@@ -35,8 +35,11 @@ dotfiles () {
             if [ ! -h ~/$file ]; then
                 echo "Collision: Moving existing ~/$file to $backup"
                 mv ~/$file $backup
+            else
+                echo "Symlink ~/$file already existed"
             fi
-        else
+	fi
+        if [ ! -h ~/$file ]; then
             echo "Creating symlink to $file in home directory."
             ln -si $dir/$file ~/$file
         fi
@@ -44,14 +47,9 @@ dotfiles () {
     cd $cwd
 }
 
-dropbox () {
-    echo "Put link to dropbox symlink script here"
-}
-
-
 echo Welcome to my linux config setup script!
 
-for section in dotfiles dropbox; do
+for section in dotfiles; do
     echo "Would you like to setup $section? (y/n): "
     read prompt
     echo
