@@ -143,8 +143,8 @@ myManageHook = composeAll [manageDocks]
 -- | Defines a custom handler function for X Events. The function should
 -- return (All True) if the default handler is to be run afterwards.
 -- To combine event hooks, use mappend or mconcat from Data.Monoid.
-handleEventHook :: Event -> X All
-handleEventHook _ = return (All True)
+-- handleEventHook :: Event -> X All
+-- handleEventHook _ = return (All True)
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -172,5 +172,6 @@ main = xmonad =<< xmobar defaultConfig {
     , workspaces         = myWorkspaces
     , borderWidth        = myBorderWidth
     , layoutHook         = myLayout
+    , handleEventHook    = fullscreenEventHook
     , normalBorderColor  = myNormalBorderColor
     , focusedBorderColor = myFocusedBorderColor }
