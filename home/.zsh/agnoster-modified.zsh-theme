@@ -49,7 +49,7 @@ prompt_segment() {
 # End the prompt, closing any open segments
 prompt_end() {
   if [[ -n $CURRENT_BG ]]; then
-    echo -n " %{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{$fg_no_bold[white]%}"
+    echo -n " %{$fg_no_bold[$CURRENT_BG]$bg[default]%}$SEGMENT_SEPARATOR%{$fg_no_bold[white]%}"
   else
     echo -n "%{%k%}"
   fi
