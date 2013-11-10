@@ -1,4 +1,4 @@
-Config { font = "xft:Liberation Mono:pixelsize=11:antialias=true:hinting=true"
+Config { font = "xft:Monospace:pixelsize=11:antialias=true:hinting=true"
        , bgColor = "black"
        , fgColor = "grey"
        , position = Top
