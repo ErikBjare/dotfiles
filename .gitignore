@@ -1,2 +1,4 @@
 !home/.*
+home/.xmonad/*
+!home/.xmonad/xmonad.hs
 backup/
