@@ -5,7 +5,7 @@ if (hostname=='erb-main-kubuntu'); then
 fi
 
 feh --bg-fill "~/Media/Wallpapers/Nothing is real.jpg"
-redshift -t 7000:3500 &
+redshift -l 55:13 -t 6000:3500 &
 dropbox start &
 
 exec xmonad
