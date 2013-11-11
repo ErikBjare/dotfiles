@@ -1,4 +1,10 @@
 !home/.*
+
+# xmonad.hs but not compiled files etc.
 home/.xmonad/*
 !home/.xmonad/xmonad.hs
+
+# Some vim stuff
+home/.vim/.netrwhist
+
 backup/
