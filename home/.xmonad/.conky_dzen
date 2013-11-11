@@ -1,0 +1,8 @@
+background yes
+out_to_console yes
+out_to_x no
+# Update interval in seconds
+update_interval 1
+ 
+TEXT
+^i(/home/my_user/.xmonad/dzen2/cpu.xbm) ^fg(\#FFFFFF)${cpu}% ^i(/home/my_user/.xmonad/dzen2/mem.xbm) ^fg(\#FFFFFF)${memperc}% ^fg(\#ebac54) ${if_existing /proc/net/route eth1} ^i(/home/my_user/.xmonad/dzen2/net_wired.xbm) ^fg(\#00aa4a) ^i(/home/my_user/.xmonad/dzen2/net_down_03.xbm)${downspeed eth1} ^fg(\#ff3333) ^i(/home/my_user/.xmonad/dzen2/net_up_03.xbm)${upspeed eth1} ^fg(\#ebac54) ^i(/home/my_user/.xmonad/dzen2/mpd.xbm) ^fg(\#00ffff)${exec rhythmbox-client --print-playing-format "%aa-%at-%tt" | cut -c-70} ^fg(\#ebac54) ^i(/home/my_user/.xmonad/dzen2/volume.xbm) ^fg(\#00ffff)${exec amixer get Headphone | egrep -o "[0-9]+%" | head -1 | egrep -o "[0-9]*"}% ^fg(\#ebac54) ^i(/home/my_user/.xmonad/dzen2/clock.xbm) ^fg(\#FFFFFF) ${time %d %m %Y} ^fg(\#ebac54) ${time %R}
