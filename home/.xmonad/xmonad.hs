@@ -14,8 +14,9 @@
     import System.IO
     import System.Exit
 
-    -- Used to order xinerama displays properly
-    import XMonad.Actions.PhysicalScreens
+    -- Actions
+    import XMonad.Actions.PhysicalScreens -- Used to order xinerama displays properly
+    import XMonad.Actions.Volume
 
     -- Hooks
     import XMonad.Hooks.ManageDocks
@@ -152,6 +153,11 @@
         , ((modm,               xK_l     ), spawn "slock")
         -- close focused window
         , ((modm,               xK_q     ), kill)
+
+        -- volume
+        , ((modm,               xK_Print ), lowerVolumeChannels ["Master"] 5 >> return ())
+        , ((modm,               xK_Scroll_Lock ), lowerVolumeChannels ["Master"] 100 >> return ())
+        , ((modm,               xK_Pause ), raiseVolumeChannels ["Master"] 5 >> return ())
     
          -- Rotate through the available layout algorithms
         , ((modm,               xK_space ), sendMessage NextLayout)
