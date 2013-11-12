@@ -148,6 +148,8 @@
         ((modm,               xK_Return), spawn $ XMonad.terminal conf)
         -- launch dmenu
         , ((modm,               xK_r     ), spawn "dmenu_run")
+        -- lock with slock
+        , ((modm,               xK_l     ), spawn "slock")
         -- close focused window
         , ((modm,               xK_q     ), kill)
     
@@ -171,8 +173,8 @@
         , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
         
         -- Shrink/expand the master area
-        , ((modm,               xK_h     ), sendMessage Shrink)
-        , ((modm,               xK_l     ), sendMessage Expand)
+        , ((modm,               xK_minus ), sendMessage Shrink)
+        , ((modm,               xK_plus  ), sendMessage Expand)
         
         -- Push window back into tiling
         , ((modm,               xK_t     ), withFocused $ windows . W.sink)
