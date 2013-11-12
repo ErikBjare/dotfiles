@@ -29,6 +29,13 @@
     import XMonad.Layout.NoBorders
     import XMonad.Layout.Named
     import XMonad.Layout.Fullscreen
+    import XMonad.Layout.PerWorkspace (onWorkspace, onWorkspaces)
+    import XMonad.Layout.IM
+    import XMonad.Layout.Grid
+    import XMonad.Layout.SimpleFloat
+    import XMonad.Layout.ResizableTile
+
+    import Data.Ratio ((%))
 
     import qualified XMonad.StackSet as W
     import qualified Data.Map        as M
@@ -47,8 +54,11 @@
     myWorkspaces    = ["1:term","2:web","3:dev","4:chat","5:music","6:fullscrn"] ++ map show [7..9]
     
     -- dzen2 bar
-    myXmonadBar = "dzen2 -xs '1' -w '1000' -h '24' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '#1B1D1E'"
-    myStatusBar = "conky -c ~/.xmonad/.conky_dzen | dzen2 -xs '1' -x '1000' -h '24' -ta 'r' -bg '#1B1D1E' -fg '#FFFFFF' "
+    dzenFont = "-fn '-*-terminus-*-*-*-*-*-*-*-*-*-*-*-*'"
+    barHeight   = "20"
+    myXmonadBar = "dzen2 -xs '1' -w '1000' -h '" ++ barHeight ++ "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '#1B1D1E' " ++ dzenFont
+    myStatusBar = "conky -c ~/.xmonad/.conky_dzen | dzen2 -xs '1' -x '1000' -h '" ++ barHeight ++ "' -ta 'r' -bg '#1B1D1E' -fg '#FFFFFF' " ++ dzenFont
+    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 10 --widthtype pixel --width 90 --transparent true --alpha 0 --tint 0x1b1d1e --heighttype pixel --height " ++ barHeight
     myBitmapsDir = "/home/erb/.xmonad/dzen2"
 --}}}
 
@@ -56,19 +66,20 @@
     main = do
         dzenLeftBar  <- spawnPipe myXmonadBar
         dzenRightBar <- spawnPipe myStatusBar
+        trayBar      <- spawnPipe myTray
         xmonad $ defaultConfig {
               -- General section
               terminal           = myTerminal
             , modMask            = myModMask
             , logHook            = myLogHook dzenLeftBar >> fadeInactiveLogHook 0xdddddddd
             , manageHook         = myManageHook
-            -- , startupHook        = myStartupHook
+            --, startupHook        = myStartupHook
             -- Keyboard
             , keys               = myKeys
             -- Style and appearance
             , workspaces         = myWorkspaces
             , borderWidth        = myBorderWidth
-            , layoutHook         = myLayout
+            , layoutHook         = myLayoutHook
             , handleEventHook    = fullscreenEventHook
             , normalBorderColor  = myNormalBorderColor
             , focusedBorderColor = myFocusedBorderColor 
@@ -106,14 +117,15 @@
                          "XFontSel", "Downloads", "Nm-connection-editor", "Alarmclock"]
         
             -- resources
-            myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer"]
+            myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer","panel"]
         
             -- names
             myNames   = ["bashrun","Google Chrome Options","Chromium Options"]
         
-            -- a trick for fullscreen but stil allow focusing of other WSs
-            myDoFullFloat :: ManageHook
-            myDoFullFloat = doF W.focusDown <+> doFullFloat
+    -- a trick for fullscreen but stil allow focusing of other WSs
+    myDoFullFloat :: ManageHook
+    myDoFullFloat = doF W.focusDown <+> doFullFloat
+        
     --}}}
     
     -----------------------------------------------------------------------------------
@@ -121,10 +133,17 @@
     
     -- myLayout = spacing 2 $ Tall 1 (3/100) (1/2)
     --
-    myLayout = avoidStruts (
-        named "Tiled" $ smartSpacing 2 $ Tall 1 (3/100) (1/2) |||
-        -- Mirror (Tall 1 (3/100) (1/2))) |||
-        noBorders (named "Full" $ fullscreenFull Full)) 
+    myLayoutHook  = onWorkspaces ["1:term","2:web"] defaultLayout $
+                    onWorkspaces ["4:chat"]              imLayout $
+                    defaultLayout
+
+    imLayout      = avoidStruts $ withIM (1%10) (And (ClassName "Pidgin") (Role "buddy_list")) Grid 
+
+    defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| simpleFloat
+        where
+            tiled = ResizableTall 1 (2/100) (1/2) []
+            -- Mirror (Tall 1 (3/100) (1/2))) |||
+            -- noBorders (named "Full" $ fullscreenFull Full)) 
 
     -- avoidStruts ( 
         -- mode (master add/max) (default proportion occupied by master)
@@ -158,6 +177,8 @@
         , ((modm,               xK_Print ), lowerVolumeChannels ["Master"] 5 >> return ())
         , ((modm,               xK_Scroll_Lock ), lowerVolumeChannels ["Master"] 100 >> return ())
         , ((modm,               xK_Pause ), raiseVolumeChannels ["Master"] 5 >> return ())
+
+        , ((modm .|. shiftMask, xK_Print ), spawn "gnome-printscreen")
     
          -- Rotate through the available layout algorithms
         , ((modm,               xK_space ), sendMessage NextLayout)
@@ -197,7 +218,7 @@
         -- Quit xmonad
         , ((modm .|. shiftMask, xK_x     ), io (exitWith ExitSuccess))
         -- Restart xmonad
-        , ((modm              , xK_x     ), spawn "killall conky dzen2; xmonad --recompile && xmonad --restart")
+        , ((modm              , xK_x     ), spawn "killall conky dzen2 trayer; xmonad --recompile && xmonad --restart")
         ]
         ++
         --
@@ -228,19 +249,20 @@
     myLogHook :: Handle -> X ()
     myLogHook h = dynamicLogWithPP $ defaultPP
         {
-            ppCurrent           =   dzenColor "#30ffff" "#1B1D1E" . pad
-          , ppVisible           =   dzenColor "#f050ff" "#1B1D1E" . pad
+            ppCurrent           =   dzenColor "#30ffff" "#1B1D1E" . wrap " (" ")"
+          , ppVisible           =   dzenColor "#f050ff" "#1B1D1E" . wrap " [" "]"
           , ppHidden            =   dzenColor "white" "#1B1D1E" . pad
-          , ppHiddenNoWindows   =   dzenColor "#7b7b7b" "#1B1D1E" . pad
+        --, ppHiddenNoWindows   =   dzenColor "#7b7b7b" "#1B1D1E" . pad
           , ppUrgent            =   dzenColor "#ff0000" "#1B1D1E" . pad
-          , ppWsSep             =   " "
-          , ppSep               =   "  |  "
+          , ppWsSep             =   ""
+          , ppSep               =   " | "
           , ppLayout            =   dzenColor "#00b0ff" "#1B1D1E" .
                                     (\x -> case x of
                                         "ResizableTall"             ->      "^i(" ++ myBitmapsDir ++ "/tall.xbm)"
                                         "Mirror ResizableTall"      ->      "^i(" ++ myBitmapsDir ++ "/mtall.xbm)"
                                         "Full"                      ->      "^i(" ++ myBitmapsDir ++ "/full.xbm)"
                                         "Simple Float"              ->      "~"
+                                        "IM Grid"                   ->      "IM"
                                         _                           ->      x
                                     )
           , ppTitle             =   (" " ++) . dzenColor "white" "#1B1D1E" . dzenEscape
