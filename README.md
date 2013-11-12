@@ -10,11 +10,12 @@ Just my dotfiles and a nice script for managing them, based on a previously priv
 
 
 ### Usage
-Run `setup.sh`
-
-(Always read through scripts from the internets before executing)
+Just run `setup.sh` and everything will be symlinked to your home dir.  
+If there are collisions with existing files they will be moved to `./backup/`  
+*(Always read through random scripts from the internets before executing)*
 
 
 ### Thanks to
- - Johan Bjäreholt (https://github.com/johan-bjareholt/linux-configs)
- - and everyone else I stole from!
+ - [Johan Bjäreholt](https://github.com/johan-bjareholt/) for his [dotfiles](https://github.com/johan-bjareholt/linux-configs)
+ - [brafales](https://github.com/brafales/) for his [XMonad config](https://github.com/brafales/xmonad-config) and [guide](http://thinkingeek.com/2011/11/21/simple-guide-configure-xmonad-dzen2-conky/)
+ - and everyone else from whom I stole!
