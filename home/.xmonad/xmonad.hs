@@ -47,9 +47,9 @@
     myWorkspaces    = ["1:term","2:web","3:dev","4:chat","5:music","6:fullscrn"] ++ map show [7..9]
     
     -- dzen2 bar
-    myXmonadBar = "dzen2 -xs '1' -w '1200' -h '24' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '#1B1D1E'"
-    myStatusBar = "conky -c ~/.xmonad/.conky_dzen | dzen2 -xs '1' -h '24' -ta 'r' -sa 'r' -bg '#1B1D1E' -fg '#FFFFFF' "
-    myBitmapsDir = "/home/erb/.xmonad/dzen"
+    myXmonadBar = "dzen2 -xs '1' -w '1000' -h '24' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '#1B1D1E'"
+    myStatusBar = "conky -c ~/.xmonad/.conky_dzen | dzen2 -xs '1' -x '1000' -h '24' -ta 'r' -bg '#1B1D1E' -fg '#FFFFFF' "
+    myBitmapsDir = "/home/erb/.xmonad/dzen2"
 --}}}
 
 -- Main {{{
