@@ -139,11 +139,11 @@
 
     imLayout      = avoidStruts $ withIM (1%10) (And (ClassName "Pidgin") (Role "buddy_list")) Grid 
 
-    defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| simpleFloat
+    defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| noBorders ||| simpleFloat
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
             -- Mirror (Tall 1 (3/100) (1/2))) |||
-            -- noBorders (named "Full" $ fullscreenFull Full)) 
+            noBorders  = (named "Full" $ fullscreenFull Full) 
 
     -- avoidStruts ( 
         -- mode (master add/max) (default proportion occupied by master)
