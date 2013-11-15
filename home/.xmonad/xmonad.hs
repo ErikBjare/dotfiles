@@ -17,6 +17,7 @@
     -- Actions
     import XMonad.Actions.PhysicalScreens -- Used to order xinerama displays properly
     import XMonad.Actions.Volume
+    import Graphics.X11.ExtraTypes.XF86
 
     -- Hooks
     import XMonad.Hooks.ManageDocks
@@ -51,14 +52,38 @@
     myTerminal = "terminator"
     
     -- Sets name of the workspaces
-    myWorkspaces    = ["1:term","2:web","3:dev","4:chat","5:music","6:fullscrn"] ++ map show [7..9]
+    myWorkspaces    = ["1:term","2:web","3:dev","4:chat","5:music","6:full"] ++ map show [7..9]
     
-    -- dzen2 bar
-    dzenFont = "-fn '-*-terminus-*-*-*-*-*-*-*-*-*-*-*-*'"
-    barHeight   = "20"
-    myXmonadBar = "dzen2 -xs '1' -w '1000' -h '" ++ barHeight ++ "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '#1B1D1E' " ++ dzenFont
-    myStatusBar = "conky -c ~/.xmonad/.conky_dzen | dzen2 -xs '1' -x '1000' -h '" ++ barHeight ++ "' -ta 'r' -bg '#1B1D1E' -fg '#FFFFFF' " ++ dzenFont
-    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 10 --widthtype pixel --width 90 --transparent true --alpha 0 --tint 0x1b1d1e --heighttype pixel --height " ++ barHeight
+
+    -- Conky config for status bar
+    dzenConkyColor color    = "^fg(\\\\" ++ color ++ ")"
+    imageBarColor   = "#2070FF"
+    textBarColor    = "#70B0FF"
+    sepBarColor     = "#FFA050"
+    
+    -- dcic & dctz, dzenConkyImageBarColor and dzenConkyTextBarColor
+    dcic = dzenConkyColor imageBarColor
+    dctc = dzenConkyColor textBarColor
+    dcsc = dzenConkyColor sepBarColor
+
+    sepBar = "|" -- "│", "\2504", "\x2504"
+
+    dzenSegment image text = concat ["|", dcic, " ^i(", myBitmapsDir, "/", image, ") ", dctc, text, " ", dcsc]
+
+    conkyText   =  dcsc ++ "["
+                        ++ tail (dzenSegment "cpu.xbm" "${cpu}%"
+                            ++ dzenSegment "mem.xbm" "${memperc}%"
+                            ++ dzenSegment "volume.xbm" "${exec amixer get Master | egrep -o '[0-9]+%' | head -1 | egrep -o '[0-9]*'}%"
+                            ++ dzenSegment "info_01.xbm" "{            }"
+                            ++ dzenSegment "clock.xbm" "${time %Y/%m/%d} ${time %R:%S}")
+
+    -- Bar
+    barFont = "-*-terminus-*-*-*-*-*-*-*-*-*-*-*-*"
+    barHeight   = "18"
+    barColor    = "#282828"
+    myXmonadBar = "dzen2 -xs '1' -w '1000' -h '" ++ barHeight ++ "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '" ++ barColor ++ "' -fn '" ++ barFont ++ "'"
+    myStatusBar = "conky -c ~/.xmonad/.conky_dzen -t '" ++ conkyText ++ "' | dzen2 -xs '1' -x '1000' -h '" ++ barHeight ++ "' -ta 'r' -bg '" ++ barColor ++ "' -fg '#FFFFFF' -fn '" ++ barFont ++ "'"
+    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 210 --widthtype pixel --width 90 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ barHeight
     myBitmapsDir = "/home/erb/.xmonad/dzen2"
 --}}}
 
@@ -137,7 +162,9 @@
                     onWorkspaces ["4:chat"]              imLayout $
                     defaultLayout
 
-    imLayout      = avoidStruts $ withIM (1%10) (And (ClassName "Pidgin") (Role "buddy_list")) Grid 
+    imLayout      = avoidStruts $ withIM (1%10) (And (ClassName "Pidgin") (Role "buddy_list")) Grid ||| tiled 
+        where
+            tiled = ResizableTall 1 (2/100) (1/2) []
 
     defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| noBorders ||| simpleFloat
         where
@@ -173,14 +200,22 @@
         -- close focused window
         , ((modm,               xK_q     ), kill)
 
-        -- volume
+        -- Volume
         , ((modm,               xK_Print ), lowerVolumeChannels ["Master"] 5 >> return ())
-        , ((modm,               xK_Scroll_Lock ), lowerVolumeChannels ["Master"] 100 >> return ())
+        , ((modm,         xK_Scroll_Lock ), lowerVolumeChannels ["Master"] 100 >> return ())
         , ((modm,               xK_Pause ), raiseVolumeChannels ["Master"] 5 >> return ())
+        , ((0,   xF86XK_AudioLowerVolume ), lowerVolumeChannels ["Master"] 5 >> return ())
+        , ((0,          xF86XK_AudioMute ), lowerVolumeChannels ["Master"] 100 >> return ())
+        , ((0,   xF86XK_AudioRaiseVolume ), raiseVolumeChannels ["Master"] 5 >> return ())
+        
+        -- Screen brightness
+        , ((0,  xF86XK_MonBrightnessUp   ), spawn "xbacklight +5")
+        , ((0,  xF86XK_MonBrightnessDown ), spawn "xbacklight -5")  
 
-        , ((modm .|. shiftMask, xK_Print ), spawn "gnome-printscreen")
+        -- Printscreen
+        , ((0,                  xK_Print ), spawn "gnome-printscreen")
     
-         -- Rotate through the available layout algorithms
+        -- Rotate through the available layout algorithms
         , ((modm,               xK_space ), sendMessage NextLayout)
     
         --  Reset the layouts on the current workspace to default
@@ -190,12 +225,13 @@
         , ((modm,               xK_n     ), refresh)
     
         -- Move focus to the next/prev/master window
-        , ((modm,               xK_Tab   ), windows W.focusDown)
-        , ((modm,               xK_j     ), windows W.focusDown)
-        , ((modm,               xK_k     ), windows W.focusUp  )
+        , ((modm,               xK_Tab   ), windows W.focusDown    )
+        , ((modm,               xK_j     ), windows W.focusDown    )
+        , ((modm,               xK_k     ), windows W.focusUp      )
         , ((modm,               xK_m     ), windows W.focusMaster  )
         
         -- Swap the focused window with the next/prev window
+        , ((modm .|. shiftMask, xK_Tab   ), windows W.swapDown  )
         , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
         , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
         
@@ -214,7 +250,7 @@
         -- Use this binding with avoidStruts from Hooks.ManageDocks.
         -- See also the statusBar function from Hooks.DynamicLog.
         , ((modm              , xK_b     ), sendMessage ToggleStruts)
-        
+
         -- Quit xmonad
         , ((modm .|. shiftMask, xK_x     ), io (exitWith ExitSuccess))
         -- Restart xmonad
@@ -249,14 +285,14 @@
     myLogHook :: Handle -> X ()
     myLogHook h = dynamicLogWithPP $ defaultPP
         {
-            ppCurrent           =   dzenColor "#30ffff" "#1B1D1E" . wrap " (" ")"
-          , ppVisible           =   dzenColor "#f050ff" "#1B1D1E" . wrap " [" "]"
-          , ppHidden            =   dzenColor "white" "#1B1D1E" . pad
-        --, ppHiddenNoWindows   =   dzenColor "#7b7b7b" "#1B1D1E" . pad
-          , ppUrgent            =   dzenColor "#ff0000" "#1B1D1E" . pad
+            ppCurrent           =   dzenColor "#50FF5F" barColor . wrap "(" ")"
+          , ppVisible           =   dzenColor "#FF50FF" barColor . wrap "[" "]"
+          , ppHidden            =   dzenColor "#AAAAAA" barColor . pad
+          , ppHiddenNoWindows   =   dzenColor "#505050" barColor . pad
+          , ppUrgent            =   dzenColor "#FF0000" barColor . pad
           , ppWsSep             =   ""
-          , ppSep               =   " | "
-          , ppLayout            =   dzenColor "#00b0ff" "#1B1D1E" .
+          , ppSep               =   "^fg(" ++ sepBarColor ++ ") "++sepBar++"  "
+          , ppLayout            =   dzenColor imageBarColor barColor .
                                     (\x -> case x of
                                         "ResizableTall"             ->      "^i(" ++ myBitmapsDir ++ "/tall.xbm)"
                                         "Mirror ResizableTall"      ->      "^i(" ++ myBitmapsDir ++ "/mtall.xbm)"
@@ -265,7 +301,7 @@
                                         "IM Grid"                   ->      "IM"
                                         _                           ->      x
                                     )
-          , ppTitle             =   (" " ++) . dzenColor "white" "#1B1D1E" . dzenEscape
+          , ppTitle             =   dzenColor "white" barColor . dzenEscape
           , ppOutput            =   hPutStrLn h
         }
 --}}}

@@ -14,6 +14,14 @@ Just run `setup.sh` and everything will be symlinked to your home dir.
 If there are collisions with existing files they will be moved to `./backup/`  
 *(Always read through random scripts from the internets before executing)*
 
+### Dependencies
+ - XMonad, with xmonad-contrib & xmonad-extras (get xmonad-extras using cabal)
+ - dzen2, trayer, suckless-tools
+ - xfonts-terminus
+ - feh, nm-applet
+ - gnome-keyring
+ - powerline-patched fonts
+ - and more I can't remember...
 
 ### Thanks to
  - [Johan Bjäreholt](https://github.com/johan-bjareholt/) for his [dotfiles](https://github.com/johan-bjareholt/linux-configs)
