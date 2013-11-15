@@ -7,5 +7,6 @@ fi
 feh --bg-fill "~/Media/Wallpapers/Nothing is real.jpg"
 redshift -l 55:13 -t 6500:3500 &
 dropbox start &
+gnome-keyring-daemon -s &
 
 exec xmonad
