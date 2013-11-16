@@ -74,7 +74,7 @@
                         ++ tail (dzenSegment "cpu.xbm" "${cpu}%"
                             ++ dzenSegment "mem.xbm" "${memperc}%"
                             ++ dzenSegment "volume.xbm" "${exec amixer get Master | egrep -o '[0-9]+%' | head -1 | egrep -o '[0-9]*'}%"
-                            ++ dzenSegment "info_01.xbm" "{            }"
+                            ++ dzenSegment "info_01.xbm" "{              }"
                             ++ dzenSegment "clock.xbm" "${time %Y/%m/%d} ${time %R:%S}")
 
     -- Bar
@@ -83,7 +83,7 @@
     barColor    = "#282828"
     myXmonadBar = "dzen2 -xs '1' -w '1000' -h '" ++ barHeight ++ "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '" ++ barColor ++ "' -fn '" ++ barFont ++ "'"
     myStatusBar = "conky -c ~/.xmonad/.conky_dzen -t '" ++ conkyText ++ "' | dzen2 -xs '1' -x '1000' -h '" ++ barHeight ++ "' -ta 'r' -bg '" ++ barColor ++ "' -fg '#FFFFFF' -fn '" ++ barFont ++ "'"
-    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 210 --widthtype pixel --width 90 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ barHeight
+    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 205 --widthtype pixel --width 110 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ barHeight
     myBitmapsDir = "/home/erb/.xmonad/dzen2"
 --}}}
 
@@ -210,7 +210,12 @@
         
         -- Screen brightness
         , ((0,  xF86XK_MonBrightnessUp   ), spawn "xbacklight +5")
-        , ((0,  xF86XK_MonBrightnessDown ), spawn "xbacklight -5")  
+        , ((0,  xF86XK_MonBrightnessDown ), spawn "xbacklight -5")
+
+        -- Screen temperature & software brightness
+        , ((modm,               xK_F10   ), spawn "redshift -O 3500 -b 0.7")
+        , ((modm,               xK_F11   ), spawn "redshift -O 3500 -b 1")
+        , ((modm,               xK_F12   ), spawn "redshift -O 6500 -b 1")
 
         -- Printscreen
         , ((0,                  xK_Print ), spawn "gnome-printscreen")
@@ -291,7 +296,7 @@
           , ppHiddenNoWindows   =   dzenColor "#505050" barColor . pad
           , ppUrgent            =   dzenColor "#FF0000" barColor . pad
           , ppWsSep             =   ""
-          , ppSep               =   "^fg(" ++ sepBarColor ++ ") "++sepBar++"  "
+          , ppSep               =   "^fg(" ++ sepBarColor ++ ") "++sepBar++" "
           , ppLayout            =   dzenColor imageBarColor barColor .
                                     (\x -> case x of
                                         "ResizableTall"             ->      "^i(" ++ myBitmapsDir ++ "/tall.xbm)"
