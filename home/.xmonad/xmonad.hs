@@ -138,7 +138,7 @@
             myDevs    = ["jetbrains-pycharm"]
             myChat    = ["Pidgin", "Buddy List"]
             myMusic   = ["Rhythmbox", "Spotify"]
-            myFloats  = ["Vlc", "VirtualBox", "Xmessage",
+            myFloats  = ["Vlc", "VirtualBox", "Xmessage", "Steam", "Kalarm",
                          "XFontSel", "Downloads", "Nm-connection-editor", "Alarmclock"]
         
             -- resources
@@ -162,7 +162,7 @@
                     onWorkspaces ["4:chat"]              imLayout $
                     defaultLayout
 
-    imLayout      = avoidStruts $ withIM (1%10) (And (ClassName "Pidgin") (Role "buddy_list")) Grid ||| tiled 
+    imLayout      = avoidStruts $ withIM (1%8) (And (ClassName "Pidgin") (Role "buddy_list")) Grid ||| tiled 
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
 
@@ -180,7 +180,7 @@
         -- noBorders (fullscreenFull Full)
 
     -- Window border
-    myBorderWidth = 1 
+    myBorderWidth = 0 
     myNormalBorderColor = "#000000"
     myFocusedBorderColor = "#2222bb"
 
