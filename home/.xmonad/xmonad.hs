@@ -13,6 +13,8 @@
 
     import System.IO
     import System.Exit
+    import System.Directory
+    import System.IO.Unsafe
 
     -- Actions
     import XMonad.Actions.PhysicalScreens -- Used to order xinerama displays properly
@@ -68,14 +70,22 @@
 
     sepBar = "|" -- "│", "\2504", "\x2504"
 
-    dzenSegment image text = concat ["|", dcic, " ^i(", myBitmapsDir, "/", image, ") ", dctc, text, " ", dcsc]
+    dzenSegment image text = concat [dcic, " ^i(", myBitmapsDir, "/", image, ") ", dctc, text, " ", dcsc, "|"]
 
-    conkyText   =  dcsc ++ "["
-                        ++ tail (dzenSegment "cpu.xbm" "${cpu}%"
-                            ++ dzenSegment "mem.xbm" "${memperc}%"
-                            ++ dzenSegment "volume.xbm" "${exec amixer get Master | egrep -o '[0-9]+%' | head -1 | egrep -o '[0-9]*'}%"
-                            ++ dzenSegment "info_01.xbm" "{              }"
-                            ++ dzenSegment "clock.xbm" "${time %Y/%m/%d} ${time %R:%S}")
+    hasBattery = unsafePerformIO $ doesDirectoryExist "/sys/class/power_supply/BAT0"
+
+    cpuSeg = dzenSegment "cpu.xbm" "${cpu}%"
+    memSeg = dzenSegment "mem.xbm" "${memperc}%"
+    volSeg = dzenSegment "volume.xbm" "${exec amixer get Master | egrep -o '[0-9]+%' | head -1 | egrep -o '[0-9]*'}%"
+    getBatSeg = do
+                if hasBattery 
+                    then return $ dzenSegment "battery.xbm" "${battery_percent BAT0}%"
+                    else return ""
+    batSeg = unsafePerformIO $ getBatSeg
+    taySeg = dzenSegment "info_01.xbm" "{             }"
+    clkSeg = dzenSegment "clock.xbm" "${time %Y/%m/%d} ${time %R:%S}"
+    
+    conkyText = init $ concat [ dcsc, "[", cpuSeg, memSeg, volSeg, batSeg, taySeg, clkSeg ]
 
     -- Bar
     barFont = "-*-terminus-*-*-*-*-*-*-*-*-*-*-*-*"
