@@ -76,7 +76,11 @@
 
     cpuSeg = dzenSegment "cpu.xbm" "${cpu}%"
     memSeg = dzenSegment "mem.xbm" "${memperc}%"
-    volSeg = dzenSegment "volume.xbm" "${exec amixer get Master | egrep -o '[0-9]+%' | head -1 | egrep -o '[0-9]*'}%"
+    getVolSeg = do
+                if hasBattery -- Checks if I'm using my laptop
+                    then return $ dzenSegment "volume.xbm" "${exec amixer -c 1 get Master | egrep -o \"[0-9]+%\" | head -1 | egrep -o \"[0-9]*\"}%"
+                    else return $ dzenSegment "volume.xbm" "${exec amixer -c 0 get Master | egrep -o \"[0-9]+%\" | head -1 | egrep -o \"[0-9]*\"}%"
+    volSeg = unsafePerformIO $ getVolSeg 
     getBatSeg = do
                 if hasBattery 
                     then return $ dzenSegment "battery.xbm" "${battery_percent BAT0}%"
