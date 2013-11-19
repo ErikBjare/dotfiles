@@ -4,6 +4,7 @@
 -- Imports {{{
     import XMonad
     import XMonad.Util.Run
+    import XMonad.Util.Loggers
     import Data.Monoid
 
     -- Prompt
@@ -15,6 +16,7 @@
     import System.Exit
     import System.Directory
     import System.IO.Unsafe
+    import Codec.Binary.UTF8.String
 
     -- Actions
     import XMonad.Actions.PhysicalScreens -- Used to order xinerama displays properly
@@ -56,6 +58,8 @@
     -- Sets name of the workspaces
     myWorkspaces    = ["1:term","2:web","3:dev","4:chat","5:music","6:full"] ++ map show [7..9]
     
+    myHomeDir = "/home/erb"
+    myBitmapsDir = myHomeDir ++ "/.xmonad/dzen2"
 
     -- Conky config for status bar
     dzenConkyColor color    = "^fg(\\\\" ++ color ++ ")"
@@ -68,37 +72,34 @@
     dctc = dzenConkyColor textBarColor
     dcsc = dzenConkyColor sepBarColor
 
-    sepBar = "|" -- "│", "\2504", "\x2504"
+    sepBar = "|" -- "┃", "\x2503"
 
-    dzenSegment image text = concat [dcic, " ^i(", myBitmapsDir, "/", image, ") ", dctc, text, " ", dcsc, "|"]
+    dzenSegment image text = concat [dcic, " ^i(", myBitmapsDir, "/", image, ") ", dctc, text, " ", dcsc, sepBar]
 
     hasBattery = unsafePerformIO $ doesDirectoryExist "/sys/class/power_supply/BAT0"
 
+    audioController = if hasBattery then "-c 1" else "-c 0"
+
     cpuSeg = dzenSegment "cpu.xbm" "${cpu}%"
     memSeg = dzenSegment "mem.xbm" "${memperc}%"
-    getVolSeg = do
-                if hasBattery -- Checks if I'm using my laptop
-                    then return $ dzenSegment "volume.xbm" "${exec amixer -c 1 get Master | egrep -o \"[0-9]+%\" | head -1 | egrep -o \"[0-9]*\"}%"
-                    else return $ dzenSegment "volume.xbm" "${exec amixer -c 0 get Master | egrep -o \"[0-9]+%\" | head -1 | egrep -o \"[0-9]*\"}%"
-    volSeg = unsafePerformIO $ getVolSeg 
-    getBatSeg = do
-                if hasBattery 
-                    then return $ dzenSegment "battery.xbm" "${battery_percent BAT0}%"
-                    else return ""
-    batSeg = unsafePerformIO $ getBatSeg
-    taySeg = dzenSegment "info_01.xbm" "{             }"
+    volSeg = dzenSegment "volume.xbm" $ "${exec amixer " ++ audioController ++ " get Master | egrep -o \"[0-9]+%\" | head -1 | egrep -o \"[0-9]*\"}%"
+    batSeg = if hasBattery 
+                    then dzenSegment "battery.xbm" "${battery_percent BAT0}%" 
+                    else ""
+    traySeg = dzenSegment "info_01.xbm" "{             }"
     clkSeg = dzenSegment "clock.xbm" "${time %Y/%m/%d} ${time %R:%S}"
     
-    conkyText = init $ concat [ dcsc, "[", cpuSeg, memSeg, volSeg, batSeg, taySeg, clkSeg ]
+    conkyText = init $ concat [ dcsc, "[", cpuSeg, memSeg, volSeg, batSeg, traySeg, clkSeg ]
 
     -- Bar
-    barFont = "-*-terminus-*-*-*-*-*-*-*-*-*-*-*-*"
+    barFont     = "-*-terminus-*-*-*-*-*-*-*-*-*-*-iso10646-*"
+    -- barFont     = "-*-clean-*-*-*-*-15-*-*-*-*-*-iso10646-*" 
+
     barHeight   = "18"
     barColor    = "#282828"
-    myXmonadBar = "dzen2 -xs '1' -w '1000' -h '" ++ barHeight ++ "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '" ++ barColor ++ "' -fn '" ++ barFont ++ "'"
-    myStatusBar = "conky -c ~/.xmonad/.conky_dzen -t '" ++ conkyText ++ "' | dzen2 -xs '1' -x '1000' -h '" ++ barHeight ++ "' -ta 'r' -bg '" ++ barColor ++ "' -fg '#FFFFFF' -fn '" ++ barFont ++ "'"
-    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 205 --widthtype pixel --width 110 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ barHeight
-    myBitmapsDir = "/home/erb/.xmonad/dzen2"
+    myXmonadBar = concat ["dzen2 -xs '1' -w '1000' -h '", barHeight, "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '", barColor, "' -fn '", barFont, "'"]
+    myStatusBar = concat ["conky -c ~/.xmonad/.conky_dzen -t '", conkyText , "' | dzen2 -xs '1' -x '1000' -h '", barHeight, "' -ta 'r' -bg '", barColor, "' -fg '#FFFFFF' -fn '", barFont, "'"]
+    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 205 --distancefrom top --distance 2 --widthtype pixel --width 110 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ (show $ (read barHeight :: Int)-4 :: String)
 --}}}
 
 -- Main {{{
@@ -106,11 +107,12 @@
         dzenLeftBar  <- spawnPipe myXmonadBar
         dzenRightBar <- spawnPipe myStatusBar
         trayBar      <- spawnPipe myTray
+        hPutStrLn dzenRightBar conkyText
         xmonad $ defaultConfig {
               -- General section
               terminal           = myTerminal
             , modMask            = myModMask
-            , logHook            = myLogHook dzenLeftBar >> fadeInactiveLogHook 0xdddddddd
+            , logHook            = myLogHook dzenLeftBar
             , manageHook         = myManageHook
             --, startupHook        = myStartupHook
             -- Keyboard
@@ -194,7 +196,7 @@
         -- noBorders (fullscreenFull Full)
 
     -- Window border
-    myBorderWidth = 0 
+    myBorderWidth = 1 
     myNormalBorderColor = "#000000"
     myFocusedBorderColor = "#2222bb"
 
@@ -230,9 +232,10 @@
         , ((modm,               xK_F10   ), spawn "redshift -O 3500 -b 0.7")
         , ((modm,               xK_F11   ), spawn "redshift -O 3500 -b 1")
         , ((modm,               xK_F12   ), spawn "redshift -O 6500 -b 1")
+        , ((modm,               xK_t     ), spawn ("echo -e \"" ++ sepBar ++ "\" >> /home/erb/test.txt"))
 
         -- Printscreen
-        , ((0,                  xK_Print ), spawn "gnome-printscreen")
+        , ((0,                  xK_Print ), spawn "gnome-screenshot")
     
         -- Rotate through the available layout algorithms
         , ((modm,               xK_space ), sendMessage NextLayout)
@@ -301,6 +304,13 @@
     -- Perform an arbitrary action on each internal state change or X event.
     -- See the 'XMonad.Hooks.DynamicLog' extension for example
     
+    --myStatusHook :: Handle -> X ()
+    --myStatusHook h = dynamicLogWithPP $ PP
+    --    {
+    --          ppExtras    = [myStatusLogger]
+    --       , ppOutput    = hPutStrLn h 
+    --    }
+
     myLogHook :: Handle -> X ()
     myLogHook h = dynamicLogWithPP $ defaultPP
         {
@@ -321,6 +331,7 @@
                                         _                           ->      x
                                     )
           , ppTitle             =   dzenColor "white" barColor . dzenEscape
+          , ppExtras            =   []
           , ppOutput            =   hPutStrLn h
         }
 --}}}
