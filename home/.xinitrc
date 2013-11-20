@@ -6,9 +6,16 @@ if (hostname=="erb-main-kubuntu"); then
     xrandr --output DVI-1 --right-of HDMI-0
 fi
 
-feh --bg-fill "~/Media/Wallpapers/Nothing is real.jpg"
+# "bg"
+feh --bg-fill "/home/erb/Media/Wallpapers/Nothing is real.jpg"
 redshift -l 55:13 -t 6500:3500 &
 dropbox start &
 gnome-keyring-daemon -s &
+
+# "fg"
+if (hostname=="erb-main-kubuntu"); then
+    pidgin &
+fi
+terminator &
 
 exec xmonad
