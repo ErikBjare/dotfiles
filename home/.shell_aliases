@@ -34,9 +34,5 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # Find process command
 alias proc="ps -ef | grep"
 
-# tmux configs
-alias tmux-main="tmux -f ~/.tmux/main.conf"
-alias tmux-work="tmux -f ~/.tmux/work.conf"
-
-# IRSSI configs
-alias irssi-main="irssi --config=~/.irssi/config"
+# Fixes IRSSI scrollback (http://blog.schrierc.org/2011/07/invalid-tmux-term-causes-irssi-issues.html)
+alias irssi='TERM=screen-256color irssi'
