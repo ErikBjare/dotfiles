@@ -3,6 +3,7 @@
 # xmonad.hs but not compiled files etc.
 home/.xmonad/*
 !home/.xmonad/xmonad.hs
+!home/.xmonad/bg.png
 
 # Some vim stuff
 home/.vim/.netrwhist

@@ -89,7 +89,7 @@ prompt_git() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue white '%~'
+  prompt_segment blue white '%c'
 }
 
 # Status:
@@ -97,10 +97,13 @@ prompt_dir() {
 # - am I root
 # - are there background jobs?
 prompt_status() {
+  # Useful symbols:
+  # ☢ ⚙ ⚡ ☉ ✘ ❌ ⁂
+  # More at: https://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols
   local symbols
   symbols=()
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
-  [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}❌"
+  [[ $UID -eq 0 ]] && symbols+="%{$fg_bold[yellow]%}☢"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
 
   [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
@@ -117,3 +120,4 @@ build_prompt() {
 }
 
 PROMPT='%{%f%b%k%}$(build_prompt) '
+RPROMPT='%t'

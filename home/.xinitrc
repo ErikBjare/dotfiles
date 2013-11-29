@@ -7,7 +7,7 @@ if (hostname=="erb-main-kubuntu"); then
 fi
 
 # "bg"
-feh --bg-fill "/home/erb/Media/Wallpapers/Nothing is real.jpg"
+feh --bg-fill "${HOME}/.xmonad/bg.png"
 redshift -l 55:13 -t 6500:3500 &
 dropbox start &
 gnome-keyring-daemon -s &
