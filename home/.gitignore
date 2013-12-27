@@ -1,0 +1,10 @@
+.config/*
+!.config/ipython/profile_default/ipython_config.py
+
+# xmonad.hs but not compiled files etc.
+.xmonad/*
+!.xmonad/xmonad.hs
+!.xmonad/bg.png
+
+# Some vim stuff
+.vim/.netrwhist
