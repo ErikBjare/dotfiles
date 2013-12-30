@@ -36,3 +36,6 @@ alias proc="ps -ef | grep"
 
 # Fixes IRSSI scrollback (http://blog.schrierc.org/2011/07/invalid-tmux-term-causes-irssi-issues.html)
 alias irssi='TERM=screen-256color irssi'
+
+# Alias for quick reloading of zsh
+alias zsh-reload='source ~/.zshrc'
