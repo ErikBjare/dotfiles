@@ -39,3 +39,6 @@ alias irssi='TERM=screen-256color irssi'
 
 # Alias for quick reloading of zsh
 alias zsh-reload='source ~/.zshrc'
+
+# Alias for making quick python-commands inline
+alias pyc='python3 -c'
