@@ -182,11 +182,11 @@
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
 
-    defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| noBorders ||| simpleFloat
+    defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| noBorders Full ||| simpleFloat
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
             -- Mirror (Tall 1 (3/100) (1/2))) |||
-            noBorders  = (named "Full" $ fullscreenFull Full) 
+            -- noBorders  = (named "Full" $ fullscreenFull Full) 
 
     -- avoidStruts ( 
         -- mode (master add/max) (default proportion occupied by master)
