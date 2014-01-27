@@ -80,7 +80,7 @@
 
     audioController = if hasBattery then "-c 1" else "-c 0"
 
-    cpuSeg = dzenSegment "cpu.xbm" "${cpu}%"
+    cpuSeg = dzenSegment "cpu.xbm" "${loadavg}"
     memSeg = dzenSegment "mem.xbm" "${memperc}%"
     volSeg = dzenSegment "volume.xbm" $ "${exec amixer " ++ audioController ++ " get Master | egrep -o \"[0-9]+%\" | head -1 | egrep -o \"[0-9]*\"}%"
     batSeg = if hasBattery 
