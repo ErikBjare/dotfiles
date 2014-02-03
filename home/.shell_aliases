@@ -11,6 +11,10 @@ export PATH="$PATH:~/bin"
 export JAVA_HOME="/usr/local/jdk1.7.0"
 export PATH="$JAVA_HOME/bin:$PATH"
 
+# Go path
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GOPATH/bin"
+
 # Enable color support of ls and others
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
