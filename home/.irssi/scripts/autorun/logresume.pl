@@ -1,1 +1,0 @@
-../logresume.pl
