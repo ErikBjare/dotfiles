@@ -2,6 +2,7 @@
 "Erik Bjäreholts .vimrc
 "
 
+
 "Enable syntax highlighting
 syntax on
 
@@ -25,3 +26,5 @@ set softtabstop=4
 
 "Set indentation settings automatically depending on filetype plugin
 filetype plugin indent on
+
+execute pathogen#infect()
