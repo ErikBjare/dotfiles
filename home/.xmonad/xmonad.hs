@@ -21,6 +21,7 @@
     -- Actions
     import XMonad.Actions.PhysicalScreens -- Used to order xinerama displays properly
     import XMonad.Actions.Volume
+    import XMonad.Actions.GridSelect
     import Graphics.X11.ExtraTypes.XF86
 
     -- Hooks
@@ -182,7 +183,7 @@
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
 
-    defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| noBorders Full ||| simpleFloat
+    defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| Grid ||| noBorders Full ||| simpleFloat
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
             -- Mirror (Tall 1 (3/100) (1/2))) |||
@@ -239,6 +240,7 @@
     
         -- Rotate through the available layout algorithms
         , ((modm,               xK_space ), sendMessage NextLayout)
+        , ((modm,               xK_apostrophe ), goToSelected defaultGSConfig)
     
         --  Reset the layouts on the current workspace to default
         , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
