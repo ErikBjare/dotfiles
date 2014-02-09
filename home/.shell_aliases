@@ -46,3 +46,7 @@ alias zsh-reload='source ~/.zshrc'
 
 # Alias for making quick python-commands inline
 alias pyc='python3 -c'
+
+# Alias for "streak"
+alias streak-code='streak -cal="Coding streaks" -event="Coding streak"'
+alias streak-writing='streak -cal="Writing streaks" -event="Writing streak"'
