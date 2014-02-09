@@ -152,7 +152,7 @@
             -- classnames
             myTerm    = ["Terminator"]
             myWebs    = ["Firefox", "Google-chrome", "Chromium", "Chromium-browser"]
-            myDevs    = ["jetbrains-pycharm"]
+            myDevs    = ["Sublime_text", "jetbrains-pycharm", "jetbrains-idea-ce"]
             myChat    = ["Pidgin", "Buddy List"]
             myMusic   = ["Rhythmbox", "Spotify"]
             myFloats  = ["Vlc", "VirtualBox", "Xmessage", "Steam", "Kalarm",
@@ -175,19 +175,28 @@
     
     -- myLayout = spacing 2 $ Tall 1 (3/100) (1/2)
     --
-    myLayoutHook  = onWorkspaces ["1:term","2:web"] defaultLayout $
-                    onWorkspaces ["4:chat"]              imLayout $
+    myLayoutHook  = onWorkspaces ["1:term"]   termLayout $
+                    onWorkspaces ["2:web"]    webLayout  $
+                    onWorkspaces ["4:chat"]   imLayout   $
                     defaultLayout
-
-    imLayout      = avoidStruts $ withIM (1%8) (And (ClassName "Pidgin") (Role "buddy_list")) Grid ||| tiled 
-        where
-            tiled = ResizableTall 1 (2/100) (1/2) []
 
     defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| Grid ||| noBorders Full ||| simpleFloat
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
             -- Mirror (Tall 1 (3/100) (1/2))) |||
             -- noBorders  = (named "Full" $ fullscreenFull Full) 
+
+    termLayout    = avoidStruts $ noBorders Full ||| tiled ||| Mirror tiled ||| Grid
+        where
+            tiled = ResizableTall 1 (2/100) (1/2) []
+
+    webLayout     = avoidStruts $ noBorders Full ||| tiled
+        where
+            tiled = ResizableTall 1 (2/100) (1/2) []
+
+    imLayout      = avoidStruts $ withIM (1%8) (And (ClassName "Pidgin") (Role "buddy_list")) Grid ||| tiled 
+        where
+            tiled = ResizableTall 1 (2/100) (1/2) []
 
     -- avoidStruts ( 
         -- mode (master add/max) (default proportion occupied by master)
