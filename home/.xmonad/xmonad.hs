@@ -249,7 +249,8 @@
     
         -- Rotate through the available layout algorithms
         , ((modm,               xK_space ), sendMessage NextLayout)
-        , ((modm,               xK_apostrophe ), goToSelected defaultGSConfig)
+        , ((modm,               xK_apostrophe ), gridselectWorkspace defaultGSConfig (\ws -> W.greedyView ws))
+        --, ((modm,               xK_apostrophe ), goToSelected defaultGSConfig)
     
         --  Reset the layouts on the current workspace to default
         , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
