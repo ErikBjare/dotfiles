@@ -22,6 +22,7 @@
     import XMonad.Actions.PhysicalScreens -- Used to order xinerama displays properly
     import XMonad.Actions.Volume
     import XMonad.Actions.GridSelect
+    import XMonad.Actions.CycleWS
     import Graphics.X11.ExtraTypes.XF86
 
     -- Hooks
@@ -118,6 +119,7 @@
             --, startupHook        = myStartupHook
             -- Keyboard
             , keys               = myKeys
+            , mouseBindings      = myMouseBindings
             -- Style and appearance
             , workspaces         = myWorkspaces
             , borderWidth        = myBorderWidth
@@ -249,7 +251,7 @@
     
         -- Rotate through the available layout algorithms
         , ((modm,               xK_space ), sendMessage NextLayout)
-        , ((modm,               xK_apostrophe ), gridselectWorkspace defaultGSConfig (\ws -> W.greedyView ws))
+        --, ((modm,               xK_apostrophe ), gridselectWorkspace defaultGSConfig (\ws -> W.greedyView ws))
         --, ((modm,               xK_apostrophe ), goToSelected defaultGSConfig)
     
         --  Reset the layouts on the current workspace to default
@@ -308,7 +310,22 @@
         [((m .|. modm, key), f sc)
             | (key, sc) <- zip [xK_a, xK_s, xK_d] [0..]
             , (f, m) <- [(viewScreen, 0), (sendToScreen, shiftMask)]]
-    
+   
+    -- | Mouse bindings: default actions bound to mouse events
+    myMouseBindings :: XConfig Layout -> M.Map (KeyMask, Button) (Window -> X ())
+    myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
+        -- mod-button1 %! Set the window to floating mode and move by dragging
+        [ ((modm, button1), \w -> focus w >> mouseMoveWindow w
+                                              >> windows W.shiftMaster)
+        -- mod-button2 %! Raise the window to the top of the stack
+        , ((modm .|. shiftMask, button3), \ws -> gridselectWorkspace defaultGSConfig (\ws -> W.greedyView ws))
+        -- mod-button3 %! Set the window to floating mode and resize by dragging
+        , ((modm, button3), \w -> focus w >> mouseResizeWindow w
+                                             >> windows W.shiftMaster)
+        -- you may also bind events to the mouse scroll wheel (button4 and button5)
+        , ((modm, button4), \w -> prevWS)
+        , ((modm, button5), \w -> nextWS)
+        ] 
     
     ------------------------------------------------------------------------
     -- Status bars and logging
