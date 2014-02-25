@@ -18,10 +18,15 @@ fi
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git vagrant python pip cabal)
+plugins=(zsh-syntax-highlighting history-substring-search git vagrant python pip cabal)
 
 # Load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
+
+# bind UP and DOWN arrow keys
+zmodload zsh/terminfo
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
 
 # Override theme
 source ~/.zsh/agnoster-modified.zsh-theme
