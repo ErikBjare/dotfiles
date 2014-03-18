@@ -58,7 +58,7 @@
     myTerminal = "terminator"
     
     -- Sets name of the workspaces
-    myWorkspaces    = ["1:term","2:web","3:dev","4:chat","5:music","6:full"] ++ map show [7..9]
+    myWorkspaces    = ["1:term","2:web","3:dev","4:term2","5:sys","6:full"] ++ map show [7..9]
     
     myHomeDir = "/home/erb"
     myBitmapsDir = myHomeDir ++ "/.xmonad/dzen2"
@@ -179,7 +179,8 @@
     --
     myLayoutHook  = onWorkspaces ["1:term"]   termLayout $
                     onWorkspaces ["2:web"]    webLayout  $
-                    onWorkspaces ["4:chat"]   imLayout   $
+                    onWorkspaces ["4:term2"]  termLayout $
+                    onWorkspaces ["5:sys"]    termLayout $
                     defaultLayout
 
     defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| Grid ||| noBorders Full ||| simpleFloat
@@ -193,10 +194,6 @@
             tiled = ResizableTall 1 (2/100) (1/2) []
 
     webLayout     = avoidStruts $ noBorders Full ||| tiled
-        where
-            tiled = ResizableTall 1 (2/100) (1/2) []
-
-    imLayout      = avoidStruts $ withIM (1%8) (And (ClassName "Pidgin") (Role "buddy_list")) Grid ||| tiled 
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
 
