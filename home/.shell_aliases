@@ -1,3 +1,6 @@
+# Export GPGKEY
+export GPGKEY=FCA40184
+
 # Default editor & terminal
 export EDITOR=vim
 export TERM="screen-256color"
