@@ -27,4 +27,7 @@ set softtabstop=4
 "Set indentation settings automatically depending on filetype plugin
 filetype plugin indent on
 
+"Set markdown for .md files
+au BufRead,BufNewFile *.md set filetype=markdown
+
 execute pathogen#infect()
