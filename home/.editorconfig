@@ -1,0 +1,20 @@
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+indent_style = space
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+
+# 4 space indentation for Python, JS and JSON
+[*.{py, js, json}]
+indent_size = 4
+
+# 2 spaces for Ruby, HTML and CSS/SASS
+[*.{ruby, html, css, scss}]
+indent_size = 2
+
+# 4 spaces for markdown
+indent_size = 4
