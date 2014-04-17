@@ -4,17 +4,21 @@ root = true
 # Unix-style newlines with a newline ending every file
 [*]
 indent_style = space
+indent_size = 4
 end_of_line = lf
 insert_final_newline = true
+trim_trailing_whitespace = true
 charset = utf-8
 
 # 4 space indentation for Python, JS and JSON
-[*.{py, js, json}]
+[*.{py,js,json}]
 indent_size = 4
 
 # 2 spaces for Ruby, HTML and CSS/SASS
-[*.{ruby, html, css, scss}]
+[*.{rb,html,css,scss}]
 indent_size = 2
 
 # 4 spaces for markdown
+[*.md]
 indent_size = 4
+trim_trailing_whitespace = false

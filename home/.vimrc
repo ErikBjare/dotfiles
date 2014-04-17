@@ -6,8 +6,6 @@
 "Enable syntax highlighting
 syntax on
 
-set rtp+=~/.vim/
-
 " Always show statusline
 set laststatus=2
 
@@ -29,5 +27,7 @@ filetype plugin indent on
 
 "Set markdown for .md files
 au BufRead,BufNewFile *.md set filetype=markdown
+
+set rtp+=~/.vim/
 
 execute pathogen#infect()
