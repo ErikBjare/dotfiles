@@ -14,13 +14,13 @@ alias tmux='TERM=xterm-256color tmux'
 export PATH="$PATH:~/bin"
 
 # JDK path
-# This should preferably be set in /etc/environment to 
+# This should preferably be set in /etc/environment to
 # allow for use by applications outside of bash
 export JAVA_HOME="/usr/local/jdk1.7.0"
 export PATH="$JAVA_HOME/bin:$PATH"
 
 # Go path
-export GOPATH="$HOME/go"
+export GOPATH="$HOME/.go"
 export PATH="$PATH:$GOPATH/bin"
 
 # Enable color support of ls and others
