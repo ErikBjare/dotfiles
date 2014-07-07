@@ -1,5 +1,5 @@
 # Export GPGKEY
-export GPGKEY=FCA40184
+export GPGKEY=86E4C130
 
 # Default editor & terminal
 export EDITOR=vim
