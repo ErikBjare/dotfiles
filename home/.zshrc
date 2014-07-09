@@ -1,3 +1,9 @@
+# TMUX
+if which tmux 2>&1 >/dev/null; then
+    #if not inside a tmux session, and if no session is started, start a new session
+    test -z "$TMUX" && export TERM=screen-256color && ( tmux attach || tmux new-session)
+fi
+
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
