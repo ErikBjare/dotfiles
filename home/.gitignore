@@ -1,3 +1,6 @@
+*.swp
+
+# Config dir can contain sensitive data
 .config/*
 !.config/ipython/profile_default/ipython_config.py
 
