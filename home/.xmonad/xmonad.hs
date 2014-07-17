@@ -56,10 +56,10 @@
 
     -- Sets default terminal
     myTerminal = "terminator"
-    
+
     -- Sets name of the workspaces
     myWorkspaces    = ["1:term","2:web","3:dev","4:term2","5:sys","6:full"] ++ map show [7..9]
-    
+
     myHomeDir = "/home/erb"
     myBitmapsDir = myHomeDir ++ "/.xmonad/dzen2"
 
@@ -68,7 +68,7 @@
     imageBarColor   = "#2070FF"
     textBarColor    = "#70B0FF"
     sepBarColor     = "#FFA050"
-    
+
     -- dcic & dctz, dzenConkyImageBarColor and dzenConkyTextBarColor
     dcic = dzenConkyColor imageBarColor
     dctc = dzenConkyColor textBarColor
@@ -85,23 +85,24 @@
     cpuSeg = dzenSegment "cpu.xbm" "${loadavg}"
     memSeg = dzenSegment "mem.xbm" "${memperc}%"
     volSeg = dzenSegment "volume.xbm" $ "${exec amixer " ++ audioController ++ " get Master | egrep -o \"[0-9]+%\" | head -1 | egrep -o \"[0-9]*\"}%"
-    batSeg = if hasBattery 
-                    then dzenSegment "battery.xbm" "${battery_percent BAT0}%" 
+    batSeg = if hasBattery
+                    then dzenSegment "battery.xbm" "${battery_percent BAT0}%"
                     else ""
     traySeg = dzenSegment "info_01.xbm" "{             }"
     clkSeg = dzenSegment "clock.xbm" "${time %Y/%m/%d} ${time %R:%S}"
-    
+
     conkyText = init $ concat [ dcsc, "[", cpuSeg, memSeg, volSeg, batSeg, traySeg, clkSeg ]
 
     -- Bar
     barFont     = "-*-terminus-*-*-*-*-*-*-*-*-*-*-iso10646-*"
-    -- barFont     = "-*-clean-*-*-*-*-15-*-*-*-*-*-iso10646-*" 
+    -- barFont     = "-*-clean-*-*-*-*-15-*-*-*-*-*-iso10646-*"
 
     barHeight   = "18"
     barColor    = "#282828"
-    myXmonadBar = concat ["dzen2 -xs '1' -w '1000' -h '", barHeight, "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '", barColor, "' -fn '", barFont, "'"]
-    myStatusBar = concat ["conky -c ~/.xmonad/.conky_dzen -t '", conkyText , "' | dzen2 -xs '1' -x '1000' -h '", barHeight, "' -ta 'r' -bg '", barColor, "' -fg '#FFFFFF' -fn '", barFont, "'"]
-    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 205 --distancefrom top --distance 2 --widthtype pixel --width 110 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ (show $ (read barHeight :: Int)-4 :: String)
+    barSplitX   = "1290"
+    myXmonadBar = concat ["dzen2 -xs '1' -w '", barSplitX, "' -h '", barHeight, "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '", barColor, "' -fn '", barFont, "'"]
+    myStatusBar = concat ["conky -c ~/.xmonad/.conky_dzen -t '", conkyText , "' | dzen2 -xs '1' -x '", barSplitX, "' -h '", barHeight, "' -ta 'r' -bg '", barColor, "' -fg '#FFFFFF' -fn '", barFont, "'"]
+    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 197 --distancefrom top --distance 2 --widthtype pixel --width 110 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ (show $ (read barHeight :: Int)-4 :: String)
 --}}}
 
 -- Main {{{
@@ -126,7 +127,7 @@
             , layoutHook         = myLayoutHook
             , handleEventHook    = fullscreenEventHook
             , normalBorderColor  = myNormalBorderColor
-            , focusedBorderColor = myFocusedBorderColor 
+            , focusedBorderColor = myFocusedBorderColor
         }
 --}}}
 --
@@ -144,13 +145,13 @@
         , [className    =? c    --> doCenterFloat       |   c   <- myFloats ] -- float my floats
         , [name         =? n    --> doCenterFloat       |   n   <- myNames  ] -- float my names
         , [isFullscreen         --> myDoFullFloat                           ]
-        ]) 
-        
+        ])
+
         where
-        
+
             role      = stringProperty "WM_WINDOW_ROLE"
             name      = stringProperty "WM_NAME"
-        
+
             -- classnames
             myTerm    = ["Terminator"]
             myWebs    = ["Firefox", "Google-chrome", "Chromium", "Chromium-browser"]
@@ -159,22 +160,22 @@
             myMusic   = ["Rhythmbox", "Spotify"]
             myFloats  = ["Vlc", "VirtualBox", "Xmessage", "Steam", "Kalarm",
                          "XFontSel", "Downloads", "Nm-connection-editor", "Alarmclock"]
-        
+
             -- resources
             myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer","panel","xfce4-notifyd"]
-        
+
             -- names
             myNames   = ["bashrun","Google Chrome Options","Chromium Options"]
-        
+
     -- a trick for fullscreen but stil allow focusing of other WSs
     myDoFullFloat :: ManageHook
     myDoFullFloat = doF W.focusDown <+> doFullFloat
-        
+
     --}}}
-    
+
     -----------------------------------------------------------------------------------
     -- Appearance and layout
-    
+
     -- myLayout = spacing 2 $ Tall 1 (3/100) (1/2)
     --
     myLayoutHook  = onWorkspaces ["1:term"]   termLayout $
@@ -187,7 +188,7 @@
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
             -- Mirror (Tall 1 (3/100) (1/2))) |||
-            -- noBorders  = (named "Full" $ fullscreenFull Full) 
+            -- noBorders  = (named "Full" $ fullscreenFull Full)
 
     termLayout    = avoidStruts $ noBorders Full ||| tiled ||| Mirror tiled ||| Grid
         where
@@ -197,15 +198,15 @@
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
 
-    -- avoidStruts ( 
+    -- avoidStruts (
         -- mode (master add/max) (default proportion occupied by master)
-        -- Tall (3/100) (1/2) ||| 
-        -- Mirror tile (3/100) (1/2)) ||| 
-        -- noBorders Full ||| 
+        -- Tall (3/100) (1/2) |||
+        -- Mirror tile (3/100) (1/2)) |||
+        -- noBorders Full |||
         -- noBorders (fullscreenFull Full)
 
     -- Window border
-    myBorderWidth = 1 
+    myBorderWidth = 1
     myNormalBorderColor = "#000000"
     myFocusedBorderColor = "#2222bb"
 
@@ -216,7 +217,7 @@
 
     myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         [
-        -- launch terminal 
+        -- launch terminal
         ((modm,               xK_Return), spawn $ XMonad.terminal conf)
         -- launch dmenu
         , ((modm,               xK_r     ), spawn "dmenu_run")
@@ -232,7 +233,7 @@
         , ((0,   xF86XK_AudioLowerVolume ), lowerVolumeChannels ["Master"] 5 >> return ())
         , ((0,          xF86XK_AudioMute ), lowerVolumeChannels ["Master"] 100 >> return ())
         , ((0,   xF86XK_AudioRaiseVolume ), raiseVolumeChannels ["Master"] 5 >> return ())
-        
+
         -- Screen brightness
         , ((0,  xF86XK_MonBrightnessUp   ), spawn "xbacklight +5")
         , ((0,  xF86XK_MonBrightnessDown ), spawn "xbacklight -5")
@@ -245,40 +246,40 @@
 
         -- Printscreen
         , ((0,                  xK_Print ), spawn "gnome-screenshot")
-    
+
         -- Rotate through the available layout algorithms
         , ((modm,               xK_space ), sendMessage NextLayout)
         --, ((modm,               xK_apostrophe ), gridselectWorkspace defaultGSConfig (\ws -> W.greedyView ws))
         --, ((modm,               xK_apostrophe ), goToSelected defaultGSConfig)
-    
+
         --  Reset the layouts on the current workspace to default
         , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
         -- Resize viewed windows to the correct size
         , ((modm,               xK_n     ), refresh)
-    
+
         -- Move focus to the next/prev/master window
         , ((modm,               xK_Tab   ), windows W.focusDown    )
         , ((modm,               xK_j     ), windows W.focusDown    )
         , ((modm,               xK_k     ), windows W.focusUp      )
         , ((modm,               xK_m     ), windows W.focusMaster  )
-        
+
         -- Swap the focused window with the next/prev window
         , ((modm .|. shiftMask, xK_Tab   ), windows W.swapDown  )
         , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
         , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
-        
+
         -- Shrink/expand the master area
         , ((modm,               xK_minus ), sendMessage Shrink)
         , ((modm,               xK_plus  ), sendMessage Expand)
-        
+
         -- Push window back into tiling
         , ((modm,               xK_t     ), withFocused $ windows . W.sink)
-        
+
         -- Increment/deincrement the number of windows in the master area
         , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
         , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
-    
+
         -- Toggle the status bar gap
         -- Use this binding with avoidStruts from Hooks.ManageDocks.
         -- See also the statusBar function from Hooks.DynamicLog.
@@ -307,7 +308,7 @@
         [((m .|. modm, key), f sc)
             | (key, sc) <- zip [xK_a, xK_s, xK_d] [0..]
             , (f, m) <- [(viewScreen, 0), (sendToScreen, shiftMask)]]
-   
+
     -- | Mouse bindings: default actions bound to mouse events
     myMouseBindings :: XConfig Layout -> M.Map (KeyMask, Button) (Window -> X ())
     myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList
@@ -322,19 +323,19 @@
         -- you may also bind events to the mouse scroll wheel (button4 and button5)
         , ((modm, button4), \w -> prevWS)
         , ((modm, button5), \w -> nextWS)
-        ] 
-    
+        ]
+
     ------------------------------------------------------------------------
     -- Status bars and logging
-     
+
     -- Perform an arbitrary action on each internal state change or X event.
     -- See the 'XMonad.Hooks.DynamicLog' extension for example
-    
+
     --myStatusHook :: Handle -> X ()
     --myStatusHook h = dynamicLogWithPP $ PP
     --    {
     --          ppExtras    = [myStatusLogger]
-    --       , ppOutput    = hPutStrLn h 
+    --       , ppOutput    = hPutStrLn h
     --    }
 
     myLogHook :: Handle -> X ()
