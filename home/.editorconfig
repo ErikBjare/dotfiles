@@ -22,3 +22,12 @@ indent_size = 2
 [*.md]
 indent_size = 4
 trim_trailing_whitespace = false
+
+# Hard TAB for Makefile
+[Makefile]
+indent_style = tab
+
+# 8 spaces for C & C++
+[*.{c,cpp}]
+indent_style = spaces
+indent_size = 8

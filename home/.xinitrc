@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if (hostname=="erb-main-kubuntu"); then
-    xrandr --output HDMI-0 --auto --primary
-    xrandr --output DisplayPort-0 --left-of HDMI-0
-    xrandr --output DVI-1 --right-of HDMI-0
+    xrandr --output DVI-1 --auto --primary
+    xrandr --output HDMI-0 --left-of DVI-1
+    xrandr --output DisplayPort-0 --right-of HDMI-0
 fi
 
 # "bg"
