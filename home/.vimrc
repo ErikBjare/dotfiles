@@ -41,4 +41,8 @@ au BufRead,BufNewFile *.md set filetype=markdown
 
 set rtp+=~/.vim/
 
+" Run pathogen
 execute pathogen#infect()
+
+" Use Python 3 for syntastic highlighting
+let g:syntastic_python_python_exec = 'python3'
