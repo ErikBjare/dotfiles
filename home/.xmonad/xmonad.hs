@@ -30,12 +30,12 @@
     import XMonad.Hooks.ManageHelpers
     import XMonad.Hooks.DynamicLog
     import XMonad.Hooks.FadeInactive
+    import XMonad.Hooks.EwmhDesktops
 
     -- Layouts
     import XMonad.Layout.Spacing
     import XMonad.Layout.NoBorders
     import XMonad.Layout.Named
-    import XMonad.Layout.Fullscreen
     import XMonad.Layout.PerWorkspace (onWorkspace, onWorkspaces)
     import XMonad.Layout.IM
     import XMonad.Layout.Grid
@@ -111,7 +111,7 @@
         dzenRightBar <- spawnPipe myStatusBar
         trayBar      <- spawnPipe myTray
         hPutStrLn dzenRightBar conkyText
-        xmonad $ defaultConfig {
+        xmonad $ ewmh defaultConfig {
               -- General section
               terminal           = myTerminal
             , modMask            = myModMask

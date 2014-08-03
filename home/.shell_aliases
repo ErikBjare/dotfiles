@@ -58,6 +58,9 @@ alias list-by-size='du -a ./ | sort -n -r | head -n 20'
 # Alias for making quick python-commands inline
 alias pyc='python3 -c'
 
+# Clipboard helper func
+alias toclip='xclip -sel clipboard'
+
 # Alias for "streak"
 alias streak-code='streak -cal="Coding streaks" -event="Coding streak"'
 alias streak-writing='streak -cal="Writing streaks" -event="Writing streak"'
