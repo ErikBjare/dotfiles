@@ -52,6 +52,9 @@ alias irssi='TERM=screen-256color irssi'
 # Alias for quick reloading of zsh
 alias zsh-reload='source ~/.zshrc'
 
+# List folders by size
+alias list-by-size='du -a ./ | sort -n -r | head -n 20'
+
 # Alias for making quick python-commands inline
 alias pyc='python3 -c'
 
