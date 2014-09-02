@@ -11,7 +11,7 @@ export TERM="xterm"
 alias tmux='TERM=xterm-256color tmux'
 
 # ~/bin path
-export PATH="$PATH:~/bin"
+export PATH="$PATH:/home/erb/bin"
 
 # JDK path
 # This should preferably be set in /etc/environment to
@@ -51,9 +51,6 @@ alias irssi='TERM=screen-256color irssi'
 
 # Alias for quick reloading of zsh
 alias zsh-reload='source ~/.zshrc'
-
-# List folders by size
-alias list-by-size='du -a ./ | sort -n -r | head -n 20'
 
 # Alias for making quick python-commands inline
 alias pyc='python3 -c'
