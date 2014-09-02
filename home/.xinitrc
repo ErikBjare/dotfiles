@@ -9,8 +9,8 @@ fi
 # "bg"
 feh --bg-fill "${HOME}/.xmonad/bg.png"
 redshift -l 55:13 -t 6500:3500 &
-rescuetime &
-[[ "$(proc rescuetime | wc -l)" = "2" ]] || zenity --warning --text="rescuetime could not be started"
+dropbox start &
+zenity --warning --text="Remember to start RescueTime (and maybe Dropbox, check if it is running)" &
 gnome-keyring-daemon -s &
 
 
