@@ -3,7 +3,7 @@ export GPGKEY=86E4C130
 
 # Default editor & terminal
 export EDITOR=vim
-export TERM="xterm"
+export TERM="xterm-256color"
 
 # tmux requires strange things to get 256-color and ncurses to play nicely...
 # https://unix.stackexchange.com/questions/1045/getting-256-colors-to-work-in-tmux

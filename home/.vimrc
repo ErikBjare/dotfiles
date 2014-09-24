@@ -1,10 +1,8 @@
 "
+"
 "Erik Bjäreholts .vimrc
 "
 
-
-" Enable syntax highlighting
-syntax on
 
 " Enable mouse
 " Send more characters for redraws
@@ -41,8 +39,19 @@ au BufRead,BufNewFile *.md set filetype=markdown
 
 set rtp+=~/.vim/
 
+
 " Run pathogen
 execute pathogen#infect()
 
+" Enable syntax highlighting
+syntax on
+" Use lighter color scheme
+let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+set background=dark
+colorscheme solarized
+set number
+
 " Use Python 3 for syntastic highlighting
 let g:syntastic_python_python_exec = 'python3'
+
