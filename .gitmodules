@@ -10,3 +10,12 @@
 [submodule "home/.vim/bundle/vim-colors-solarized"]
 	path = home/.vim/bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
+[submodule "home/.tmux/plugins/tpm"]
+    path = home/.tmux/plugins/tpm
+    url = https://github.com/tmux-plugins/tpm.git
+[submodule "home/.tmux/plugins/tmux-resurrect"]
+    path = home/.tmux/plugins/tmux-resurrect
+    url = https://github.com/tmux-plugins/tmux-resurrect.git
+[submodule "home/.tmux/plugins/tmux-sensible"]
+    path = home/.tmux/plugins/tmux-sensible
+    url = https://github.com/tmux-plugins/tmux-sensible.git
