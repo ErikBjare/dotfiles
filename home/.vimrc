@@ -32,6 +32,7 @@ set shiftwidth=4
 set softtabstop=4
 
 " Set indentation settings automatically depending on filetype plugin
+let g:html_indent_inctags = "html,body,head,tbody"
 filetype plugin indent on
 
 " Set markdown for .md files
