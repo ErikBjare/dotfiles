@@ -31,8 +31,11 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 
+" First line needed since 7.4 to indent HTML properly:
+"   http://askubuntu.com/questions/392573/how-do-i-get-vim-to-indent-all-html-tags
+let g:html_indent_inctags = "html,body,head,tbody,p,li,a,span,header,footer,small,b,i"
+
 " Set indentation settings automatically depending on filetype plugin
-let g:html_indent_inctags = "html,body,head,tbody"
 filetype plugin indent on
 
 " Set markdown for .md files
@@ -55,4 +58,4 @@ set number
 
 " Use Python 3 for syntastic highlighting
 let g:syntastic_python_python_exec = 'python3'
-
+let g:syntastic_javascript_checkers = ['jshint']

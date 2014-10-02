@@ -1,6 +1,3 @@
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -21,7 +18,11 @@ fi
 plugins=(history-substring-search git vagrant python pip cabal pass gem zsh-syntax-highlighting)
 
 # Load oh-my-zsh
+ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
+
+# Load up antigen
+source ~/.antigenrc.sh
 
 # bind UP and DOWN arrow keys
 zmodload zsh/terminfo
@@ -30,3 +31,4 @@ bindkey "$terminfo[kcud1]" history-substring-search-down
 
 # Override theme
 source ~/.zsh/agnoster-modified.zsh-theme
+

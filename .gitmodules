@@ -25,3 +25,6 @@
 [submodule "home/.vim/bundle/editorconfig"]
 	path = home/.vim/bundle/editorconfig
 	url = https://github.com/editorconfig/editorconfig-vim.git
+[submodule "home/antigen"]
+	path = home/antigen
+	url = https://github.com/zsh-users/antigen.git
