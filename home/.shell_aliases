@@ -21,6 +21,7 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 # Go path
 export GOPATH="$HOME/.go"
+export GOROOT="/usr/lib/go"
 export PATH="$PATH:$GOPATH/bin"
 
 # Enable color support of ls and others

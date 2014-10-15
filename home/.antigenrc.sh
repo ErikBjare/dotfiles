@@ -6,7 +6,7 @@
 source $HOME/.antigen/antigen.zsh
 
 # Load various lib files
-antigen bundle robbyrussell/oh-my-zsh
+antigen bundle robbyrussell/oh-my-zsh lib/
 
 # Antigen Theme
 #antigen theme jdavis/zsh-files themes/jdavis

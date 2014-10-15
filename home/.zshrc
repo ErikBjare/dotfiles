@@ -15,7 +15,7 @@ fi
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(history-substring-search git vagrant python pip cabal pass gem zsh-syntax-highlighting)
+plugins=(vagrant pass)
 
 # Load oh-my-zsh
 ZSH=$HOME/.oh-my-zsh

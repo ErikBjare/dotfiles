@@ -31,6 +31,11 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
 " First line needed since 7.4 to indent HTML properly:
 "   http://askubuntu.com/questions/392573/how-do-i-get-vim-to-indent-all-html-tags
 let g:html_indent_inctags = "html,body,head,tbody,p,li,a,span,header,footer,small,b,i"
