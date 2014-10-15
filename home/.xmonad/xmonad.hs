@@ -99,7 +99,7 @@
 
     barHeight   = "18"
     barColor    = "#282828"
-    barSplitX   = "1290"
+    barSplitX   = "1190"
     myXmonadBar = concat ["dzen2 -xs '1' -w '", barSplitX, "' -h '", barHeight, "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '", barColor, "' -fn '", barFont, "'"]
     myStatusBar = concat ["conky -c ~/.xmonad/.conky_dzen -t '", conkyText , "' | dzen2 -xs '1' -x '", barSplitX, "' -h '", barHeight, "' -ta 'r' -bg '", barColor, "' -fg '#FFFFFF' -fn '", barFont, "'"]
     myTray      = "trayer --monitor 'primary' --edge top --align right --margin 197 --distancefrom top --distance 2 --widthtype pixel --width 110 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ (show $ (read barHeight :: Int)-4 :: String)
