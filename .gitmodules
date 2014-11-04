@@ -31,3 +31,6 @@
 [submodule "home/.antigen"]
 	path = home/.antigen
 	url = https://github.com/zsh-users/antigen.git
+[submodule "home/.vim/bundle/bufexplorer"]
+	path = home/.vim/bundle/bufexplorer
+	url = https://github.com/jlanzarotta/bufexplorer.git
