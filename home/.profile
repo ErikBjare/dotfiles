@@ -3,7 +3,7 @@
 ####################
 
 # Log to file
-logfile="$HOME/.$logfile"
+logfile="$HOME/.profile-log.txt"
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
