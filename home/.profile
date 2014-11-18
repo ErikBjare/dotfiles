@@ -2,6 +2,9 @@
 #  Initialization  #
 ####################
 
+# Log to file
+logfile="$HOME/.$logfile"
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -26,7 +29,6 @@ export GPGKEY="86E4C130"
 alias tmux="TERM=xterm-256color tmux"
 
 
-
 ###########################
 #   Setting up the PATH   #
 ###########################
@@ -48,8 +50,8 @@ if [ $? -eq 0 ]; then
     export GOROOT="$GOROOT:$GOGAE/goroot"
     export PATH="$GOPATH/bin:$PATH"
     export PATH="$GOGAE:$PATH"
-    echo $GOROOT >> profile-log.txt
-    echo "Did GO stuff" >> profile-log.txt
+    echo $GOROOT >> $logfile
+    echo "Did GO stuff" >> $logfile
 fi
 
 # Set up java and the JDK
@@ -58,7 +60,7 @@ if [ -d "/usr/local/jdk1.7.0" ]; then
 elif [ -d "/usr/local/jdk1.6.0" ]; then
     export JAVA_HOME="/usr/local/jdk1.6.0"
 else
-    echo "(~/.profile) WARNING: Could not find java"
+    echo "WARNING: Could not find java" >> $logfile
 fi
 export PATH="$JAVA_HOME/bin:$PATH"
 
@@ -100,4 +102,4 @@ alias pyc='python3 -c'
 # Clipboard helper func
 alias toclip='xclip -sel clipboard'
 
-echo ".profile ran successfully" >> profile-log.txt
+echo ".profile ran successfully" >> $logfile
