@@ -1,5 +1,8 @@
 #!/bin/bash
 
+git submodule init
+git submodule update
+
 dotfiles () {
     ##########
     # This function is based on a blogpost by Michael Smalley
@@ -37,7 +40,7 @@ dotfiles () {
     GREEN="\e[0;32m"
 
     for file in $files; do
-        if [ -e ~/$file ]; then 
+        if [ -e ~/$file ]; then
             if [ ! -h ~/$file ]; then
                 echo -e "${RED}Collision: Moving existing ~/${file:2} to $backup"
                 mv ~/$file $backup
