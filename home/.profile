@@ -2,6 +2,9 @@
 #  Initialization  #
 ####################
 
+# Create new log file
+echo "Starting log: $(date --rfc-3339=seconds)" > ~/.profile-log.txt
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -41,15 +44,11 @@ which go >& /dev/null
 if [ $? -eq 0 ]; then
     # get default GOROOT
     export GOROOT="$(go env | grep "GOROOT=\".*\"$" | grep "\".*"\" -o | sed 's/\"//g')"
-
     export GOGAE="$HOME/Applications/go_appengine"
     export GOPATH="$HOME/.go"
 
-    export GOROOT="$GOROOT:$GOGAE/goroot"
     export PATH="$GOPATH/bin:$PATH"
-    export PATH="$GOGAE:$PATH"
-    echo $GOROOT >> profile-log.txt
-    echo "Did GO stuff" >> profile-log.txt
+    export PATH="$PATH:$GOGAE"
 fi
 
 # Set up java and the JDK
@@ -58,7 +57,7 @@ if [ -d "/usr/local/jdk1.7.0" ]; then
 elif [ -d "/usr/local/jdk1.6.0" ]; then
     export JAVA_HOME="/usr/local/jdk1.6.0"
 else
-    echo "(~/.profile) WARNING: Could not find java"
+    echo "(~/.profile) WARNING: Could not find java" >> ~/.profile-log.txt
 fi
 export PATH="$JAVA_HOME/bin:$PATH"
 
@@ -100,4 +99,4 @@ alias pyc='python3 -c'
 # Clipboard helper func
 alias toclip='xclip -sel clipboard'
 
-echo ".profile ran successfully" >> profile-log.txt
+echo ".profile ran successfully" >> ~/.profile-log.txt
