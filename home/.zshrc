@@ -8,8 +8,8 @@
 export DEFAULT_USER="erb"
 
 # My shell aliases
-if [ -f ~/.shell_aliases ]; then
-    . ~/.shell_aliases
+if [ -f ~/.aliases ]; then
+    . ~/.aliases
 fi
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)

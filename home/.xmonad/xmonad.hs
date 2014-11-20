@@ -162,7 +162,7 @@
                          "XFontSel", "Downloads", "Nm-connection-editor", "Alarmclock"]
 
             -- resources
-            myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer","panel","xfce4-notifyd"]
+            myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer","panel","xfce4-notifyd","gnome-panel"]
 
             -- names
             myNames   = ["bashrun","Google Chrome Options","Chromium Options"]
