@@ -24,22 +24,21 @@ if [ -d "$HOME/bin" ]; then
     export PATH="$HOME/bin:$PATH"
 fi
 
-# TODO: Currently errs, see issue on GH
 # set up the go environment
-#which go >& /dev/null
-#if [ $? -eq 0 ]; then
-#    # get default GOROOT
-#    export GOROOT="$(go env | grep "GOROOT=\".*\"$" | grep "\".*"\" -o | sed 's/\"//g')"
-#
-#    export GOGAE="$HOME/Applications/go_appengine"
-#    export GOPATH="$HOME/.go"
-#
-#    export GOROOT="$GOROOT:$GOGAE/goroot"
-#    export PATH="$GOPATH/bin:$PATH"
-#    export PATH="$GOGAE:$PATH"
-#    echo $GOROOT >> $logfile
-#    echo "Did GO stuff" >> $logfile
-#fi
+which go >> /dev/null
+if [ $? -eq 0 ]; then
+    # get default GOROOT
+    export GOROOT="$(go env | grep "GOROOT=\".*\"$" | grep "\".*"\" -o | sed 's/\"//g')"
+
+    export GOGAE="$HOME/Applications/go_appengine"
+    export GOPATH="$HOME/.go"
+
+    export GOROOT="$GOROOT:$GOGAE/goroot"
+    export PATH="$GOPATH/bin:$PATH"
+    export PATH="$GOGAE:$PATH"
+    echo $GOROOT >> $logfile
+    echo "Did GO stuff" >> $logfile
+fi
 
 # Set up java and the JDK
 if [ -d "/usr/local/jdk1.7.0" ]; then
