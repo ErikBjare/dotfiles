@@ -6,10 +6,12 @@ fi
 
 # "bg"
 feh --bg-fill "${HOME}/.xmonad/bg.png"
+
+# Background apps
 redshift -l 55:13 -t 6500:3500 &
 dropbox start &
-zenity --warning --text="Remember to start RescueTime (and maybe Dropbox, check if it is running)" &
+rescuetime &
+zenity --warning --text="Remember to check that RescueTime and Dropbox is running" &
 gnome-keyring-daemon -s &
-
 
 exec xmonad
