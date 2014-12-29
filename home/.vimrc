@@ -55,8 +55,6 @@ nnoremap <Leader>7 :7b<CR>
 nnoremap <Leader>8 :8b<CR>
 nnoremap <Leader>9 :9b<CR>
 nnoremap <Leader>0 :10b<CR>
-" It's useful to show the buffer number in the status line.
-set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 
 " First line needed since 7.4 to indent HTML properly:
 "   http://askubuntu.com/questions/392573/how-do-i-get-vim-to-indent-all-html-tags
@@ -86,3 +84,4 @@ set number
 " Use Python 3 for syntastic highlighting
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute', 'trimming empty <span>', 'ng-', '"href" lacks value', 'trimming empty <li>']
