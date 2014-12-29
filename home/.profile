@@ -33,7 +33,6 @@ if [ $? -eq 0 ]; then
     export GOGAE="$HOME/Applications/go_appengine"
     export GOPATH="$HOME/.go"
 
-    export GOROOT="$GOROOT:$GOGAE/goroot"
     export PATH="$GOPATH/bin:$PATH"
     export PATH="$GOGAE:$PATH"
     echo $GOROOT >> $logfile
