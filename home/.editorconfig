@@ -27,7 +27,7 @@ trim_trailing_whitespace = false
 [Makefile]
 indent_style = tab
 
-# 8 spaces for C & C++
-[*.{c,cpp}]
+# 8 spaces for Go, C & C++
+[*.{go,c,cpp}]
 indent_style = spaces
 indent_size = 8
