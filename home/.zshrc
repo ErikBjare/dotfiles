@@ -32,5 +32,7 @@ bindkey "$terminfo[kcud1]" history-substring-search-down
 # Override theme
 source ~/.zsh/agnoster-modified.zsh-theme
 
-# Solarized dircolors
-eval `dircolors $HOME/.dircolors-solarized/dircolors.256dark`
+if [[ "$(uname)" == "Linux" ]]; then
+    # Solarized dircolors
+    eval `dircolors $HOME/.dircolors-solarized/dircolors.256dark`
+fi
