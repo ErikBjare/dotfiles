@@ -39,4 +39,8 @@ alias zsh-reload='source ~/.zshrc'
 alias pyc='python3 -c'
 
 # Clipboard helper func
-alias toclip='xclip -sel clipboard'
+if [[ "$(uname)" == "Linux" ]] then
+    alias toclip='xclip -sel clipboard'
+elif [[ "$(uname)" == "Darwin" ]] then
+    alias toclip='pbcopy'
+fi;
