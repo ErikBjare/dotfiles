@@ -1,0 +1,11 @@
+[pager]
+pager = LESS='FRX' less
+
+[color]
+mode = ansi
+
+[extensions]
+pager =
+color =
+
+
