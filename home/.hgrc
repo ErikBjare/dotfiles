@@ -1,3 +1,6 @@
+[ui]
+username = Erik BjÃreholt <erik.bjareholt@gmail.com>
+
 [pager]
 pager = LESS='FRX' less
 
