@@ -1,8 +1,9 @@
 # Install
 
+# travis doesn't support zsh, find a way to install it
 before_install:
     - git --version
-    - which zsh && zsh --version
+    - which zsh && zsh --version; true
 
 install:
     - echo -e 'y\n' | ./setup.sh
@@ -19,6 +20,6 @@ after_install: true
 before_script: true
 
 script:
-    - "echo 'echo $EDITOR' | zsh"
+    - echo 'echo $EDITOR' | bash
 
 after_script: true
