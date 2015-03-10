@@ -25,6 +25,22 @@ set t_Co=256
 set nocompatible
 set ruler
 
+" Relative line numbers toggle
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber
+  else
+    set relativenumber
+  endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
+call NumberToggle()
+
+" <C-C> and <C-V> for copy and paste
+vmap <C-C> :!xclip -f -sel clip<CR>
+map <C-V> :set paste; -1r !xclip -o -sel clip; set nopaste<CR>
+
 " Indentation
 set cindent
 set expandtab
@@ -85,3 +101,7 @@ set number
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute', 'trimming empty <span>', 'ng-', '"href" lacks value', 'trimming empty <li>']
+
+" C++ syntastic stuff
+let g:syntastic_cpp_compiler = "g++"
+let g:syntastic_cpp_compiler_options = " -std=c++11"
