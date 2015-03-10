@@ -1,8 +1,9 @@
 dotfiles
 ========
 
-Just my dotfiles and a nice script for managing them, based on a previously private home repo.
+[![Build Status](https://travis-ci.org/ErikBjare/dotfiles.svg)](https://travis-ci.org/ErikBjare/dotfiles)
 
+Just my dotfiles and a nice script for managing them, based on a previously private home repo.
 
 
 > *Look again at that dot. That's here. That's home.*  
