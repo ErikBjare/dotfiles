@@ -3,7 +3,7 @@
 before_install: true
 
 install:
-    - "echo -e 'y\n' | ./setup.sh"
+    - echo -e 'y\n' | ./setup.sh
 
 after_install: true
 
@@ -13,5 +13,8 @@ after_install: true
 # TODO: Check env variables
 
 before_script: true
-script: true
+
+script:
+    - echo 'echo Editor is: $EDITOR' | zsh
+
 after_script: true
