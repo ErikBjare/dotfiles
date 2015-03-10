@@ -1,7 +1,8 @@
 "
+" Erik Bjäreholts .vimrc
 "
-"Erik Bjäreholts .vimrc
-"
+" TODO: Split into seperate files: one base, one for keys, one for theme, one for syntax
+" TODO: Make pageup move half page and center view (the equivalent of `z.`)
 
 
 " Enable mouse
@@ -33,8 +34,10 @@ function! NumberToggle()
     set relativenumber
   endif
 endfunc
-
 nnoremap <C-n> :call NumberToggle()<cr>
+
+" Sets relative line numbers with current line showing absolute line number
+set number
 call NumberToggle()
 
 " <C-C> and <C-V> for copy and paste
@@ -46,6 +49,9 @@ set cindent
 set expandtab
 set shiftwidth=4
 set softtabstop=4
+
+" Don't wrap by default (you might want to wrap in non-code files)
+set nowrap
 
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -95,7 +101,6 @@ let g:solarized_termcolors=256
 let g:solarized_termtrans=1
 set background=dark
 colorscheme solarized
-set number
 
 " Use Python 3 for syntastic highlighting
 let g:syntastic_python_python_exec = 'python3'
