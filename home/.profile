@@ -10,10 +10,10 @@ logfile="$HOME/.profile-log.txt"
 #  Set up the environment  #
 ############################
 
+export BROWSER="google-chrome"
 export EDITOR="vim"
 export TERM="xterm-256color"
 export GPGKEY="86E4C130"
-
 
 ###########################
 #   Setting up the PATH   #
