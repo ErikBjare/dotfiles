@@ -1,6 +1,8 @@
 # Install
 
-before_install: true
+before_install:
+    - git --version
+    - which zsh && zsh --version
 
 install:
     - echo -e 'y\n' | ./setup.sh
@@ -10,11 +12,13 @@ after_install: true
 
 # Script
 # TODO: Load new session
+# TODO: Make scripts become aware of travis using env variable,
+#       such as symlink script not moving `~/.ssh`, `~/.gitconfig` and `~/.profile`
 # TODO: Check env variables
 
 before_script: true
 
 script:
-    - echo 'echo Editor is: $EDITOR' | zsh
+    - "echo 'echo $EDITOR' | zsh"
 
 after_script: true
