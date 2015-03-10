@@ -34,3 +34,6 @@
 [submodule "home/.vim/bundle/bufexplorer"]
 	path = home/.vim/bundle/bufexplorer
 	url = https://github.com/jlanzarotta/bufexplorer.git
+[submodule "home/.vim/bundle/rust.vim"]
+	path = home/.vim/bundle/rust.vim
+	url = https://github.com/rust-lang/rust.vim.git
