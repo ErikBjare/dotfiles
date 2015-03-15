@@ -17,10 +17,6 @@ fi
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(vagrant pass)
 
-# Load oh-my-zsh
-ZSH=$HOME/.oh-my-zsh
-source $ZSH/oh-my-zsh.sh
-
 # Load up antigen
 source ~/.antigenrc.sh
 
