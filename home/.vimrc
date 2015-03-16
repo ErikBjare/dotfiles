@@ -36,9 +36,11 @@ function! NumberToggle()
 endfunc
 nnoremap <C-n> :call NumberToggle()<cr>
 
-" Sets relative line numbers with current line showing absolute line number
+" Sets relative line numbers with current line showing absolute line number,
+" should be disabled by default on remote SSH sessions as it can cause
+" significant slowdown.
 set number
-call NumberToggle()
+"call NumberToggle()
 
 " <C-C> and <C-V> for copy and paste
 vmap <C-C> :!xclip -f -sel clip<CR>
