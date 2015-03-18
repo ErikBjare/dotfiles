@@ -31,3 +31,6 @@
 [submodule "home/.vim/bundle/rust.vim"]
 	path = home/.vim/bundle/rust.vim
 	url = https://github.com/rust-lang/rust.vim.git
+[submodule "home/.vim/bundle/nimrod.vim"]
+	path = home/.vim/bundle/nimrod.vim
+	url = git@github.com:zah/nimrod.vim.git
