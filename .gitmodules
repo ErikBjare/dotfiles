@@ -18,7 +18,7 @@
     url = https://github.com/scrooloose/syntastic.git
 [submodule "home/.vim/bundle/vim-colors-solarized"]
     path = home/.vim/bundle/vim-colors-solarized
-    url = git://github.com/altercation/vim-colors-solarized.git
+    url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "home/.vim/bundle/vim-go"]
     path = home/.vim/bundle/vim-go
     url = https://github.com/fatih/vim-go.git
@@ -33,4 +33,4 @@
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "home/.vim/bundle/nimrod.vim"]
 	path = home/.vim/bundle/nimrod.vim
-	url = git@github.com:zah/nimrod.vim.git
+	url = https://github.com/zah/nimrod.vim.git
