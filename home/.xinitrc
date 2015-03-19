@@ -2,13 +2,15 @@
 
 if (hostname=="erb-main-kubuntu"); then
     ./.xrandr-erb-main-kubuntu
+    feh --bg-fill "${HOME}/.backgrounds/current_multimonitor"
+else
+    feh --bg-fill "${HOME}/.backgrounds/current"
 fi
 
 # "bg"
-feh --bg-fill "${HOME}/.xmonad/bg.png"
 
 # Background apps
-redshift -l 55:13 -t 6500:3500 &
+redshift -l 55:13 -t 7000:2500 &
 dropbox start &
 rescuetime &
 zenity --warning --text="Remember to check that RescueTime and Dropbox is running" &
