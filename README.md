@@ -8,10 +8,33 @@ Just my dotfiles and a nice script for managing them, based on a previously priv
 > *Look again at that dot. That's here. That's home.*  
 > \- Carl Sagan
 
+
 ## Usage
 Just run `setup.sh` and everything will be symlinked to your home dir.  
 If there are collisions with existing files they will be moved to `./backup/`  
 *(Always read through random scripts from the internets before executing)*
+
+You should probably skim through this README before using.  
+Before using you should probably take the advice of a wise file:
+
+> *"Read me"*  
+> ***\- README***
+
+
+## Introduction
+
+We all feel strongly for our dotfiles, so why not share them?
+
+These are my dotfiles that I use on a variety of hosts, from my desktop and laptop to my servers and Raspberry Pi's.
+
+Configuration files that are here (incomplete list):
+    - xmonad
+    - zsh (+plugins)
+    - vim` (+plugins)
+    - editorconfig`
+    - xinitrc` (sets up the X session)
+    - ssh authorized hosts
+
 
 ### Keybindings
 Incomplete section
@@ -31,6 +54,7 @@ Incomplete section
  - `Ctrl-a + Shift-5`, split vertical
  - `F[1-12]`, switch window
 
+
 ## Dependencies
 
 ### Base
@@ -49,6 +73,7 @@ Incomplete section
  - nm-applet, gnome-keyring (Managing WiFi)
  - feh (Sets background image)
  - suckless-tools (slock with super-l)
+
 
 ## Thanks to...
  - [Johan Bjäreholt](https://github.com/johan-bjareholt/) for his [dotfiles](https://github.com/johan-bjareholt/linux-configs)
