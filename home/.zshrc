@@ -25,8 +25,13 @@ zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 
-# Override theme
-source ~/.zsh/agnoster-modified.zsh-theme
+which powerline > /dev/null 2>&1
+rc=$?
+if [[ $rc == 0 ]]; then
+    # Override theme
+    source ~/.zsh/agnoster-modified.zsh-theme
+fi
+
 
 if [[ "$(uname)" == "Linux" ]]; then
     # Solarized dircolors

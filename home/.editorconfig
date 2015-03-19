@@ -10,12 +10,20 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 charset = utf-8
 
-# 4 space indentation for Python, JS and JSON
+# 4 space indentation for Python, JS, TS and JSON
 [*.{py,js,json}]
 indent_size = 4
 
+# 8 spaces for Go, C & C++
+[*.{go,c,cpp}]
+indent_size = 8
+
+# 4 spaces for Nim and Rust
+[*.{nim,rs}]
+indent_size = 4
+
 # 2 spaces for Ruby, HTML and CSS/SASS
-[*.{rb,html,css,scss}]
+[*.{rb,html,css,scss,sass,less}]
 indent_size = 2
 
 # 4 spaces for markdown
@@ -26,8 +34,3 @@ trim_trailing_whitespace = false
 # Hard TAB for Makefile
 [Makefile]
 indent_style = tab
-
-# 8 spaces for Go, C & C++
-[*.{go,c,cpp}]
-indent_style = spaces
-indent_size = 8
