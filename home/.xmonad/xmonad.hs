@@ -88,7 +88,7 @@
     batSeg = if hasBattery
                     then dzenSegment "battery.xbm" "${battery_percent BAT0}%"
                     else ""
-    traySeg = dzenSegment "info_01.xbm" "{             }"
+    traySeg = dzenSegment "info_01.xbm" "{                    }"
     clkSeg = dzenSegment "clock.xbm" "${time %Y/%m/%d} ${time %R:%S}"
 
     conkyText = init $ concat [ dcsc, "[", cpuSeg, memSeg, volSeg, batSeg, traySeg, clkSeg ]
@@ -102,7 +102,7 @@
     barSplitX   = "1190"
     myXmonadBar = concat ["dzen2 -xs '1' -w '", barSplitX, "' -h '", barHeight, "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '", barColor, "' -fn '", barFont, "'"]
     myStatusBar = concat ["conky -c ~/.xmonad/.conky_dzen -t '", conkyText , "' | dzen2 -xs '1' -x '", barSplitX, "' -h '", barHeight, "' -ta 'r' -bg '", barColor, "' -fg '#FFFFFF' -fn '", barFont, "'"]
-    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 197 --distancefrom top --distance 2 --widthtype pixel --width 110 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ (show $ (read barHeight :: Int)-4 :: String)
+    myTray      = "trayer --monitor 'primary' --edge top --align right --margin 197 --distancefrom top --distance 2 --widthtype pixel --width 200 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ (show $ (read barHeight :: Int)-4 :: String)
 --}}}
 
 -- Main {{{
@@ -184,13 +184,13 @@
                     onWorkspaces ["5:sys"]    termLayout $
                     defaultLayout
 
-    defaultLayout = avoidStruts $ tiled ||| Mirror tiled ||| Grid ||| noBorders Full ||| simpleFloat
+    defaultLayout = avoidStruts $ tiled ||| Grid ||| noBorders Full ||| simpleFloat
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
             -- Mirror (Tall 1 (3/100) (1/2))) |||
             -- noBorders  = (named "Full" $ fullscreenFull Full)
 
-    termLayout    = avoidStruts $ noBorders Full ||| tiled ||| Mirror tiled ||| Grid
+    termLayout    = avoidStruts $ noBorders Full ||| tiled ||| Grid
         where
             tiled = ResizableTall 1 (2/100) (1/2) []
 
