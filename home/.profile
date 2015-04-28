@@ -19,9 +19,12 @@ export GPGKEY="86E4C130"
 #   Setting up the PATH   #
 ###########################
 
-# include user's private bin if it exists
+# include user's private bin-folders if any of them exists
 if [ -d "$HOME/bin" ]; then
     export PATH="$HOME/bin:$PATH"
+fi
+if [ -d "$HOME/.bin" ]; then
+    export PATH="$HOME/.bin:$PATH"
 fi
 
 # set up the go environment
