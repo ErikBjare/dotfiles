@@ -1,5 +1,5 @@
 "
-" Erik Bjäreholts .vimrc
+" Erik Bjareholts .vimrc
 "
 " TODO: Split into seperate files: one base, one for keys, one for theme, one for syntax
 " TODO: Make pageup move half page and center view (the equivalent of `z.`)
@@ -112,3 +112,8 @@ let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute', 'trimming em
 " C++ syntastic stuff
 let g:syntastic_cpp_compiler = "g++"
 let g:syntastic_cpp_compiler_options = " -std=c++11"
+
+" Show the git diff in vim when commiting
+" Stolen from:
+"   https://github.com/Coornail/coornails_dotfiles/blob/master/.vimrc#L131
+autocmd FileType gitcommit DiffGitCached | wincmd p
