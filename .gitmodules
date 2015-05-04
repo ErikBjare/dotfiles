@@ -34,3 +34,6 @@
 [submodule "home/.vim/bundle/nimrod.vim"]
 	path = home/.vim/bundle/nimrod.vim
 	url = https://github.com/zah/nimrod.vim.git
+[submodule "home/.vim/bundle/vim-wakatime"]
+	path = home/.vim/bundle/vim-wakatime
+	url = git://github.com/wakatime/vim-wakatime.git
