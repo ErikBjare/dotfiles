@@ -1,0 +1,7 @@
+#!/bin/bash
+
+DATE=$(date -Iseconds)
+FILE="$HOME/Dropbox/Public/Screenshots/${DATE}.png"
+
+import $FILE
+dropbox puburl $FILE

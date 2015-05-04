@@ -1,0 +1,11 @@
+#!/usr/bin/zsh
+
+
+subdirs=("${(@f)$(find -maxdepth 3 -type d)}");
+
+rows=""
+foreach dir in $subdirs; do
+    rows="$(find $dir -type f | wc -l)\t$dir\n$rows";
+done;
+
+echo $rows | sort -nr | less

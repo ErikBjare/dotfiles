@@ -1,0 +1,3 @@
+#!/bin/bash
+
+du -ha ./ | sort -h -r | less
