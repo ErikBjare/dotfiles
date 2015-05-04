@@ -83,6 +83,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# set up default profile
+if [ -f ~/.profile ]; then
+    . ~/.profile
+fi
+
 # set up default aliases
 if [ -f ~/.aliases ]; then
     . ~/.aliases

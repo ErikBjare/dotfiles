@@ -7,6 +7,11 @@
 # Set DEFAULT_USER
 export DEFAULT_USER="erb"
 
+# Set up profile
+if [ -f ~/.profile ]; then
+    . ~/.profile
+fi
+
 # My shell aliases
 if [ -f ~/.aliases ]; then
     . ~/.aliases
