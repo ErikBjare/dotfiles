@@ -1,0 +1,28 @@
+#!/bin/bash
+# Runs rescuetime if it isn't already running
+# Note that isn't best practice or "safe"
+#   More details: https://stackoverflow.com/questions/2366693/run-cron-job-only-if-it-isnt-already-running
+
+# Ensure dirs exist
+mkdir -p "$HOME/tmp/pid"
+mkdir -p "$HOME/tmp/logs"
+
+APP="rescuetime"
+APPLOG="$HOME/tmp/logs/${APP}.log"
+PIDFILE="$HOME/tmp/pid/${APP}.pid"
+
+# Used for testing only
+#LOG="$HOME/tmp/logs/${APP}.log"
+#echo "Script ran at $(date)" >> $LOG
+
+if [ -e "${PIDFILE}" ] && (ps -u $(whoami) -opid= |
+                           grep -P "^\s*$(cat ${PIDFILE})$" &> /dev/null); then
+  echo "Already running."
+  exit 99
+fi
+
+export DISPLAY=":0"
+$APP 2>&1 | cat > $APPLOG &
+
+echo $! > "${PIDFILE}"
+chmod 644 "${PIDFILE}"
