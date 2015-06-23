@@ -106,8 +106,13 @@ colorscheme solarized
 
 " Use Python 3 for syntastic highlighting
 let g:syntastic_python_python_exec = 'python3'
+
+" Use jshint for JS checking
 let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute', 'trimming empty <span>', 'ng-', '"href" lacks value', 'trimming empty <li>']
+
+" HTML Tidy stuff
+let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute', 'trimming empty <span>', 'ng-', '"href" lacks value', 'trimming empty <li>', "isn't allowed in <head>"]
+let g:syntastic_html_tidy_blocklevel_tags = ['slides', 'slide', 'hgroup']
 
 " C++ syntastic stuff
 let g:syntastic_cpp_compiler = "g++"

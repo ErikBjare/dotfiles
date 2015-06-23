@@ -30,7 +30,7 @@ alias l='ls -CF'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Find process command
-alias proc="ps -ef | grep"
+alias proc="ps -ef | grep -v grep | grep"
 
 # Alias for quick reloading of zsh
 alias zsh-reload='source ~/.zshrc'
