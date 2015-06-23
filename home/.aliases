@@ -45,3 +45,5 @@ case $(uname) in
     Darwin)
         alias toclip='pbcopy' ;;
 esac
+
+alias plz='sudo $(fc -ln -1)'
