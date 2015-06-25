@@ -8,7 +8,7 @@ if test -z $CRONTABCMD; then
     crontab()
     {
         if [[ $@ == "-e" ]]; then
-            vim ~/.crontab && $CRONTABCMD ~/.crontab
+            $EDITOR ~/.crontab && $CRONTABCMD ~/.crontab
         else
             $CRONTABCMD $@
         fi
@@ -16,5 +16,7 @@ if test -z $CRONTABCMD; then
 
     # Loads crontab every time zsh is started
     # TODO: Move/copy to .profile or dotfiles setup.py
-    $CRONTABCMD ~/.crontab
+    if [ -f ~/.crontab ]; then
+        $CRONTABCMD ~/.crontab
+    fi
 fi
