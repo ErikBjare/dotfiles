@@ -1,3 +1,6 @@
+# Uncomment this line and the last line in the file to time performance
+#zmodload zsh/zprof
+
 # Set up profile
 if [ -f ~/.profile ]; then
     . ~/.profile
@@ -31,3 +34,6 @@ if [[ "$(uname)" == "Linux" ]]; then
     # Solarized dircolors
     eval `dircolors $HOME/.dircolors-solarized/dircolors.256dark`
 fi
+
+# Uncomment this line and line 2 in the file to time performance
+#zprof
