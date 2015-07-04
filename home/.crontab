@@ -26,4 +26,4 @@
 
 PATH=/usr/bin:/bin:/home/erb/.bin
 
-* * * * * sleep 0.6; cd .bin && ./ensure-rescuetime-is-running
+#* * * * * sleep 0.6; cd .bin && ./ensure-rescuetime-is-running
