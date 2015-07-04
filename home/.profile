@@ -11,6 +11,7 @@ echo "Starting log: $(date --rfc-3339=seconds)" >> $logfile
 #  Set up the environment  #
 ############################
 
+export DEFAULT_USER="erb"
 export BROWSER="google-chrome"
 export EDITOR="vim"
 export TERM="xterm-256color"
