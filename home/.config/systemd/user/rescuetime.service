@@ -9,4 +9,4 @@ ExecStart=/usr/bin/rescuetime
 Restart=always
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target

@@ -9,4 +9,4 @@ ExecStart=/usr/local/bin/activitywatch
 Restart=always
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target
