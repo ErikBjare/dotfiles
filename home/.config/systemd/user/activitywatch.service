@@ -1,0 +1,12 @@
+[Unit]
+Description=ActivityWatch
+Documentation=
+Requires=
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/activitywatch
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

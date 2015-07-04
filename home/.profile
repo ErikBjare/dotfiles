@@ -53,4 +53,13 @@ fi
 export PATH="$JAVA_HOME/bin:$PATH"
 
 
+###########################
+#        Finish up        #
+###########################
+
+# Import PATH to systemd
+if hash systemctl 2>/dev/null; then
+    systemctl --user import-environment PATH;
+fi
+
 echo ".profile ran successfully" >> $logfile
