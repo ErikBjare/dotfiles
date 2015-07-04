@@ -6,6 +6,10 @@
 !.config/systemd/user
 .config/systemd/user/*.wants
 
+# A lot of scripts and bins are stored in .bin, not all should
+# be commited and all should be carefully hand-picked.
+.bin
+
 # xmonad.hs but not compiled files etc.
 .xmonad/*
 !.xmonad/xmonad.hs
