@@ -1,0 +1,11 @@
+[Unit]
+Description=Dropbox
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/dropbox start
+ExecStop=/usr/bin/dropbox stop
+Environment="DISPLAY=:0"
+
+[Install]
+WantedBy=default.target

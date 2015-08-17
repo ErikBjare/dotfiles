@@ -1,11 +1,12 @@
 [Unit]
-Description=Rescuetime
+Description=Redshift
 Documentation=
 Requires=
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/rescuetime
+ExecStart=/usr/bin/redshift -l 55:13 -t 7000:2000 -b 1:0.75
+ExecStop=/usr/bin/pkill redshift
 Environment="DISPLAY=:0"
 Restart=always
 

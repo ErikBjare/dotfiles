@@ -5,8 +5,9 @@ Requires=
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/activitywatch
+ExecStart=/usr/local/bin/activitywatch --debug
+Environment="DISPLAY=:0"
 Restart=always
 
 [Install]
-WantedBy=graphical.target
+WantedBy=default.target
