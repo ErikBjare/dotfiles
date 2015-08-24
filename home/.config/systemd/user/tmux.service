@@ -9,7 +9,6 @@ Type=forking
 ExecStart=/usr/bin/tmux new-session -s "Main" -d -c %h
 ExecStop=/usr/bin/tmux kill-server
 Environment="DISPLAY=:0"
-EnvironmentFile=%h/.gpg-agent-info
 
 [Install]
 WantedBy=default.target
