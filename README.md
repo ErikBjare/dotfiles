@@ -74,6 +74,10 @@ Incomplete section
  - feh (Sets background image)
  - suckless-tools (slock with super-l)
 
+## Features
+Here are a few features that you automatically get if you 
+
+ - `.crontab` file that loads when zsh launches (might be loaded in a better way later)
 
 ## Thanks to...
  - [Johan Bjäreholt](https://github.com/johan-bjareholt/) for his [dotfiles](https://github.com/johan-bjareholt/linux-configs)

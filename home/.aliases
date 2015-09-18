@@ -25,12 +25,15 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# findd recursively lists all files in dir with a shortly specified maxdepth
+alias findd='find . -maxdepth'
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Find process command
-alias proc="ps -ef | grep"
+alias proc="ps -ef | grep -v grep | grep"
 
 # Alias for quick reloading of zsh
 alias zsh-reload='source ~/.zshrc'
@@ -45,3 +48,5 @@ case $(uname) in
     Darwin)
         alias toclip='pbcopy' ;;
 esac
+
+alias plz='sudo $(fc -ln -1)'

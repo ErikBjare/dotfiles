@@ -1,0 +1,22 @@
+#!/bin/zsh
+# Loaded from .zshrc
+# Stolen from http://blog.chmd.fr/saving-your-crontab-in-your-dotfiles.html
+
+if test -z $CRONTABCMD; then
+    # allows to source zshrc twice
+    export CRONTABCMD=$(which crontab)
+    crontab()
+    {
+        if [[ $@ == "-e" ]]; then
+            $EDITOR ~/.crontab && $CRONTABCMD ~/.crontab
+        else
+            $CRONTABCMD $@
+        fi
+    }
+
+    # Loads crontab every time zsh is started
+    # TODO: Move/copy to .profile or dotfiles setup.py
+    if [ -f ~/.crontab ]; then
+        $CRONTABCMD ~/.crontab
+    fi
+fi

@@ -3,6 +3,12 @@
 # Config dir can contain sensitive data
 .config/*
 !.config/ipython/profile_default/ipython_config.py
+!.config/systemd/user
+.config/systemd/user/*.wants
+
+# A lot of scripts and bins are stored in .bin, not all should
+# be commited and all should be carefully hand-picked.
+.bin
 
 # xmonad.hs but not compiled files etc.
 .xmonad/*

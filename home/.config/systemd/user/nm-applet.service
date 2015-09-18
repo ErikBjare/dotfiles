@@ -1,0 +1,14 @@
+[Unit]
+Description=nm-applet
+Documentation=
+Requires=
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/nm-applet
+ExecStop=/usr/bin/pkill nm-applet
+Environment="DISPLAY=:0"
+Restart=always
+
+[Install]
+WantedBy=default.target

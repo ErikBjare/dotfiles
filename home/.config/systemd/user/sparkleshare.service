@@ -1,0 +1,11 @@
+[Unit]
+Description=Sparkleshare
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/sparkleshare start
+ExecStop=/usr/bin/sparkleshare stop
+Environment="DISPLAY=:0"
+
+[Install]
+WantedBy=default.target

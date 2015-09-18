@@ -1,0 +1,13 @@
+[Unit]
+Description=Rescuetime
+Documentation=
+Requires=
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/rescuetime
+Environment="DISPLAY=:0"
+Restart=always
+
+[Install]
+WantedBy=default.target

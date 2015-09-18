@@ -1,0 +1,14 @@
+[Unit]
+Description=gnome-keyring-daemon
+Documentation=
+Requires=
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/gnome-keyring-daemon
+ExecStop=/usr/bin/pkill gnome-keyring-daemon
+Environment="DISPLAY=:0"
+Restart=always
+
+[Install]
+WantedBy=default.target

@@ -7,13 +7,9 @@ else
     feh --bg-fill "${HOME}/.backgrounds/current"
 fi
 
-# "bg"
+zenity --warning --text="Check that systemd user services are behaving" &
 
-# Background apps
-redshift -l 55:13 -t 7000:2500 &
-dropbox start &
-rescuetime &
-zenity --warning --text="Remember to check that RescueTime and Dropbox is running" &
+# This should be replaced by a systemd service
 gnome-keyring-daemon -s &
 
 exec xmonad
