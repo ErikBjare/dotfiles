@@ -5,7 +5,7 @@ dotfiles
 
 Just my dotfiles and a nice script for managing them, based on a previously private home repo.
 
-> *Look again at that dot. That's here. That's home.*  
+> *Look again at that dot. That's here. That's home. That's us.*  
 > \- Carl Sagan
 
 
