@@ -41,6 +41,11 @@ alias zsh-reload='source ~/.zshrc'
 # Alias for making quick python-commands inline
 alias pyc='python3 -c'
 
+# Systemd
+alias sctl="systemctl"
+alias usctl="systemctl --user"
+
+
 # Clipboard helper func
 case $(uname) in
     Linux)
