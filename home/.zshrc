@@ -11,9 +11,6 @@ if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
 
-# Set up crontab
-. ~/.zsh/crontab-handling
-
 # Load up antigen
 source ~/.antigenrc.sh
 
