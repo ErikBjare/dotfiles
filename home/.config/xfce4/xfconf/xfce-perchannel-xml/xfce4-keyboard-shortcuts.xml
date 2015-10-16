@@ -33,11 +33,11 @@
       <property name="&lt;Super&gt;r" type="string" value="dmenu_run">
         <property name="startup-notify" type="bool" value="true"/>
       </property>
-      <property name="&lt;Super&gt;Return" type="string" value="terminator"/>
       <property name="&lt;Super&gt;space" type="string" value="xfce4-appfinder">
         <property name="startup-notify" type="bool" value="true"/>
       </property>
       <property name="&lt;Super&gt;l" type="string" value="slock"/>
+      <property name="&lt;Super&gt;Return" type="string" value="bash -c &quot;terminator || xfce4-terminal&quot;"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">
