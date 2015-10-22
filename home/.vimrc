@@ -96,8 +96,10 @@ au BufRead,BufNewFile *.md set filetype=markdown
 
 set rtp+=~/.vim/
 
-
+" vim-airline config
+let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
+let g:airline_theme='dark'
 
 " To disable a plugin, add it's bundle name to the following list
 let g:pathogen_disabled = []
