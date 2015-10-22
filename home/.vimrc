@@ -4,6 +4,9 @@
 " TODO: Split into seperate files: one base, one for keys, one for theme, one for syntax
 " TODO: Make pageup move half page and center view (the equivalent of `z.`)
 
+" Set leader key to space
+let mapleader = "\<Space>"
+nnoremap <Leader><Leader> :
 
 " Enable mouse
 " Send more characters for redraws
@@ -40,7 +43,6 @@ nnoremap <C-n> :call NumberToggle()<cr>
 " should be disabled by default on remote SSH sessions as it can cause
 " significant slowdown.
 set number
-"call NumberToggle()
 
 " <C-C> and <C-V> for copy and paste
 vmap <C-C> :!xclip -f -sel clip<CR>
@@ -98,6 +100,10 @@ execute pathogen#infect()
 
 " Enable syntax highlighting
 syntax on
+
+" Enable search highlighting
+set hlsearch
+
 " Use lighter color scheme
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1
