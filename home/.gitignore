@@ -22,3 +22,6 @@
 .weechat/*
 !.weechat/python
 !.weechat/perl
+
+# GnuPG, obviously
+.gnupg
