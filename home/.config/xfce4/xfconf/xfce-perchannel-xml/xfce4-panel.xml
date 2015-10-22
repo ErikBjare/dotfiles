@@ -102,7 +102,7 @@
     <property name="plugin-8" type="string" value="tasklist">
       <property name="include-all-monitors" type="bool" value="false"/>
       <property name="flat-buttons" type="bool" value="true"/>
-      <property name="show-labels" type="bool" value="true"/>
+      <property name="show-labels" type="bool" value="false"/>
       <property name="sort-order" type="uint" value="4"/>
       <property name="grouping" type="uint" value="0"/>
       <property name="show-handle" type="bool" value="false"/>
