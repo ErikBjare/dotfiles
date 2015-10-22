@@ -1,3 +1,8 @@
+" Powerline does not currently work in neovim
+if has('nvim')
+    finish
+endif
+
 if exists('g:powerline_loaded')
     finish
 endif

@@ -15,9 +15,11 @@ set ttyfast
 " Enable mouse use in all modes
 set mouse=a
 
-" Set this to the name of your terminal that supports mouse codes.
-" Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
-set ttymouse=xterm2
+if !has('nvim')
+    " Set this to the name of your terminal that supports mouse codes.
+    " Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
+    set ttymouse=xterm2
+endif
 
 " Always show statusline
 set laststatus=2
@@ -94,6 +96,13 @@ au BufRead,BufNewFile *.md set filetype=markdown
 
 set rtp+=~/.vim/
 
+
+" To disable a plugin, add it's bundle name to the following list
+let g:pathogen_disabled = []
+
+if has('nvim')
+    call add(g:pathogen_disabled, 'vim-geeknote')
+endif
 
 " Run pathogen
 execute pathogen#infect()

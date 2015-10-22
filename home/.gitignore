@@ -17,6 +17,7 @@
 
 # Some vim stuff
 .vim/.netrwhist
+.vim/shada
 
 # WeeChat
 .weechat/*
