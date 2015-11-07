@@ -39,6 +39,7 @@
         <value type="int" value="23"/>
         <value type="int" value="16"/>
         <value type="int" value="5"/>
+        <value type="int" value="1"/>
         <value type="int" value="2"/>
         <value type="int" value="3"/>
         <value type="int" value="19"/>
@@ -118,7 +119,7 @@
     <property name="plugin-11" type="string" value="pager">
       <property name="rows" type="uint" value="2"/>
       <property name="miniature-view" type="bool" value="true"/>
-      <property name="workspace-scrolling" type="bool" value="true"/>
+      <property name="workspace-scrolling" type="bool" value="false"/>
     </property>
     <property name="plugin-13" type="string" value="actions"/>
     <property name="plugin-16" type="string" value="cpugraph"/>
@@ -132,7 +133,7 @@
       <property name="style" type="uint" value="0"/>
     </property>
     <property name="plugin-3" type="string" value="mixer">
-      <property name="sound-card" type="string" value="PlaybackBuiltinAudioAnalogStereoPulseAudioMixer"/>
+      <property name="sound-card" type="string" value="PlaybackBuiltinAudioDigitalStereoHDMI2PulseAudioMixer"/>
       <property name="track" type="string" value="Master"/>
       <property name="command" type="string" value="xfce4-mixer"/>
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
@@ -149,6 +150,14 @@
     <property name="plugin-19" type="string" value="separator">
       <property name="style" type="uint" value="3"/>
       <property name="expand" type="bool" value="false"/>
+    </property>
+    <property name="plugin-1" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="14460477131.desktop"/>
+        <value type="string" value="14462592451.desktop"/>
+        <value type="string" value="14462594522.desktop"/>
+        <value type="string" value="14462596175.desktop"/>
+      </property>
     </property>
   </property>
 </channel>
