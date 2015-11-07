@@ -67,6 +67,7 @@
         <value type="int" value="18"/>
       </property>
       <property name="background-style" type="uint" value="1"/>
+      <property name="span-monitors" type="bool" value="false"/>
     </property>
   </property>
   <property name="plugins" type="empty">
@@ -94,8 +95,10 @@
         <value type="string" value="activitywatch"/>
         <value type="string" value="deluge"/>
         <value type="string" value="xfce4-power-manager"/>
+        <value type="string" value="instantbird"/>
         <value type="string" value="statusicon"/>
         <value type="string" value="deluge-gtk"/>
+        <value type="string" value="sabnzbdplus"/>
       </property>
       <property name="size-max" type="uint" value="12"/>
       <property name="show-frame" type="bool" value="true"/>
