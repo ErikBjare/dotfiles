@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Internal Display Only
+Comment=Only output to internal display
+Exec=sh -c "xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rate 60; xrandr --output HDMI1 --off"
+Icon=xfce-display-internal
+Path=
+Terminal=false
+StartupNotify=false
