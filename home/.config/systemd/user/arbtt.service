@@ -1,0 +1,13 @@
+[Unit]
+Description=arbtt
+Documentation=Automatic, Rule-Based Time Tracker
+Requires=
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/arbtt-capture
+Environment="DISPLAY=:0"
+Restart=always
+
+[Install]
+WantedBy=default.target
