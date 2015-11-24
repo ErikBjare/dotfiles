@@ -38,6 +38,7 @@
       <property name="&lt;Super&gt;b" type="string" value="sh -c &quot;sleep 0.2; DISPLAY=:0 xset dpms force off&quot;"/>
       <property name="&lt;Shift&gt;&lt;Super&gt;d" type="string" value="sh -c &quot;xrandr --output eDP1 --mode 1920x1080 --pos 0x0; xrandr --output HDMI1 --mode 1920x1080 --pos 0x0 --rate 60&quot;"/>
       <property name="&lt;Super&gt;l" type="string" value="sh -c &quot;slock&amp; sleep 0.5; DISPLAY=:0 xset dpms force off&quot;"/>
+      <property name="Print" type="string" value="gnome-screenshot"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">
