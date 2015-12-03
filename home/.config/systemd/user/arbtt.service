@@ -5,7 +5,7 @@ Requires=
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/arbtt-capture
+ExecStart=/usr/bin/arbtt-capture --sample-rate=15
 Environment="DISPLAY=:0"
 Restart=always
 
