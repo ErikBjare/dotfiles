@@ -25,19 +25,20 @@
       <property name="&lt;Alt&gt;F2" type="empty">
         <property name="startup-notify" type="bool" value="true"/>
       </property>
-      <property name="XF86Mail" type="string" value="exo-open --launch MailReader"/>
       <property name="XF86Display" type="string" value="xfce4-display-settings --minimal"/>
-      <property name="XF86WWW" type="string" value="exo-open --launch WebBrowser"/>
       <property name="&lt;Super&gt;p" type="string" value="xfce4-display-settings --minimal"/>
       <property name="override" type="bool" value="true"/>
       <property name="&lt;Super&gt;r" type="string" value="dmenu_run">
         <property name="startup-notify" type="bool" value="true"/>
       </property>
-      <property name="&lt;Super&gt;space" type="string" value="xfce4-appfinder">
+      <property name="&lt;Super&gt;space" type="empty">
         <property name="startup-notify" type="bool" value="true"/>
       </property>
-      <property name="&lt;Super&gt;l" type="string" value="slock"/>
-      <property name="&lt;Super&gt;Return" type="string" value="bash -c &quot;terminator || xfce4-terminal&quot;"/>
+      <property name="&lt;Super&gt;Return" type="string" value="sh -c &quot;terminator || xfce4-terminal&quot;"/>
+      <property name="&lt;Super&gt;b" type="string" value="sh -c &quot;sleep 0.2; DISPLAY=:0 xset dpms force off&quot;"/>
+      <property name="&lt;Shift&gt;&lt;Super&gt;d" type="string" value="sh -c &quot;xrandr --output eDP1 --mode 1920x1080 --pos 0x0; xrandr --output HDMI1 --mode 1920x1080 --pos 0x0 --rate 60&quot;"/>
+      <property name="&lt;Super&gt;l" type="string" value="sh -c &quot;slock&amp; sleep 0.5; DISPLAY=:0 xset dpms force off&quot;"/>
+      <property name="Print" type="string" value="gnome-screenshot"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">

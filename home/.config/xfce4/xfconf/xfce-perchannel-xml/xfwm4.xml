@@ -32,7 +32,7 @@
     <property name="mousewheel_rollup" type="bool" value="true"/>
     <property name="move_opacity" type="int" value="100"/>
     <property name="placement_mode" type="string" value="center"/>
-    <property name="placement_ratio" type="int" value="20"/>
+    <property name="placement_ratio" type="int" value="16"/>
     <property name="popup_opacity" type="int" value="100"/>
     <property name="prevent_focus_stealing" type="bool" value="false"/>
     <property name="raise_delay" type="int" value="250"/>
@@ -55,7 +55,7 @@
     <property name="snap_to_border" type="bool" value="true"/>
     <property name="snap_to_windows" type="bool" value="false"/>
     <property name="snap_width" type="int" value="10"/>
-    <property name="sync_to_vblank" type="bool" value="false"/>
+    <property name="sync_to_vblank" type="bool" value="true"/>
     <property name="theme" type="string" value="Greybird-compact"/>
     <property name="tile_on_move" type="bool" value="true"/>
     <property name="title_alignment" type="string" value="center"/>
@@ -67,7 +67,7 @@
     <property name="title_vertical_offset_active" type="int" value="0"/>
     <property name="title_vertical_offset_inactive" type="int" value="0"/>
     <property name="toggle_workspaces" type="bool" value="false"/>
-    <property name="unredirect_overlays" type="bool" value="true"/>
+    <property name="unredirect_overlays" type="bool" value="false"/>
     <property name="urgent_blink" type="bool" value="false"/>
     <property name="use_compositing" type="bool" value="true"/>
     <property name="workspace_count" type="int" value="10"/>

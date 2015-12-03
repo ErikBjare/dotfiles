@@ -1,12 +1,12 @@
 [Unit]
-Description=Rescuetime
-Documentation=
+Description=arbtt
+Documentation=Automatic, Rule-Based Time Tracker
 Requires=wait-for-xserver.service
 After=wait-for-xserver.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/rescuetime
+ExecStart=/usr/bin/arbtt-capture --sample-rate=15
 Environment="DISPLAY=:0"
 Restart=always
 
