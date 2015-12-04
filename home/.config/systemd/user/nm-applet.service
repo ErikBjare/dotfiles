@@ -1,12 +1,12 @@
 [Unit]
-Description=Rescuetime
+Description=nm-applet
 Documentation=
-Requires=wait-for-xserver.service
-After=wait-for-xserver.service
+Requires=
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/rescuetime
+ExecStart=/usr/bin/nm-applet
+ExecStop=/usr/bin/pkill nm-applet
 Environment="DISPLAY=:0"
 Restart=always
 

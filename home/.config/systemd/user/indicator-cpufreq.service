@@ -1,12 +1,12 @@
 [Unit]
-Description=Rescuetime
+Description=indicator-cpufreq
 Documentation=
-Requires=wait-for-xserver.service
-After=wait-for-xserver.service
+Requires=
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/rescuetime
+ExecStart=/usr/bin/indicator-cpufreq
+ExecStop=/usr/bin/pkill indicator-cpufreq
 Environment="DISPLAY=:0"
 Restart=always
 

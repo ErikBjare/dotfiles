@@ -16,6 +16,7 @@ export BROWSER="google-chrome"
 export EDITOR="vim"
 export TERM="xterm-256color"
 export GPGKEY="86E4C130"
+export TZ="Europe/Stockholm"
 
 
 ###########################
@@ -28,6 +29,9 @@ if [ -d "$HOME/bin" ]; then
 fi
 if [ -d "$HOME/.bin" ]; then
     export PATH="$HOME/.bin:$PATH"
+fi
+if [ -d "$HOME/.local/bin" ]; then
+    export PATH="$HOME/.local/bin:$PATH"
 fi
 
 # set up the go environment
