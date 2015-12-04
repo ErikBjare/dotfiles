@@ -11,3 +11,6 @@ sudo tar xvf $TMP_ARCHIVE_NAME -C /usr/bin
 SYSTEMD_SERVICE_FILE_URL="https://raw.githubusercontent.com/syncthing/syncthing-inotify/master/etc/linux-systemd/user/syncthing-inotify.service"
 
 curl $SYSTEMD_SERVICE_FILE_URL | sudo tee /usr/lib/systemd/user/syncthing-inotify.service >> /dev/null
+
+systemctl --user daemon-reload
+systemctl --user start syncthing-inotify
