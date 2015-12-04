@@ -9,6 +9,9 @@
 # https://bbs.archlinux.org/viewtopic.php?pid=880348
 alias tmux="TERM=xterm-256color tmux"
 
+# weechat requires similar sorcery
+alias weechat="TERM=screen-256color weechat"
+
 # Enable color support of ls and others
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
