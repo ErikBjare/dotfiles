@@ -17,6 +17,7 @@ export EDITOR="vim"
 export TERM="xterm-256color"
 export GPGKEY="86E4C130"
 export TZ="Europe/Stockholm"
+export DISPLAY=":0"
 
 
 ###########################
