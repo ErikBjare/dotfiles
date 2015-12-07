@@ -24,6 +24,8 @@ export KEYTIMEOUT=1
 zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
+bindkey "^[[A" history-substring-search-up
+bindkey "^[[B" history-substring-search-down
 
 # bind Alt+Left and Alt+Right, works in my current setup
 #
