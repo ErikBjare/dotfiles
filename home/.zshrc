@@ -18,10 +18,6 @@ source ~/.antigenrc.sh
 # Taken from http://dougblack.io/words/zsh-vi-mode.html
 bindkey -v
 
-function git_custom_status {
-    echo "git status no impl"
-}
-
 export KEYTIMEOUT=1
 
 # bind UP and DOWN arrow keys
@@ -30,13 +26,19 @@ bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
 
 # bind Alt+Left and Alt+Right, works in my current setup
+#
 # Why OC and OD works and "^[^[[C" & "^[^[[D" doesn't I do not know
-bindkey "OD" backward-word
-bindkey "OC" forward-word
+#
+# Not compatible with vi mode since Alt+Right sends same key
+# as Esc+Right, which enters vi-mode
+
+#>bindkey "OD" backward-word
+#>bindkey "OC" forward-word
 
 # bind Ctrl+Alt+Left and Ctrl+Alt+Right
-bindkey "[D" backward-word
-bindkey "[C" forward-word
+
+#>bindkey "[D" backward-word
+#>bindkey "[C" forward-word
 
 # Use powerline theme if available
 if hash powerline 2>/dev/null; then
