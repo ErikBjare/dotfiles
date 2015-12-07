@@ -53,7 +53,14 @@ dotfiles () {
             ln -si $dir/$file ~/$file
         fi
     done
+
     cd $cwd
+
+    # Set certain permissions on the folders leading down to .ssh to prevent SSH issues
+    chmod 744 .
+    chmod 744 home
+    chmod 744 home/.ssh
+    chmod 600 home/.ssh/authorized_keys
 }
 
 echo Welcome to my linux config setup script!
@@ -66,5 +73,6 @@ for section in dotfiles; do
     fi
 done
 
-NC="\e[0m"  # No color
+NC="\e[0m"  # No/reset color
+
 echo -e "${NC}Done!"
