@@ -1,0 +1,15 @@
+show_frame=true
+fg_set=false
+bg_set=false
+timezone=
+width_set=false
+height_set=false
+data0=%X
+font0=Liberation Mono 11
+data1=%Y-%m-%d
+font1=Liberation Mono 9
+tooltip=%A %d %B %Y/%V
+hib_timing=false
+lines_vertically=true
+rotation=0
+

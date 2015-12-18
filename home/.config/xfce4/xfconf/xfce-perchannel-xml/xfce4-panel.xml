@@ -39,6 +39,7 @@
         <value type="int" value="23"/>
         <value type="int" value="16"/>
         <value type="int" value="5"/>
+        <value type="int" value="1"/>
         <value type="int" value="2"/>
         <value type="int" value="3"/>
         <value type="int" value="19"/>
@@ -55,7 +56,7 @@
       <property name="position" type="string" value="p=9;x=957;y=19"/>
       <property name="nrows" type="uint" value="1"/>
       <property name="size" type="uint" value="32"/>
-      <property name="length" type="uint" value="6"/>
+      <property name="length" type="uint" value="7"/>
       <property name="length-adjust" type="bool" value="false"/>
       <property name="disable-struts" type="bool" value="true"/>
       <property name="mode" type="uint" value="0"/>
@@ -66,6 +67,7 @@
         <value type="int" value="18"/>
       </property>
       <property name="background-style" type="uint" value="1"/>
+      <property name="span-monitors" type="bool" value="false"/>
     </property>
   </property>
   <property name="plugins" type="empty">
@@ -92,8 +94,11 @@
         <value type="string" value="update-notifier"/>
         <value type="string" value="activitywatch"/>
         <value type="string" value="deluge"/>
+        <value type="string" value="xfce4-power-manager"/>
+        <value type="string" value="instantbird"/>
         <value type="string" value="statusicon"/>
         <value type="string" value="deluge-gtk"/>
+        <value type="string" value="sabnzbdplus"/>
       </property>
       <property name="size-max" type="uint" value="12"/>
       <property name="show-frame" type="bool" value="true"/>
@@ -101,7 +106,7 @@
     <property name="plugin-8" type="string" value="tasklist">
       <property name="include-all-monitors" type="bool" value="false"/>
       <property name="flat-buttons" type="bool" value="true"/>
-      <property name="show-labels" type="bool" value="true"/>
+      <property name="show-labels" type="bool" value="false"/>
       <property name="sort-order" type="uint" value="4"/>
       <property name="grouping" type="uint" value="0"/>
       <property name="show-handle" type="bool" value="false"/>
@@ -117,20 +122,21 @@
     <property name="plugin-11" type="string" value="pager">
       <property name="rows" type="uint" value="2"/>
       <property name="miniature-view" type="bool" value="true"/>
-      <property name="workspace-scrolling" type="bool" value="true"/>
+      <property name="workspace-scrolling" type="bool" value="false"/>
     </property>
     <property name="plugin-13" type="string" value="actions"/>
     <property name="plugin-16" type="string" value="cpugraph"/>
     <property name="plugin-23" type="string" value="systemload"/>
     <property name="plugin-24" type="string" value="separator">
       <property name="expand" type="bool" value="true"/>
+      <property name="style" type="uint" value="1"/>
     </property>
     <property name="plugin-26" type="string" value="separator">
       <property name="expand" type="bool" value="true"/>
       <property name="style" type="uint" value="0"/>
     </property>
     <property name="plugin-3" type="string" value="mixer">
-      <property name="sound-card" type="string" value="PlaybackBuiltinAudioAnalogStereoPulseAudioMixer"/>
+      <property name="sound-card" type="string" value="PlaybackBuiltinAudioDigitalStereoHDMI2PulseAudioMixer"/>
       <property name="track" type="string" value="Master"/>
       <property name="command" type="string" value="xfce4-mixer"/>
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
@@ -144,6 +150,17 @@
       <property name="expand" type="bool" value="true"/>
       <property name="style" type="uint" value="3"/>
     </property>
-    <property name="plugin-19" type="string" value="separator"/>
+    <property name="plugin-19" type="string" value="separator">
+      <property name="style" type="uint" value="3"/>
+      <property name="expand" type="bool" value="false"/>
+    </property>
+    <property name="plugin-1" type="string" value="launcher">
+      <property name="items" type="array">
+        <value type="string" value="14460477131.desktop"/>
+        <value type="string" value="14462592451.desktop"/>
+        <value type="string" value="14462594522.desktop"/>
+        <value type="string" value="14462596175.desktop"/>
+      </property>
+    </property>
   </property>
 </channel>

@@ -121,3 +121,14 @@ build_prompt() {
 
 PROMPT='%{%f%b%k%}$(build_prompt) '
 RPROMPT=''
+
+# Displays when in normal mode
+# From: http://dougblack.io/words/zsh-vi-mode.html
+function zle-line-init zle-keymap-select {
+    VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]% %{$reset_color%}"
+    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
+    zle reset-prompt
+}
+
+zle -N zle-line-init
+zle -N zle-keymap-select

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Mirror Display
+Comment=Display the same thing on two screens
+Exec=sh -c "xrandr --output eDP1 --mode 1920x1080 --pos 0x0; xrandr --output HDMI1 --mode 1920x1080 --pos 0x0 --rate 60"
+Icon=xfce-display-mirror
+Path=
+Terminal=false
+StartupNotify=false

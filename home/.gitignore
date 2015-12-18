@@ -17,8 +17,12 @@
 
 # Some vim stuff
 .vim/.netrwhist
+.vim/shada
 
 # WeeChat
 .weechat/*
 !.weechat/python
 !.weechat/perl
+
+# GnuPG, obviously
+.gnupg

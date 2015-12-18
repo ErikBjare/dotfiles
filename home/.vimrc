@@ -4,6 +4,9 @@
 " TODO: Split into seperate files: one base, one for keys, one for theme, one for syntax
 " TODO: Make pageup move half page and center view (the equivalent of `z.`)
 
+" Set leader key to space
+let mapleader = "\<Space>"
+nnoremap <Leader><Leader> :
 
 " Enable mouse
 " Send more characters for redraws
@@ -12,9 +15,11 @@ set ttyfast
 " Enable mouse use in all modes
 set mouse=a
 
-" Set this to the name of your terminal that supports mouse codes.
-" Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
-set ttymouse=xterm2
+if !has('nvim')
+    " Set this to the name of your terminal that supports mouse codes.
+    " Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
+    set ttymouse=xterm2
+endif
 
 " Always show statusline
 set laststatus=2
@@ -40,7 +45,6 @@ nnoremap <C-n> :call NumberToggle()<cr>
 " should be disabled by default on remote SSH sessions as it can cause
 " significant slowdown.
 set number
-"call NumberToggle()
 
 " <C-C> and <C-V> for copy and paste
 vmap <C-C> :!xclip -f -sel clip<CR>
@@ -92,12 +96,27 @@ au BufRead,BufNewFile *.md set filetype=markdown
 
 set rtp+=~/.vim/
 
+" vim-airline config
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme='dark'
+
+" To disable a plugin, add it's bundle name to the following list
+let g:pathogen_disabled = []
+
+if has('nvim')
+    call add(g:pathogen_disabled, 'vim-geeknote')
+endif
 
 " Run pathogen
 execute pathogen#infect()
 
 " Enable syntax highlighting
 syntax on
+
+" Enable search highlighting
+set hlsearch
+
 " Use lighter color scheme
 let g:solarized_termcolors=256
 let g:solarized_termtrans=1

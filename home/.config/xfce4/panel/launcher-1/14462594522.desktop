@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=HDMI Only
+Comment=Only output to HDMI
+Exec=sh -c "xrandr --output eDP1 --off; xrandr --output HDMI1 --mode 1920x1080 --pos 0x0 --rate 60"
+Icon=xfce-display-external
+Path=
+Terminal=false
+StartupNotify=false
