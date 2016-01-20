@@ -97,11 +97,11 @@
     barFont     = "-*-terminus-*-*-*-*-*-*-*-*-*-*-iso10646-*"
     -- barFont     = "-*-clean-*-*-*-*-15-*-*-*-*-*-iso10646-*"
 
-    barHeight   = "24"
-    barColor    = "#282828"
-    wsBarStartX = "48"
-    wsBarStartY   = "0"
-    wsBarWidth = "500"
+    barHeight   = "16"
+    barColor    = "#303030"
+    wsBarStartX = "60"
+    wsBarStartY   = "5"
+    wsBarWidth = "1000"
     barSplitX = "500"
     myXmonadBar = "dzen2 -xs '1' -x " ++ wsBarStartX ++ " -y " ++ wsBarStartY ++ " -w '" ++ wsBarWidth ++ "' -h '" ++ barHeight ++ "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '" ++ barColor ++ "' -fn '" ++ barFont ++ "'"
     myStatusBar = concat ["conky -c ~/.xmonad/.conky_dzen -t '", conkyText , "' | dzen2 -xs '1' -x '", barSplitX, "' -h '", barHeight, "' -ta 'r' -bg '", barColor, "' -fg '#FFFFFF' -fn '", barFont, "'"]

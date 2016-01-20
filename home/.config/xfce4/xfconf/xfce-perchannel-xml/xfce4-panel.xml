@@ -14,12 +14,15 @@
       <property name="position-locked" type="bool" value="true"/>
       <property name="plugin-ids" type="array">
         <value type="int" value="9"/>
+        <value type="int" value="8"/>
         <value type="int" value="4"/>
         <value type="int" value="7"/>
         <value type="int" value="24"/>
         <value type="int" value="16"/>
         <value type="int" value="23"/>
+        <value type="int" value="11"/>
         <value type="int" value="5"/>
+        <value type="int" value="12"/>
         <value type="int" value="1"/>
         <value type="int" value="2"/>
         <value type="int" value="3"/>
@@ -31,9 +34,9 @@
       <property name="background-alpha" type="uint" value="100"/>
       <property name="background-style" type="uint" value="1"/>
       <property name="background-color" type="array">
-        <value type="uint" value="10280"/>
-        <value type="uint" value="10280"/>
-        <value type="uint" value="10280"/>
+        <value type="uint" value="12336"/>
+        <value type="uint" value="12336"/>
+        <value type="uint" value="12336"/>
         <value type="uint" value="65535"/>
       </property>
       <property name="enter-opacity" type="uint" value="100"/>
@@ -147,9 +150,10 @@
       </property>
     </property>
     <property name="plugin-4" type="string" value="windowmenu">
-      <property name="workspace-actions" type="bool" value="true"/>
+      <property name="workspace-actions" type="bool" value="false"/>
       <property name="workspace-names" type="bool" value="true"/>
       <property name="style" type="uint" value="1"/>
+      <property name="urgentcy-notification" type="bool" value="true"/>
     </property>
     <property name="plugin-20" type="string" value="xfce4-mount-plugin"/>
     <property name="plugin-21" type="string" value="netload"/>
@@ -159,6 +163,15 @@
     <property name="plugin-32" type="string" value="cpugraph"/>
     <property name="plugin-7" type="string" value="separator">
       <property name="style" type="uint" value="3"/>
+    </property>
+    <property name="plugin-8" type="string" value="separator">
+      <property name="style" type="uint" value="3"/>
+    </property>
+    <property name="plugin-11" type="string" value="separator">
+      <property name="style" type="uint" value="3"/>
+    </property>
+    <property name="plugin-12" type="string" value="separator">
+      <property name="style" type="uint" value="1"/>
     </property>
   </property>
 </channel>

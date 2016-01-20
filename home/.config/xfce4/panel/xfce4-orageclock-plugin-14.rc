@@ -1,6 +1,6 @@
 show_frame=false
 fg_set=false
-bg_set=false
+bg_set=true
 timezone=
 width_set=false
 height_set=false
@@ -12,4 +12,5 @@ lines_vertically=true
 rotation=0
 data1=%Y-%m-%d
 font1=Terminus (TTF) Medium 9
+bg=12336R 12336G 12336B
 
