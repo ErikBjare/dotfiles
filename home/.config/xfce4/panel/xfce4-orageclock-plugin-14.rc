@@ -1,15 +1,15 @@
-show_frame=true
+show_frame=false
 fg_set=false
 bg_set=false
 timezone=
 width_set=false
 height_set=false
-data0=%X
-font0=Liberation Mono 11
-data1=%Y-%m-%d
-font1=Liberation Mono 9
+data0=%H:%M:%S
+font0=Terminus (TTF) Medium 12
 tooltip=%A %d %B %Y/%V
 hib_timing=false
 lines_vertically=true
 rotation=0
+data1=%Y-%m-%d
+font1=Terminus (TTF) Medium 9
 

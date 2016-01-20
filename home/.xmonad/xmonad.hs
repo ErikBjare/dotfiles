@@ -58,7 +58,7 @@
     myTerminal = "terminator"
 
     -- Sets name of the workspaces
-    myWorkspaces    = ["1:term","2:web","3:dev","4:term2","5:sys","6:full"] ++ map show [7..10]
+    myWorkspaces    = map show [1..10]
 
     myHomeDir = "/home/erb"
     myBitmapsDir = myHomeDir ++ "/.xmonad/dzen2"
@@ -97,17 +97,20 @@
     barFont     = "-*-terminus-*-*-*-*-*-*-*-*-*-*-iso10646-*"
     -- barFont     = "-*-clean-*-*-*-*-15-*-*-*-*-*-iso10646-*"
 
-    barHeight   = "18"
+    barHeight   = "24"
     barColor    = "#282828"
-    barSplitX   = "1190"
-    myXmonadBar = concat ["dzen2 -xs '1' -w '", barSplitX, "' -h '", barHeight, "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '", barColor, "' -fn '", barFont, "'"]
+    wsBarStartX = "48"
+    wsBarStartY   = "0"
+    wsBarWidth = "500"
+    barSplitX = "500"
+    myXmonadBar = "dzen2 -xs '1' -x " ++ wsBarStartX ++ " -y " ++ wsBarStartY ++ " -w '" ++ wsBarWidth ++ "' -h '" ++ barHeight ++ "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '" ++ barColor ++ "' -fn '" ++ barFont ++ "'"
     myStatusBar = concat ["conky -c ~/.xmonad/.conky_dzen -t '", conkyText , "' | dzen2 -xs '1' -x '", barSplitX, "' -h '", barHeight, "' -ta 'r' -bg '", barColor, "' -fg '#FFFFFF' -fn '", barFont, "'"]
     myTray      = "trayer --monitor 'primary' --edge top --align right --margin 197 --distancefrom top --distance 2 --widthtype pixel --width 200 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ (show $ (read barHeight :: Int)-4 :: String)
 --}}}
 
 -- Main {{{
     main = do
-        ---dzenLeftBar  <- spawnPipe myXmonadBar
+        dzenLeftBar  <- spawnPipe myXmonadBar
         ---dzenRightBar <- spawnPipe myStatusBar
         ---trayBar      <- spawnPipe myTray
         ---hPutStrLn dzenRightBar conkyText
@@ -115,14 +118,17 @@
               -- General section
               terminal           = myTerminal
             , modMask            = myModMask
-            , logHook            = ewmhDesktopsLogHook
+            , logHook            = myLogHook dzenLeftBar
             , layoutHook         = avoidStruts $ myLayoutHook
-            , handleEventHook    = ewmhDesktopsEventHook <+> fullscreenEventHook
+            --, handleEventHook    = fullscreenEventHook
+            --, handleEventHook    = ewmhDesktopsEventHook <+> fullscreenEventHook
             , manageHook         = manageDocks <+> myManageHook
-            , startupHook        = ewmhDesktopsStartup
+            --, startupHook        = ewmhDesktopsStartup
+
             -- Keyboard
             , keys               = myKeys
             , mouseBindings      = myMouseBindings
+
             -- Style and appearance
             , workspaces         = myWorkspaces
             , borderWidth        = myBorderWidth

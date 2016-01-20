@@ -109,8 +109,6 @@
       <property name="&lt;Alt&gt;space" type="string" value="popup_menu_key"/>
       <property name="&lt;Alt&gt;Delete" type="string" value="del_workspace_key"/>
       <property name="override" type="bool" value="true"/>
-      <property name="&lt;Super&gt;Tab" type="string" value="cycle_windows_key"/>
-      <property name="&lt;Shift&gt;&lt;Super&gt;ISO_Left_Tab" type="string" value="cycle_reverse_windows_key"/>
       <property name="&lt;Super&gt;q" type="string" value="close_window_key"/>
       <property name="&lt;Super&gt;f" type="string" value="maximize_window_key"/>
       <property name="&lt;Shift&gt;&lt;Super&gt;exclam" type="string" value="move_window_workspace_1_key"/>
@@ -146,6 +144,8 @@
       <property name="&lt;Shift&gt;&lt;Super&gt;KP_2" type="string" value="tile_down_key"/>
       <property name="&lt;Shift&gt;&lt;Super&gt;KP_4" type="string" value="tile_left_key"/>
       <property name="&lt;Shift&gt;&lt;Super&gt;KP_6" type="string" value="tile_right_key"/>
+      <property name="&lt;Alt&gt;Tab" type="string" value="cycle_windows_key"/>
+      <property name="&lt;Shift&gt;&lt;Alt&gt;ISO_Left_Tab" type="string" value="cycle_reverse_windows_key"/>
     </property>
   </property>
   <property name="providers" type="array">
