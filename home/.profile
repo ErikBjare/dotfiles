@@ -14,11 +14,13 @@ echo "Starting log: $(date --rfc-3339=seconds)" >> $logfile
 export DEFAULT_USER="erb"
 export BROWSER="google-chrome"
 export EDITOR="vim"
-export TERM="xterm-256color"
 export GPGKEY="86E4C130"
 export TZ="Europe/Stockholm"
 export DISPLAY=":0"
 
+# Apparently you should never set term... Who knew?
+# https://wiki.archlinux.org/index.php/Home_and_End_keys_not_working
+#export TERM="xterm-256color"
 
 ###########################
 #   Setting up the PATH   #
@@ -31,8 +33,12 @@ fi
 if [ -d "$HOME/.bin" ]; then
     export PATH="$HOME/.bin:$PATH"
 fi
+# bin folder used by Python for user installs
 if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"
+fi
+if [ -d "$HOME/.cabal/bin" ]; then
+    export PATH="$HOME/.cabal/bin:$PATH"
 fi
 
 # set up the go environment

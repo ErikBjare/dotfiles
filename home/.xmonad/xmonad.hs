@@ -55,7 +55,7 @@
     myModMask       = mod4Mask
 
     -- Sets default terminal
-    myTerminal = "terminator"
+    myTerminal = "urxvt"
 
     -- Sets name of the workspaces
     myWorkspaces    = map show [1..10]
@@ -119,8 +119,8 @@
               terminal           = myTerminal
             , modMask            = myModMask
             , logHook            = myLogHook dzenLeftBar
-            , layoutHook         = avoidStruts $ myLayoutHook
-            --, handleEventHook    = fullscreenEventHook
+            , layoutHook         = myLayoutHook
+            , handleEventHook    = fullscreenEventHook
             --, handleEventHook    = ewmhDesktopsEventHook <+> fullscreenEventHook
             , manageHook         = manageDocks <+> myManageHook
             --, startupHook        = ewmhDesktopsStartup
