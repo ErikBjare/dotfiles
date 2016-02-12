@@ -1,3 +1,4 @@
 backup/
 *.swp
 npm-debug.log
+*.bkp

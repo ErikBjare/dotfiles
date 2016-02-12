@@ -34,11 +34,11 @@
       <property name="&lt;Super&gt;space" type="empty">
         <property name="startup-notify" type="bool" value="true"/>
       </property>
-      <property name="&lt;Super&gt;Return" type="string" value="sh -c &quot;terminator || xfce4-terminal&quot;"/>
-      <property name="&lt;Super&gt;b" type="string" value="sh -c &quot;sleep 0.2; DISPLAY=:0 xset dpms force off&quot;"/>
       <property name="&lt;Shift&gt;&lt;Super&gt;d" type="string" value="sh -c &quot;xrandr --output eDP1 --mode 1920x1080 --pos 0x0; xrandr --output HDMI1 --mode 1920x1080 --pos 0x0 --rate 60&quot;"/>
       <property name="&lt;Super&gt;l" type="string" value="sh -c &quot;slock&amp; sleep 0.5; DISPLAY=:0 xset dpms force off&quot;"/>
       <property name="Print" type="string" value="screenshot-share"/>
+      <property name="&lt;Primary&gt;&lt;Shift&gt;b" type="string" value="sh -c &quot;sleep 0.5; DISPLAY=:0 xset dpms force off&quot;"/>
+      <property name="&lt;Super&gt;Return" type="string" value="sh -c &quot;urxvt | terminator || xfce4-terminal&quot;"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">

@@ -16,7 +16,7 @@ source ~/.antigenrc.sh
 
 # Use vi mode
 # Taken from http://dougblack.io/words/zsh-vi-mode.html
-bindkey -v
+#bindkey -v
 
 export KEYTIMEOUT=1
 
@@ -46,8 +46,6 @@ bindkey "^[[B" history-substring-search-down
 if hash powerline 2>/dev/null; then
     # Override theme
     source ~/.zsh/agnoster-modified.zsh-theme;
-else
-    antigen bundle jdavis/zsh-files themes/jdavis
 fi
 
 # Set dircolors if under Linux (where dircolors is available)
