@@ -1,6 +1,1 @@
-# Instructions here: https://wiki.archlinux.org/index.php/Extra_Keyboard_Keys_in_Xorg
-# Keydefinitions here: /usr/include/X11/keysymdef.h
-xmodmap ~/.xmodmap
-
-# Rebind caps to ctrl
-setxkbmap -option "ctrl:nocaps"
+xmodmap ~/.config/erb.xmodmap
