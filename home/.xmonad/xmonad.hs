@@ -55,10 +55,10 @@
     myModMask       = mod4Mask
 
     -- Sets default terminal
-    myTerminal = "terminator"
+    myTerminal = "urxvt"
 
     -- Sets name of the workspaces
-    myWorkspaces    = ["1:term","2:web","3:dev","4:term2","5:sys","6:full"] ++ map show [7..9]
+    myWorkspaces    = map show [1..10]
 
     myHomeDir = "/home/erb"
     myBitmapsDir = myHomeDir ++ "/.xmonad/dzen2"
@@ -97,10 +97,13 @@
     barFont     = "-*-terminus-*-*-*-*-*-*-*-*-*-*-iso10646-*"
     -- barFont     = "-*-clean-*-*-*-*-15-*-*-*-*-*-iso10646-*"
 
-    barHeight   = "18"
-    barColor    = "#282828"
-    barSplitX   = "1190"
-    myXmonadBar = concat ["dzen2 -xs '1' -w '", barSplitX, "' -h '", barHeight, "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '", barColor, "' -fn '", barFont, "'"]
+    barHeight   = "16"
+    barColor    = "#303030"
+    wsBarStartX = "60"
+    wsBarStartY   = "5"
+    wsBarWidth = "1000"
+    barSplitX = "500"
+    myXmonadBar = "dzen2 -xs '1' -x " ++ wsBarStartX ++ " -y " ++ wsBarStartY ++ " -w '" ++ wsBarWidth ++ "' -h '" ++ barHeight ++ "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '" ++ barColor ++ "' -fn '" ++ barFont ++ "'"
     myStatusBar = concat ["conky -c ~/.xmonad/.conky_dzen -t '", conkyText , "' | dzen2 -xs '1' -x '", barSplitX, "' -h '", barHeight, "' -ta 'r' -bg '", barColor, "' -fg '#FFFFFF' -fn '", barFont, "'"]
     myTray      = "trayer --monitor 'primary' --edge top --align right --margin 197 --distancefrom top --distance 2 --widthtype pixel --width 200 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ (show $ (read barHeight :: Int)-4 :: String)
 --}}}
@@ -108,24 +111,27 @@
 -- Main {{{
     main = do
         dzenLeftBar  <- spawnPipe myXmonadBar
-        dzenRightBar <- spawnPipe myStatusBar
-        trayBar      <- spawnPipe myTray
-        hPutStrLn dzenRightBar conkyText
+        ---dzenRightBar <- spawnPipe myStatusBar
+        ---trayBar      <- spawnPipe myTray
+        ---hPutStrLn dzenRightBar conkyText
         xmonad $ ewmh defaultConfig {
               -- General section
               terminal           = myTerminal
             , modMask            = myModMask
             , logHook            = myLogHook dzenLeftBar
-            , manageHook         = myManageHook
-            --, startupHook        = myStartupHook
+            , layoutHook         = myLayoutHook
+            , handleEventHook    = fullscreenEventHook
+            --, handleEventHook    = ewmhDesktopsEventHook <+> fullscreenEventHook
+            , manageHook         = manageDocks <+> myManageHook
+            --, startupHook        = ewmhDesktopsStartup
+
             -- Keyboard
             , keys               = myKeys
             , mouseBindings      = myMouseBindings
+
             -- Style and appearance
             , workspaces         = myWorkspaces
             , borderWidth        = myBorderWidth
-            , layoutHook         = myLayoutHook
-            , handleEventHook    = fullscreenEventHook
             , normalBorderColor  = myNormalBorderColor
             , focusedBorderColor = myFocusedBorderColor
         }
@@ -136,14 +142,14 @@
     -- stuff to do when a new window is opened
     myManageHook :: ManageHook
     myManageHook = (composeAll . concat $
-        [ [resource     =? r    --> doIgnore            |   r   <- myIgnores] -- ignore desktop
+        [ [resource     =? r    --> doIgnore            |   r   <- myIgnoreResources ] -- ignore desktop
         , [className    =? c    --> doShift  "1:main"   |   c   <- myTerm   ] -- move term to main
         , [className    =? c    --> doShift  "2:web"    |   c   <- myWebs   ] -- move webs to web
         , [className    =? c    --> doShift  "3:dev"    |   c   <- myDevs   ] -- move devs to dev
         , [className    =? c    --> doShift  "4:chat"   |   c   <- myChat   ] -- move chat to chat
         , [className    =? c    --> doShift  "5:music"  |   c   <- myMusic  ] -- move music to music
-        , [className    =? c    --> doCenterFloat       |   c   <- myFloats ] -- float my floats
-        , [name         =? n    --> doCenterFloat       |   n   <- myNames  ] -- float my names
+        , [className    =? c    --> doCenterFloat       |   c   <- myFloatClasses ] -- float these classes
+        , [name         =? n    --> doCenterFloat       |   n   <- myFloatNames  ] -- float these names
         , [isFullscreen         --> myDoFullFloat                           ]
         ])
 
@@ -158,18 +164,19 @@
             myDevs    = ["Sublime_text", "jetbrains-pycharm", "jetbrains-idea-ce"]
             myChat    = ["Pidgin", "Buddy List"]
             myMusic   = ["Rhythmbox", "Spotify"]
-            myFloats  = ["Vlc", "VirtualBox", "Xmessage", "Steam", "Kalarm",
-                         "XFontSel", "Downloads", "Nm-connection-editor", "Alarmclock"]
 
-            -- resources
-            myIgnores = ["desktop","desktop_window","notify-osd","stalonetray","trayer","panel","xfce4-notifyd","gnome-panel"]
+            -- floats
+            myFloatClasses = ["Vlc", "VirtualBox", "Xmessage", "Steam", "Kalarm",
+                              "XFontSel", "Downloads", "Nm-connection-editor", "Alarmclock", "Xfce4-panel"]
+            myFloatNames   = ["bashrun","Google Chrome Options","Chromium Options"]
 
-            -- names
-            myNames   = ["bashrun","Google Chrome Options","Chromium Options"]
+            -- resources, a list of roles, not names
+            myIgnoreResources = ["desktop", "desktop_window", "notify-osd", "stalonetray",
+                         "trayer", "xfce4-notifyd", "xfce4-desktop"]
 
-    -- a trick for fullscreen but stil allow focusing of other WSs
-    myDoFullFloat :: ManageHook
-    myDoFullFloat = doF W.focusDown <+> doFullFloat
+            -- a trick for fullscreen but stil allow focusing of other WSs
+            myDoFullFloat :: ManageHook
+            myDoFullFloat = doF W.focusDown <+> doFullFloat
 
     --}}}
 
@@ -298,7 +305,7 @@
         -- mod-shift-[1..9], Move client to workspace N
         --
         [((m .|. modm, k), windows $ f i)
-            | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+            | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
             , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
         ++
         --

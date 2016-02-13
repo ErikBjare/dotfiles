@@ -1,15 +1,17 @@
-show_frame=true
+show_frame=false
 fg_set=false
-bg_set=false
+bg_set=true
 timezone=
-width_set=false
+width_set=true
 height_set=false
-data0=%X
-font0=Liberation Mono 11
-data1=%Y-%m-%d
-font1=Liberation Mono 9
+data0=%H:%M:%S
+font0=Noto Sans Armenian Bold 8
 tooltip=%A %d %B %Y/%V
 hib_timing=false
 lines_vertically=true
 rotation=0
+data1=%Y-%m-%d
+font1=Noto Sans Armenian 8
+bg=12336R 12336G 12336B
+width=80
 

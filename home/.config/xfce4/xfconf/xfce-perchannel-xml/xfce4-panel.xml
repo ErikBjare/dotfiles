@@ -4,154 +4,127 @@
   <property name="configver" type="int" value="2"/>
   <property name="panels" type="array">
     <value type="int" value="1"/>
-    <value type="int" value="3"/>
-    <value type="int" value="4"/>
     <property name="panel-1" type="empty">
-      <property name="position" type="string" value="p=6;x=960;y=19"/>
-      <property name="size" type="uint" value="32"/>
-      <property name="length" type="uint" value="47"/>
+      <property name="position" type="string" value="p=6;x=2131;y=16"/>
+      <property name="size" type="uint" value="24"/>
+      <property name="length" type="uint" value="100"/>
       <property name="nrows" type="uint" value="1"/>
       <property name="disable-struts" type="bool" value="false"/>
       <property name="position-locked" type="bool" value="true"/>
       <property name="plugin-ids" type="array">
         <value type="int" value="9"/>
-        <value type="int" value="11"/>
         <value type="int" value="8"/>
+        <value type="int" value="4"/>
+        <value type="int" value="7"/>
         <value type="int" value="24"/>
+        <value type="int" value="6"/>
+        <value type="int" value="16"/>
+        <value type="int" value="11"/>
+        <value type="int" value="5"/>
+        <value type="int" value="12"/>
+        <value type="int" value="1"/>
+        <value type="int" value="20"/>
+        <value type="int" value="2"/>
+        <value type="int" value="3"/>
+        <value type="int" value="22"/>
+        <value type="int" value="19"/>
+        <value type="int" value="13"/>
+        <value type="int" value="18"/>
+        <value type="int" value="14"/>
       </property>
-      <property name="background-alpha" type="uint" value="100"/>
+      <property name="background-alpha" type="int" value="100"/>
       <property name="background-style" type="uint" value="1"/>
       <property name="background-color" type="array">
-        <value type="uint" value="8985"/>
-        <value type="uint" value="8985"/>
-        <value type="uint" value="8985"/>
+        <value type="uint" value="12336"/>
+        <value type="uint" value="12336"/>
+        <value type="uint" value="12336"/>
         <value type="uint" value="65535"/>
       </property>
       <property name="enter-opacity" type="uint" value="100"/>
       <property name="leave-opacity" type="uint" value="100"/>
       <property name="mode" type="uint" value="0"/>
       <property name="length-adjust" type="bool" value="false"/>
-    </property>
-    <property name="panel-3" type="empty">
-      <property name="position" type="string" value="p=2;x=1459;y=15"/>
-      <property name="plugin-ids" type="array">
-        <value type="int" value="26"/>
-        <value type="int" value="23"/>
-        <value type="int" value="16"/>
-        <value type="int" value="5"/>
-        <value type="int" value="1"/>
-        <value type="int" value="2"/>
-        <value type="int" value="3"/>
-        <value type="int" value="19"/>
-        <value type="int" value="13"/>
-      </property>
-      <property name="length" type="uint" value="47"/>
-      <property name="size" type="uint" value="32"/>
-      <property name="disable-struts" type="bool" value="false"/>
-      <property name="position-locked" type="bool" value="true"/>
-      <property name="background-style" type="uint" value="1"/>
-      <property name="length-adjust" type="bool" value="false"/>
-    </property>
-    <property name="panel-4" type="empty">
-      <property name="position" type="string" value="p=9;x=957;y=19"/>
-      <property name="nrows" type="uint" value="1"/>
-      <property name="size" type="uint" value="32"/>
-      <property name="length" type="uint" value="7"/>
-      <property name="length-adjust" type="bool" value="false"/>
-      <property name="disable-struts" type="bool" value="true"/>
-      <property name="mode" type="uint" value="0"/>
-      <property name="position-locked" type="bool" value="true"/>
-      <property name="plugin-ids" type="array">
-        <value type="int" value="15"/>
-        <value type="int" value="14"/>
-        <value type="int" value="18"/>
-      </property>
-      <property name="background-style" type="uint" value="1"/>
       <property name="span-monitors" type="bool" value="false"/>
+      <property name="background-image" type="string" value=""/>
     </property>
   </property>
   <property name="plugins" type="empty">
     <property name="plugin-2" type="string" value="power-manager-plugin"/>
     <property name="plugin-5" type="string" value="systray">
       <property name="names-visible" type="array">
-        <value type="string" value="thunar"/>
-        <value type="string" value="vlc"/>
-        <value type="string" value="redshift-gtk"/>
-        <value type="string" value="google-chrome"/>
-        <value type="string" value="networkmanager applet"/>
-        <value type="string" value="google-chrome-stable"/>
-        <value type="string" value="indicator-cpufreq"/>
-        <value type="string" value="wicd-client.py"/>
-        <value type="string" value="steam"/>
-        <value type="string" value="psensor"/>
-        <value type="string" value="orage"/>
-        <value type="string" value="ibus panel"/>
-        <value type="string" value="synapse"/>
-        <value type="string" value="blueman-applet"/>
+        <value type="string" value="syncthing"/>
         <value type="string" value="task manager"/>
-        <value type="string" value="rescuetime"/>
-        <value type="string" value="spotify"/>
-        <value type="string" value="update-notifier"/>
-        <value type="string" value="activitywatch"/>
         <value type="string" value="deluge"/>
+        <value type="string" value="steam"/>
+        <value type="string" value="activitywatch"/>
+        <value type="string" value="bitcoin-qt"/>
+        <value type="string" value="wicd-client.py"/>
+        <value type="string" value="vlc"/>
+        <value type="string" value="profile.py"/>
+        <value type="string" value="bluetooth"/>
         <value type="string" value="xfce4-power-manager"/>
-        <value type="string" value="instantbird"/>
-        <value type="string" value="statusicon"/>
-        <value type="string" value="deluge-gtk"/>
+        <value type="string" value="thunar"/>
+        <value type="string" value="spotify"/>
+        <value type="string" value="qt4systrayicon.py"/>
+        <value type="string" value="google-chrome"/>
+        <value type="string" value="pidgin"/>
+        <value type="string" value="google-chrome-stable"/>
+        <value type="string" value="syncthing-gtk"/>
         <value type="string" value="sabnzbdplus"/>
+        <value type="string" value="deluge-gtk"/>
+        <value type="string" value="redshift-gtk"/>
+        <value type="string" value="synapse"/>
+        <value type="string" value="rescuetime"/>
+        <value type="string" value="instantbird"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="slack"/>
+        <value type="string" value="statusicon"/>
+        <value type="string" value="synergy"/>
+        <value type="string" value="blueman-applet"/>
+        <value type="string" value="__main__.py"/>
+        <value type="string" value="ibus panel"/>
+        <value type="string" value="psensor"/>
+        <value type="string" value="update-notifier"/>
+        <value type="string" value="indicator-cpufreq"/>
       </property>
-      <property name="size-max" type="uint" value="12"/>
+      <property name="size-max" type="uint" value="16"/>
       <property name="show-frame" type="bool" value="true"/>
-    </property>
-    <property name="plugin-8" type="string" value="tasklist">
-      <property name="include-all-monitors" type="bool" value="false"/>
-      <property name="flat-buttons" type="bool" value="true"/>
-      <property name="show-labels" type="bool" value="false"/>
-      <property name="sort-order" type="uint" value="4"/>
-      <property name="grouping" type="uint" value="0"/>
-      <property name="show-handle" type="bool" value="false"/>
-      <property name="show-wireframes" type="bool" value="true"/>
-      <property name="show-only-minimized" type="bool" value="false"/>
+      <property name="names-hidden" type="array">
+        <value type="string" value="blueberry-tray.py"/>
+        <value type="string" value="orage"/>
+        <value type="string" value="chromium"/>
+        <value type="string" value="veracrypt"/>
+      </property>
     </property>
     <property name="plugin-9" type="string" value="applicationsmenu">
       <property name="show-menu-icons" type="bool" value="true"/>
-      <property name="button-icon" type="string" value="application-menu-symbolic"/>
+      <property name="button-icon" type="string" value="application-menu"/>
       <property name="show-button-title" type="bool" value="false"/>
-      <property name="show-tooltips" type="bool" value="false"/>
+      <property name="show-tooltips" type="bool" value="true"/>
+      <property name="show-generic-names" type="bool" value="false"/>
+      <property name="custom-menu" type="bool" value="false"/>
     </property>
-    <property name="plugin-11" type="string" value="pager">
-      <property name="rows" type="uint" value="2"/>
-      <property name="miniature-view" type="bool" value="true"/>
-      <property name="workspace-scrolling" type="bool" value="false"/>
+    <property name="plugin-13" type="string" value="actions">
+      <property name="appearance" type="uint" value="1"/>
     </property>
-    <property name="plugin-13" type="string" value="actions"/>
     <property name="plugin-16" type="string" value="cpugraph"/>
-    <property name="plugin-23" type="string" value="systemload"/>
     <property name="plugin-24" type="string" value="separator">
       <property name="expand" type="bool" value="true"/>
       <property name="style" type="uint" value="1"/>
     </property>
-    <property name="plugin-26" type="string" value="separator">
-      <property name="expand" type="bool" value="true"/>
-      <property name="style" type="uint" value="0"/>
-    </property>
     <property name="plugin-3" type="string" value="mixer">
-      <property name="sound-card" type="string" value="PlaybackBuiltinAudioDigitalStereoHDMI2PulseAudioMixer"/>
+      <property name="sound-card" type="string" value="HDAIntelPCHAlsamixer"/>
       <property name="track" type="string" value="Master"/>
       <property name="command" type="string" value="xfce4-mixer"/>
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
     </property>
     <property name="plugin-14" type="string" value="xfce4-orageclock-plugin"/>
-    <property name="plugin-15" type="string" value="separator">
-      <property name="expand" type="bool" value="true"/>
-      <property name="style" type="uint" value="3"/>
-    </property>
     <property name="plugin-18" type="string" value="separator">
-      <property name="expand" type="bool" value="true"/>
-      <property name="style" type="uint" value="3"/>
+      <property name="expand" type="bool" value="false"/>
+      <property name="style" type="uint" value="1"/>
     </property>
     <property name="plugin-19" type="string" value="separator">
-      <property name="style" type="uint" value="3"/>
+      <property name="style" type="uint" value="1"/>
       <property name="expand" type="bool" value="false"/>
     </property>
     <property name="plugin-1" type="string" value="launcher">
@@ -162,5 +135,26 @@
         <value type="string" value="14462596175.desktop"/>
       </property>
     </property>
+    <property name="plugin-4" type="string" value="windowmenu">
+      <property name="workspace-actions" type="bool" value="false"/>
+      <property name="workspace-names" type="bool" value="true"/>
+      <property name="style" type="uint" value="1"/>
+      <property name="urgentcy-notification" type="bool" value="true"/>
+    </property>
+    <property name="plugin-20" type="string" value="xfce4-mount-plugin"/>
+    <property name="plugin-22" type="string" value="xkb-plugin"/>
+    <property name="plugin-7" type="string" value="separator">
+      <property name="style" type="uint" value="1"/>
+    </property>
+    <property name="plugin-8" type="string" value="separator">
+      <property name="style" type="uint" value="1"/>
+    </property>
+    <property name="plugin-11" type="string" value="separator">
+      <property name="style" type="uint" value="1"/>
+    </property>
+    <property name="plugin-12" type="string" value="separator">
+      <property name="style" type="uint" value="1"/>
+    </property>
+    <property name="plugin-6" type="string" value="systemload"/>
   </property>
 </channel>

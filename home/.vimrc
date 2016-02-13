@@ -47,8 +47,8 @@ nnoremap <C-n> :call NumberToggle()<cr>
 set number
 
 " <C-C> and <C-V> for copy and paste
-vmap <C-C> :!xclip -f -sel clip<CR>
-map <C-V> :set paste; -1r !xclip -o -sel clip; set nopaste<CR>
+"vmap <C-C> :!xclip -f -sel clip<CR>
+"map <C-V> :set paste; -1r !xclip -o -sel clip; set nopaste<CR>
 
 " Indentation
 set cindent
@@ -99,7 +99,7 @@ set rtp+=~/.vim/
 " vim-airline config
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='dark'
+let g:airline_theme='simple'
 
 " To disable a plugin, add it's bundle name to the following list
 let g:pathogen_disabled = []

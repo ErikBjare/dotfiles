@@ -1,8 +1,6 @@
 [Unit]
 Description=arbtt
 Documentation=Automatic, Rule-Based Time Tracker
-Requires=wait-for-xserver.service
-After=wait-for-xserver.service
 
 [Service]
 Type=simple
