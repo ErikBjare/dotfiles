@@ -2,7 +2,7 @@
 ! Instructions here: https://wiki.archlinux.org/index.php/Extra_Keyboard_Keys_in_Xorg
 ! Keydefinitions here: /usr/include/X11/keysymdef.h
 ! For key inspection: `xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'`
-! For use with `setxkbmap -layout 'us'`
+! For use with `setxkbmap -layout 'us(intl)'`
 
 
 !               Key                 Shift+Key   mode+Key            mode+Shift+Key      AltGr+Key  AltGr+Shift+Key

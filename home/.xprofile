@@ -1,1 +1,2 @@
+setxkbmap -layout 'us(intl)'
 xmodmap ~/.config/erb.xmodmap

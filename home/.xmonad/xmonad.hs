@@ -246,10 +246,11 @@
         , ((0,  xF86XK_MonBrightnessDown ), spawn "xbacklight -5")
 
         -- Screen temperature & software brightness
-        , ((modm,               xK_F10   ), spawn "redshift -O 3500 -b 0.7")
-        , ((modm,               xK_F11   ), spawn "redshift -O 3500 -b 1")
-        , ((modm,               xK_F12   ), spawn "redshift -O 6500 -b 1")
-        , ((modm,               xK_t     ), spawn ("echo -e \"" ++ sepBar ++ "\" >> /home/erb/test.txt"))
+        , ((modm,               xK_F11   ), spawn "systemctl --user stop redshift; redshift -O 7000 -b 1.0")
+        , ((modm,               xK_F12   ), spawn "systemctl --user start redshift")
+
+        -- Used in testing
+        , ((modm,               xK_t     ), spawn ("echo -e \"" ++ sepBar ++ "\" >> /home/erb/.xmonad/test.txt"))
 
         -- Printscreen
         , ((0,                  xK_Print ), spawn "gnome-screenshot")
