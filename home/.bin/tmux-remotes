@@ -1,0 +1,9 @@
+#!/bin/bash
+
+REATTACH_SCREEN_CMD="screen -R"
+REATTACH_TMUX_CMD="'if tmux has-session; then tmux attach; else tmux new-session; fi'"
+
+tmux new-session -d -s "remotes" -n "erb-pi2" "TERM=screen ssh -t erb-pi2 $REATTACH_TMUX_CMD" \; \
+     new-window -d -t "remotes" -n "erb-pi" "TERM=screen ssh -t pi@erb-pi $REATTACH_TMUX_CMD" \; \
+     new-window -d -t "remotes" -n "drop" "TERM=screen ssh -t drop.ngenia.net $REATTACH_TMUX_CMD"
+tmux attach -t "remotes"
