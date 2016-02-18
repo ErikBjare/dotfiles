@@ -1,0 +1,22 @@
+! My own modified keys
+! Instructions here: https://wiki.archlinux.org/index.php/Extra_Keyboard_Keys_in_Xorg
+! Keydefinitions here: /usr/include/X11/keysymdef.h
+! For key inspection: `xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'`
+! For use with `setxkbmap -layout 'us(intl)'`
+
+
+!               Key                 Shift+Key   mode+Key            mode+Shift+Key      AltGr+Key  AltGr+Shift+Key
+
+! Enables AltGr as a modifier key
+keycode 108 =   ISO_Level3_Shift    NoSymbol    ISO_Level3_Shift
+
+! Maps CapsLock to Control, and Shift+CapsLock to CapsLock
+clear lock
+clear control
+add control =   Caps_Lock           Control_L   Control_R
+keycode  66 =   Control_L           Caps_Lock   NoSymbol            NoSymbol
+
+! Sets å on AltGr+[, ä on AltGr+;, ö on AltGr+'
+keycode  34 =   bracketleft         braceleft   bracketleft         braceleft           aring       Aring
+keycode  47 =   semicolon           colon       semicolon           colon               odiaeresis  Odiaeresis
+keycode  48 =   apostrophe          quotedbl    apostrophe          quotedbl            adiaeresis  Adiaeresis

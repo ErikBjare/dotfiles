@@ -1,7 +1,12 @@
 #!/bin/bash
 
 DATE=$(date -Iseconds)
-FILE="$HOME/Dropbox/Public/Screenshots/${DATE}.png"
+FILE="$HOME/Public/Screenshots/${DATE}.png"
 
-import $FILE
-dropbox puburl $FILE
+gnome-screenshot --file=$FILE
+
+# TODO: Use import as fallback
+#import $FILE
+
+# TODO: Grab public URL and put into clipboard
+#dropbox puburl $FILE

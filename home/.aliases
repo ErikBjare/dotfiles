@@ -7,7 +7,7 @@
 # tmux requires strange things to get 256-color and ncurses to play nicely.
 # https://unix.stackexchange.com/questions/1045/getting-256-colors-to-work-in-tmux
 # https://bbs.archlinux.org/viewtopic.php?pid=880348
-alias tmux="TERM=xterm-256color tmux"
+#alias tmux="TERM=xterm-256color tmux"
 
 # weechat requires similar sorcery
 alias weechat="TERM=screen-256color weechat"
@@ -48,6 +48,8 @@ alias pyc='python3 -c'
 alias sctl="systemctl"
 alias usctl="systemctl --user"
 
+# Ain't nobody got time for `tmux a`
+alias ta="tmux a"
 
 # Clipboard helper func
 case $(uname) in
@@ -57,4 +59,5 @@ case $(uname) in
         alias toclip='pbcopy' ;;
 esac
 
+# Please do as I say, I am your master.
 alias plz='sudo $(fc -ln -1)'

@@ -1,12 +1,10 @@
 [Unit]
 Description=ActivityWatch
 Documentation=
-Requires=wait-for-xserver.service
-After=wait-for-xserver.service
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/activitywatch --debug
+ExecStart=/bin/activitywatch --debug
 Environment="DISPLAY=:0"
 Restart=always
 

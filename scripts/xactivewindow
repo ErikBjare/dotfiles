@@ -1,0 +1,45 @@
+#!/bin/bash
+
+WINDOW_ID=`xprop -root | grep ACTIVE_WINDOW | egrep -o "0x[0-9]+"`
+
+if [[ $* == *-v* ]]; then
+    xprop -root
+fi
+
+
+if [[ $WINDOW_ID != "0x0" ]]; then
+    WINDOW_NETNAME=`xprop -id $WINDOW_ID _NET_WM_NAME | egrep -o "\".*\""`
+    WINDOW_NAME=`xprop -id $WINDOW_ID WM_NAME | egrep -o "\".*\""`
+    WINDOW_CLASS=`xprop -id $WINDOW_ID WM_CLASS | egrep -o "\".*\""`
+    WINDOW_PID=`xprop -id $WINDOW_ID _NET_WM_PID | egrep -o "[0-9]+"`
+    WINDOW_CLIENT=`xprop -id $WINDOW_ID WM_CLIENT_MACHINE | egrep -o "\".*\""`
+    WINDOW_TYPE=`xprop -id $WINDOW_ID _NET_WM_WINDOW_TYPE | egrep -o "=.+" | egrep -o "[^=].+"`
+
+    echo "Locators"
+    echo "  Client machine: `echo $WINDOW_CLIENT`"
+    echo "  Process ID: `echo $WINDOW_PID`"
+    echo "  Window ID: $WINDOW_ID"
+
+    echo -e "\nWindow attributes"
+    echo "  Class: `echo $WINDOW_CLASS`"
+    echo "  Window title: `echo $WINDOW_NAME`"
+    echo "  Type: `echo $WINDOW_TYPE`"
+
+    if [[ $WINDOW_PID != "" ]]; then
+        PROCESS_CMD=`ps -o cmd= -p $WINDOW_PID`
+        PROCESS_TIME=`ps -o time= -p $WINDOW_PID`
+
+        echo -e "\nProcess"
+        echo "  Command: $PROCESS_CMD"
+        echo "  Time: $PROCESS_TIME"
+    fi
+
+
+    if [[ $* == *-v* ]]; then
+        echo -e "\nxprop of window $WINDOW_ID"
+        xprop -id $WINDOW_ID
+    fi
+else
+    echo "No active window"
+    exit 1
+fi
