@@ -4,7 +4,11 @@
 
 # Log to file
 logfile="$HOME/.profile-log.txt"
-echo "Starting log: $(date --rfc-3339=seconds)" >> $logfile
+
+# The following doesn't work due to the date command on OS X (doesn't have --rfc-3339 support)
+if [[ `uname` != 'Darwin' ]]; then
+    echo "Starting log: $(date --rfc-3339=seconds)" >> $logfile
+fi
 
 
 ############################
