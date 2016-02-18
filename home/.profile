@@ -18,6 +18,12 @@ export GPGKEY="86E4C130"
 export TZ="Europe/Stockholm"
 export DISPLAY=":0"
 
+# Needed on OS X for pbcopy etc.
+# Done generally if not already set just in case
+if [[ -z $LANG ]]; then
+    export LANG="en_US.UTF-8"
+fi
+
 # Apparently you should never set term... Who knew?
 # https://wiki.archlinux.org/index.php/Home_and_End_keys_not_working
 #export TERM="xterm-256color"
