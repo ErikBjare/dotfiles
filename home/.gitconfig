@@ -1,9 +1,15 @@
 [user]
 	email = erik.bjareholt@gmail.com
-	name = Erik BjÃ¤reholt
+	name = Erik BjÃreholt
 [core]
 	autocrlf = input
 [color]
 	ui = true
 [push]
 	default = current
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
