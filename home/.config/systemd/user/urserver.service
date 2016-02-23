@@ -3,8 +3,9 @@ Description=Unified Remote Server
 After=network.target
 
 [Service]
-RemainAfterExit=yes
-ExecStart=/bin/bash /opt/urserver/urserver-start
+Type=forking
+PIDFile=/home/erb/.urserver/urserver.pid
+ExecStart=/bin/bash /opt/urserver/urserver-start --no-manager
 ExecStop=/bin/bash /opt/urserver/urserver-stop
 
 [Install]
