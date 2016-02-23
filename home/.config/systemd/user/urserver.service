@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=forking
-PIDFile=/home/erb/.urserver/urserver.pid
+PIDFile=%h/.urserver/urserver.pid
 ExecStart=/bin/bash /opt/urserver/urserver-start --no-manager
 ExecStop=/bin/bash /opt/urserver/urserver-stop
 
