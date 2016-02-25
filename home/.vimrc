@@ -142,3 +142,6 @@ let g:syntastic_cpp_compiler_options = " -std=c++11"
 " Stolen from:
 "   https://github.com/Coornail/coornails_dotfiles/blob/master/.vimrc#L131
 autocmd FileType gitcommit DiffGitCached | wincmd p
+
+" Wrap lines on whitespace in markdown
+autocmd FileType markdown setlocal wrap linebreak nolist

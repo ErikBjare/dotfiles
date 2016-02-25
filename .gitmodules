@@ -49,3 +49,9 @@
 [submodule "home/.vim/bundle/vim-airline"]
 	path = home/.vim/bundle/vim-airline
 	url = https://github.com/bling/vim-airline
+[submodule "home/.vim/bundle/vim-markdown"]
+	path = home/.vim/bundle/vim-markdown
+	url = https://github.com/plasticboy/vim-markdown.git
+[submodule "home/.vim/bundle/YouCompleteMe"]
+	path = home/.vim/bundle/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe.git
