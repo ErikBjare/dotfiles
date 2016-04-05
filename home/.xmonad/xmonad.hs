@@ -230,7 +230,7 @@
         , ((modm,               xK_r     ), spawn "dmenu_run")
         -- lock with slock
         , ((modm,               xK_l     ), spawn "slock")
-        , ((modm .|. shiftMask, xK_l     ), spawn "systemctl suspend; slock")
+        , ((modm .|. shiftMask, xK_l     ), spawn "sleep 1; systemctl suspend; slock")
         -- close focused window
         , ((modm,               xK_q     ), kill)
 
