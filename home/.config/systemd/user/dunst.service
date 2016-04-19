@@ -1,0 +1,13 @@
+[Unit]
+Description=dunst, a notification daemon
+Documentation=
+
+[Service]
+Type=simple
+ExecStart=/bin/dunst
+Environment="DISPLAY=:0"
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
