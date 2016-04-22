@@ -26,3 +26,5 @@
 
 # GnuPG, obviously
 .gnupg
+
+.vimperator/info
