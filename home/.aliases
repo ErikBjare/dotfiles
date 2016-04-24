@@ -49,7 +49,11 @@ alias sctl="systemctl"
 alias usctl="systemctl --user"
 
 # Ain't nobody got time for `tmux a`
+alias tm="tmux new-session"
 alias ta="tmux a"
+
+alias oct="octave"
+alias ipy="ipython3"
 
 # Clipboard helper func
 case $(uname) in
