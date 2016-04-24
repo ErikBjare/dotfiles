@@ -1,0 +1,13 @@
+[Unit]
+Description=ActivityWatch
+Documentation=
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/actwa-server
+Environment="DISPLAY=:0"
+Restart=always
+After=mongodb.service
+
+[Install]
+WantedBy=default.target

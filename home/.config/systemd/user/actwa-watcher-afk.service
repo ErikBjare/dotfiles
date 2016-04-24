@@ -1,0 +1,13 @@
+[Unit]
+Description=AFK watcher for ActivityWatch
+Documentation=
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/actwa-watcher-afk
+Environment="DISPLAY=:0"
+Restart=always
+After=actwa-server.service
+
+[Install]
+WantedBy=default.target
