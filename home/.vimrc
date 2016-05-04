@@ -138,6 +138,11 @@ let g:syntastic_html_tidy_blocklevel_tags = ['slides', 'slide', 'hgroup']
 let g:syntastic_cpp_compiler = "g++"
 let g:syntastic_cpp_compiler_options = " -std=c++11"
 
+" YouCompleteMe close window after completion
+let g:ycm_autoclose_preview_window_after_completion=1
+" GoToDefinition for key
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
 " Show the git diff in vim when commiting
 " Stolen from:
 "   https://github.com/Coornail/coornails_dotfiles/blob/master/.vimrc#L131
