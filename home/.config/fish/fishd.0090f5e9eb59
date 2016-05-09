@@ -29,4 +29,4 @@ SET fish_pager_color_completion:normal
 SET fish_pager_color_description:555\x1eyellow
 SET fish_pager_color_prefix:cyan
 SET fish_pager_color_progress:cyan
-SET fish_user_abbreviations:ta\x20tmux\x20attach\x1esctl\x20systemctl\x1eusctl\x20systemctl\x20\x2d\x2duser
+SET fish_user_abbreviations:ta\x20tmux\x20attach\x1esctl\x20systemctl\x1eusctl\x20systemctl\x20\x2d\x2duser\x1egs\x20git\x20status\x1egd\x20git\x20diff\x1egds\x20git\x20diff\x20\x2d\x2dstaged\x1epyc\x20python3\x20\x2dc\x1eipy\x20ipython3\x1eoct\x20octave
