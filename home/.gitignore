@@ -5,6 +5,8 @@
 !.config/ipython/profile_default/ipython_config.py
 !.config/systemd/user
 .config/systemd/user/*.wants
+!.config/fish
+.config/fish/fish_history
 
 # A lot of scripts and bins are stored in .bin, not all should
 # be commited and all should be carefully hand-picked.
@@ -26,5 +28,8 @@
 
 # GnuPG, obviously
 .gnupg
+
+# Uncertain which files here are okay to upload
+.atom
 
 .vimperator/info

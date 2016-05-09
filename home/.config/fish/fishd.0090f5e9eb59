@@ -29,3 +29,4 @@ SET fish_pager_color_completion:normal
 SET fish_pager_color_description:555\x1eyellow
 SET fish_pager_color_prefix:cyan
 SET fish_pager_color_progress:cyan
+SET fish_user_abbreviations:ta\x20tmux\x20attach\x1esctl\x20systemctl\x1eusctl\x20systemctl\x20\x2d\x2duser
