@@ -58,3 +58,6 @@
 [submodule "home/.vim/bundle/vim-scala"]
 	path = home/.vim/bundle/vim-scala
 	url = https://github.com/derekwyatt/vim-scala.git
+[submodule "home/.vim/bundle/vim-solidity"]
+	path = home/.vim/bundle/vim-solidity
+	url = https://github.com/tomlion/vim-solidity.git
