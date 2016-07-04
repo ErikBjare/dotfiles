@@ -35,7 +35,7 @@ set messagetimeout=2000
 
 " hints
 
-"set hintchars=fdasjkl;rcexunim
+set hintchars=fdasjkl;rcexunim
 "set hintinputs=''
 
 " editor
