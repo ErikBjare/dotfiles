@@ -43,10 +43,13 @@ fi
 if [ -d "$HOME/.bin" ]; then
     export PATH="$HOME/.bin:$PATH"
 fi
+
 # bin folder used by Python for user installs
 if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
+
+# bin folder used by Cabal (Haskell) for user installs
 if [ -d "$HOME/.cabal/bin" ]; then
     export PATH="$HOME/.cabal/bin:$PATH"
 fi
@@ -63,13 +66,19 @@ if hash go 2>/dev/null; then
     export PATH="$GOGAE:$PATH"
 fi
 
-# Set up java and the JDK
-if [ -d "/usr/local/jdk1.7.0" ]; then
-    export JAVA_HOME="/usr/local/jdk1.7.0"
-elif [ -d "/usr/local/jdk1.6.0" ]; then
-    export JAVA_HOME="/usr/local/jdk1.6.0"
+# Set up Java and the JDK
+if [[ `uname` == 'Darwin' ]]; then
+    export JAVA_HOME=$(/usr/libexec/java_home)
 else
-    echo "WARNING: Could not find java" >> $logfile
+    if [ -d "/usr/local/jdk1.8.0" ]; then
+        export JAVA_HOME="/usr/local/jdk1.8.0"
+    elif [ -d "/usr/local/jdk1.7.0" ]; then
+        export JAVA_HOME="/usr/local/jdk1.7.0"
+    elif [ -d "/usr/local/jdk1.6.0" ]; then
+        export JAVA_HOME="/usr/local/jdk1.6.0"
+    else
+        echo "WARNING: Could not find java" >> $logfile
+    fi
 fi
 export PATH="$JAVA_HOME/bin:$PATH"
 
