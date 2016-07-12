@@ -61,3 +61,6 @@
 [submodule "home/.vim/bundle/vim-solidity"]
 	path = home/.vim/bundle/vim-solidity
 	url = https://github.com/tomlion/vim-solidity.git
+[submodule "home/.vim/bundle/vim-javascript"]
+	path = home/.vim/bundle/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
