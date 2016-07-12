@@ -115,8 +115,16 @@ execute pathogen#infect()
 " Enable syntax highlighting
 syntax on
 
+" Enable conceal
+set cole=2
+
 " Enable search highlighting
 set hlsearch
+
+" Better incsearch with incsearch.vim
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
 
 " Use lighter color scheme
 let g:solarized_termcolors=256
