@@ -73,3 +73,18 @@
 [submodule "home/.vim/bundle/vim-lambdify"]
 	path = home/.vim/bundle/vim-lambdify
 	url = https://github.com/calebsmith/vim-lambdify.git
+[submodule "home/.vim/bundle/unite.vim"]
+	path = home/.vim/bundle/unite.vim
+	url = https://github.com/Shougo/unite.vim.git
+[submodule "home/.vim/bundle/vim-easymotion"]
+	path = home/.vim/bundle/vim-easymotion
+	url = https://github.com/easymotion/vim-easymotion.git
+[submodule "home/.vim/bundle/nerdtree"]
+	path = home/.vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "home/.vim/bundle/nerdtree-git-plugin"]
+	path = home/.vim/bundle/nerdtree-git-plugin
+	url = https://github.com/Xuyuanp/nerdtree-git-plugin.git
+[submodule "home/.vim/bundle/vim-gitgutter"]
+	path = home/.vim/bundle/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git
