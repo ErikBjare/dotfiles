@@ -1,14 +1,49 @@
 "
 " Erik Bjareholts .vimrc
+" https://github.com/ErikBjare/dotfiles
 "
-" TODO: Split into seperate files: one base, one for keys, one for theme, one for syntax
-" TODO: Make pageup move half page and center view (the equivalent of `z.`)
+
+" Summary:
+"   - <Space> is the leader key
+"   - <Leader>-b opens buffer search (using Unite)
+"   - <Leader>-f opens file search (using Unite)
+"   - <Leader>-n opens nerdtree
+"   - <Leader><Leader> triggers easymotion
+"   - <C-{H,J,K,L}> changes panes
+"   - Folds are enabled (in some languages) and uses default bindings
+"   - q and wq only closes buffers, use qa to close vim entirely
+"       - Looking for a better solution
+"
+" TODOs:
+"   - Fix proper pane/window/buffer config
+"   - Split into seperate files: one base, one for keys, one for theme, one for syntax
+"   - Make pageup/pagedown move half page and center view
+"
 
 " Set leader key to space
 let mapleader = "\<Space>"
-nnoremap <Leader><Leader> :
+set timeoutlen=300
 
-" Enable mouse
+" Necessary if using fish
+" https://github.com/Xuyuanp/nerdtree-git-plugin/blob/1f3fe773bbc3d8bdd0096e19c26481dddab7cdfc/README.md#faq
+set shell=sh
+
+" Only close buffer on q/wq, not vim
+" This was a bad idea, now I know better.
+"cnoreabbrev wq w<bar>bd
+"cnoreabbrev q bd
+
+" Easymotion with <Leader>Leader>
+map <Leader><Leader> <Plug>(easymotion-prefix)
+map <Leader>n :NERDTreeToggle<CR>
+
+map <Leader>h :sp<CR>
+map <Leader>v :vsp<CR>
+
+" More 'natural' splits
+set splitbelow
+set splitright
+
 " Send more characters for redraws
 set ttyfast
 
@@ -57,7 +92,8 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 
-" Don't wrap by default (you might want to wrap in non-code files)
+" Don't wrap by default
+" (we might want to wrap in non-code files such as Markdown)
 set nowrap
 
 nnoremap <C-J> <C-W><C-J>
@@ -84,6 +120,9 @@ nnoremap <Leader>7 :7b<CR>
 nnoremap <Leader>8 :8b<CR>
 nnoremap <Leader>9 :9b<CR>
 nnoremap <Leader>0 :10b<CR>
+
+nnoremap <Leader>b :Unite buffer<CR>
+nnoremap <Leader>f :Unite file<CR>
 
 " First line needed since 7.4 to indent HTML properly:
 "   http://askubuntu.com/questions/392573/how-do-i-get-vim-to-indent-all-html-tags
@@ -126,6 +165,7 @@ map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 
+" Remove search highlight when non-search movement happens
 let g:incsearch#auto_nohlsearch = 1
 map n  <Plug>(incsearch-nohl-n)
 map N  <Plug>(incsearch-nohl-N)
