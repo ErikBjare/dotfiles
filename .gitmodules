@@ -40,9 +40,6 @@
 [submodule "home/.emacs.d"]
 	path = home/.emacs.d
 	url = https://github.com/syl20bnr/spacemacs.git
-[submodule "home/.vim/bundle/fugitive"]
-	path = home/.vim/bundle/fugitive
-	url = git://github.com/tpope/vim-fugitive.git
 [submodule "home/.vim/bundle/typescript-vim"]
 	path = home/.vim/bundle/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
@@ -88,3 +85,6 @@
 [submodule "home/.vim/bundle/vim-gitgutter"]
 	path = home/.vim/bundle/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
+[submodule "home/.vim/bundle/vim-fugitive"]
+	path = home/.vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
