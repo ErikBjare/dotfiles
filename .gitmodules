@@ -70,3 +70,9 @@
 [submodule "home/.vim/bundle/incsearch.vim"]
 	path = home/.vim/bundle/incsearch.vim
 	url = https://github.com/haya14busa/incsearch.vim
+[submodule "home/.vim/bundle/swift.vim"]
+	path = home/.vim/bundle/swift.vim
+	url = https://github.com/keith/swift.vim.git
+[submodule "home/.vim/bundle/vim-lambdify"]
+	path = home/.vim/bundle/vim-lambdify
+	url = https://github.com/calebsmith/vim-lambdify.git
