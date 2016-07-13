@@ -64,9 +64,6 @@
 [submodule "home/.vim/bundle/vim-javascript"]
 	path = home/.vim/bundle/vim-javascript
 	url = https://github.com/pangloss/vim-javascript.git
-[submodule ".vim/bundle/vim-lambdify"]
-	path = .vim/bundle/vim-lambdify
-	url = https://github.com/calebsmith/vim-lambdify.git
 [submodule "home/.vim/bundle/incsearch.vim"]
 	path = home/.vim/bundle/incsearch.vim
 	url = https://github.com/haya14busa/incsearch.vim
