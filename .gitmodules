@@ -58,3 +58,9 @@
 [submodule "home/.vim/bundle/vim-scala"]
 	path = home/.vim/bundle/vim-scala
 	url = https://github.com/derekwyatt/vim-scala.git
+[submodule "home/.vim/bundle/vim-vue"]
+	path = home/.vim/bundle/vim-vue
+	url = https://github.com/posva/vim-vue.git
+[submodule "home/.vim/bundle/vim-pug"]
+	path = home/.vim/bundle/vim-pug
+	url = https://github.com/digitaltoad/vim-pug.git
