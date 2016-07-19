@@ -1,14 +1,95 @@
 "
 " Erik Bjareholts .vimrc
+" https://github.com/ErikBjare/dotfiles
 "
-" TODO: Split into seperate files: one base, one for keys, one for theme, one for syntax
-" TODO: Make pageup move half page and center view (the equivalent of `z.`)
+
+" Summary:
+"   - <Space> is the leader key
+"   - <Leader>-b opens buffer search (using Unite)
+"   - <Leader>-f opens file search (using Unite)
+"   - <Leader>-n opens nerdtree
+"   - <Leader><Leader> triggers easymotion
+"   - <C-{H,J,K,L}> changes panes
+"   - Folds are enabled (in some languages) and uses default bindings
+"   - q and wq only closes buffers, use qa to close vim entirely
+"       - Looking for a better solution
+"
+" TODOs:
+"   - Fix proper pane/window/buffer config
+"   - Split into seperate files: one base, one for keys, one for theme, one for syntax
+"   - Make pageup/pagedown move half page and center view
+"
 
 " Set leader key to space
 let mapleader = "\<Space>"
-nnoremap <Leader><Leader> :
+set timeoutlen=300
 
-" Enable mouse
+" Easymotion
+map <Leader><Leader> <Plug>(easymotion-prefix)
+
+" NERDTree
+map <Leader>n :NERDTreeToggle<CR>
+
+map <Leader>h :sp<CR>
+map <Leader>v :vsp<CR>
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+nnoremap <Leader>b :Unite buffer<CR>
+nnoremap <Leader>t :Unite tab<CR>
+nnoremap <Leader>f :Unite file<CR>
+nnoremap <Leader>ff :Unite -start-insert file_rec<CR>
+
+" Better incsearch with incsearch.vim
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+" Remove search highlight when non-search movement happens
+let g:incsearch#auto_nohlsearch = 1
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
+map g* <Plug>(incsearch-nohl-g*)
+map g# <Plug>(incsearch-nohl-g#)
+
+" fugitive git bindings
+nnoremap <Leader>ga :Git add %:p<CR><CR>
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gc :Gcommit -v -q<CR>
+nnoremap <Leader>gt :Gcommit -v -q %:p<CR>
+nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>ge :Gedit<CR>
+nnoremap <Leader>gr :Gread<CR>
+nnoremap <Leader>gw :Gwrite<CR><CR>
+nnoremap <Leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <Leader>gp :Ggrep<Space>
+nnoremap <Leader>gm :Gmove<Space>
+nnoremap <Leader>gb :Git branch<Space>
+nnoremap <Leader>go :Git checkout<Space>
+nnoremap <Leader>gps :Dispatch! git push<CR>
+nnoremap <Leader>gpl :Dispatch! git pull<CR>
+
+" GoToDefinition for key
+"map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+"
+" Here ends the keyconfig
+" Here starts some basic settings
+"
+
+" Necessary if using fish
+" https://github.com/Xuyuanp/nerdtree-git-plugin/blob/1f3fe773bbc3d8bdd0096e19c26481dddab7cdfc/README.md#faq
+set shell=sh
+
+" Basics from vimrc_example.vim
+set nocompatible
+set ruler
+
 " Send more characters for redraws
 set ttyfast
 
@@ -21,15 +102,15 @@ if !has('nvim')
     set ttymouse=xterm2
 endif
 
+" More 'natural' splits
+set splitbelow
+set splitright
+
 " Always show statusline
 set laststatus=2
 
 " Use 256 colours (Use this setting only if your terminal supports 256 colours)
 set t_Co=256
-
-" Basics from vimrc_example.vim
-set nocompatible
-set ruler
 
 " Relative line numbers toggle
 function! NumberToggle()
@@ -57,33 +138,8 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 
-" Don't wrap by default (you might want to wrap in non-code files)
+" Don't wrap by default
 set nowrap
-
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-" Mappings to access buffers (don't use "\p" because a
-" delay before pressing "p" would accidentally paste).
-" \l       : list buffers
-" \b \f \g : go back/forward/last-used
-" \1 \2 \3 : go to buffer 1/2/3 etc
-nnoremap <Leader>l :ls<CR>
-nnoremap <Leader>b :bp<CR>
-nnoremap <Leader>f :bn<CR>
-nnoremap <Leader>g :e#<CR>
-nnoremap <Leader>1 :1b<CR>
-nnoremap <Leader>2 :2b<CR>
-nnoremap <Leader>3 :3b<CR>
-nnoremap <Leader>4 :4b<CR>
-nnoremap <Leader>5 :5b<CR>
-nnoremap <Leader>6 :6b<CR>
-nnoremap <Leader>7 :7b<CR>
-nnoremap <Leader>8 :8b<CR>
-nnoremap <Leader>9 :9b<CR>
-nnoremap <Leader>0 :10b<CR>
 
 " First line needed since 7.4 to indent HTML properly:
 "   http://askubuntu.com/questions/392573/how-do-i-get-vim-to-indent-all-html-tags
@@ -115,6 +171,9 @@ execute pathogen#infect()
 " Enable syntax highlighting
 syntax on
 
+" Enable conceal
+set cole=2
+
 " Enable search highlighting
 set hlsearch
 
@@ -140,13 +199,8 @@ let g:syntastic_cpp_compiler_options = " -std=c++11"
 
 " YouCompleteMe close window after completion
 let g:ycm_autoclose_preview_window_after_completion=1
-" GoToDefinition for key
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " Show the git diff in vim when commiting
 " Stolen from:
 "   https://github.com/Coornail/coornails_dotfiles/blob/master/.vimrc#L131
 autocmd FileType gitcommit DiffGitCached | wincmd p
-
-" Wrap lines on whitespace in markdown
-autocmd FileType markdown setlocal wrap linebreak nolist
