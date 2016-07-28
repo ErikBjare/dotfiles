@@ -63,5 +63,6 @@ case $(uname) in
         alias toclip='pbcopy' ;;
 esac
 
-# Please do as I say, I am your master.
+# Please do as I say, friend.
 alias plz='sudo $(fc -ln -1)'
+

@@ -40,9 +40,6 @@
 [submodule "home/.emacs.d"]
 	path = home/.emacs.d
 	url = https://github.com/syl20bnr/spacemacs.git
-[submodule "home/.vim/bundle/fugitive"]
-	path = home/.vim/bundle/fugitive
-	url = git://github.com/tpope/vim-fugitive.git
 [submodule "home/.vim/bundle/typescript-vim"]
 	path = home/.vim/bundle/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
@@ -58,6 +55,42 @@
 [submodule "home/.vim/bundle/vim-scala"]
 	path = home/.vim/bundle/vim-scala
 	url = https://github.com/derekwyatt/vim-scala.git
+[submodule "home/.vim/bundle/vim-vue"]
+	path = home/.vim/bundle/vim-vue
+	url = https://github.com/posva/vim-vue.git
+[submodule "home/.vim/bundle/vim-pug"]
+	path = home/.vim/bundle/vim-pug
+	url = https://github.com/digitaltoad/vim-pug.git
 [submodule "home/.vim/bundle/vim-solidity"]
 	path = home/.vim/bundle/vim-solidity
 	url = https://github.com/tomlion/vim-solidity.git
+[submodule "home/.vim/bundle/vim-javascript"]
+	path = home/.vim/bundle/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
+[submodule "home/.vim/bundle/incsearch.vim"]
+	path = home/.vim/bundle/incsearch.vim
+	url = https://github.com/haya14busa/incsearch.vim
+[submodule "home/.vim/bundle/swift.vim"]
+	path = home/.vim/bundle/swift.vim
+	url = https://github.com/keith/swift.vim.git
+[submodule "home/.vim/bundle/vim-lambdify"]
+	path = home/.vim/bundle/vim-lambdify
+	url = https://github.com/calebsmith/vim-lambdify.git
+[submodule "home/.vim/bundle/unite.vim"]
+	path = home/.vim/bundle/unite.vim
+	url = https://github.com/Shougo/unite.vim.git
+[submodule "home/.vim/bundle/vim-easymotion"]
+	path = home/.vim/bundle/vim-easymotion
+	url = https://github.com/easymotion/vim-easymotion.git
+[submodule "home/.vim/bundle/nerdtree"]
+	path = home/.vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "home/.vim/bundle/nerdtree-git-plugin"]
+	path = home/.vim/bundle/nerdtree-git-plugin
+	url = https://github.com/Xuyuanp/nerdtree-git-plugin.git
+[submodule "home/.vim/bundle/vim-gitgutter"]
+	path = home/.vim/bundle/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git
+[submodule "home/.vim/bundle/vim-fugitive"]
+	path = home/.vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
