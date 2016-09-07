@@ -103,3 +103,6 @@
 [submodule "home/.vim/bundle/vim-tmux-navigator"]
 	path = home/.vim/bundle/vim-tmux-navigator
 	url = git@github.com:christoomey/vim-tmux-navigator.git
+[submodule "home/.vim/bundle/vim-autopep8"]
+	path = home/.vim/bundle/vim-autopep8
+	url = git@github.com:tell-k/vim-autopep8.git

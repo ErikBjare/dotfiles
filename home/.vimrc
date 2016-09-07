@@ -192,6 +192,19 @@ let g:solarized_termtrans=1
 set background=dark
 colorscheme solarized
 
+"
+" Syntastic config
+"
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 " Use Python 3 for syntastic highlighting
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_python_checkers=['flake8']
@@ -207,6 +220,9 @@ let g:syntastic_html_tidy_blocklevel_tags = ['slides', 'slide', 'hgroup']
 " C++ syntastic stuff
 let g:syntastic_cpp_compiler = "g++"
 let g:syntastic_cpp_compiler_options = " -std=c++11"
+
+" Disable showing diff after :Autopep8
+let g:autopep8_disable_show_diff=1
 
 " YouCompleteMe close window after completion
 let g:ycm_autoclose_preview_window_after_completion=1
