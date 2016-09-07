@@ -94,3 +94,12 @@
 [submodule "home/.vim/bundle/vim-fugitive"]
 	path = home/.vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
+[submodule "home/.vim/bundle/vim-airline-themes"]
+	path = home/.vim/bundle/vim-airline-themes
+	url = git@github.com:vim-airline/vim-airline-themes.git
+[submodule "home/.vim/bundle/neovim-colors-solarized-truecolor-only"]
+	path = home/.vim/bundle/neovim-colors-solarized-truecolor-only
+	url = git@github.com:frankier/neovim-colors-solarized-truecolor-only.git
+[submodule "home/.vim/bundle/vim-tmux-navigator"]
+	path = home/.vim/bundle/vim-tmux-navigator
+	url = git@github.com:christoomey/vim-tmux-navigator.git

@@ -102,6 +102,10 @@ if !has('nvim')
     set ttymouse=xterm2
 endif
 
+if has('nvim')
+    set termguicolors
+endif
+
 " More 'natural' splits
 set splitbelow
 set splitright
@@ -163,6 +167,11 @@ let g:pathogen_disabled = []
 
 if has('nvim')
     call add(g:pathogen_disabled, 'vim-geeknote')
+    call add(g:pathogen_disabled, 'vim-colors-solarized')
+endif
+if !has('nvim')
+    call add(g:pathogen_disabled, 'vim-geeknote')
+    call add(g:pathogen_disabled, 'neovim-colors-solarized-truecolors-only')
 endif
 
 " Run pathogen
@@ -185,6 +194,8 @@ colorscheme solarized
 
 " Use Python 3 for syntastic highlighting
 let g:syntastic_python_python_exec = 'python3'
+let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_flake8_args='--ignore=E501,E225'
 
 " Use jshint for JS checking
 let g:syntastic_javascript_checkers = ['jshint']
