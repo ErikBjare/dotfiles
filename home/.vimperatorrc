@@ -35,7 +35,8 @@ set messagetimeout=2000
 
 " hints
 
-set hintchars=fdasjkl;rcexunim
+set hintchars=fdasjkl;rcexunimi
+highlight Hint font-size:150%;color:red;background-color:yellow;padding:2px;
 "set hintinputs=''
 
 " editor
@@ -99,6 +100,7 @@ set! browser.newtab.url=about:blank
 "set! network.http.pipelining.aggressive=true
 "set! network.http.pipelining.max-optimistic-requests=3
 "set! network.http.pipelining.maxrequests=12
+
 "set! network.http.pipelining.maxsize=300000
 "set! network.http.pipelining.read-timeout=60000
 "set! network.http.pipelining.reschedule-on-timeout=true
@@ -242,18 +244,18 @@ set! devtools.cache.disabled=true
 " --------
 
 " we've already gone through the tutorial
-"set! extensions.ghostery.tutorial=true
+set! extensions.ghostery.tutorial=true
 
 " make Ghostery more ghostlike
-"set! extensions.ghostery.showBubble=false
-"set! extensions.ghostery.showBugCount=false
-"set! extensions.ghostery.showClick2Play=false
-"set! extensions.ghostery.showClick2PlayButton=false
-"set! extensions.ghostery.toolbarButton=false
+set! extensions.ghostery.showBubble=false
+set! extensions.ghostery.showBugCount=false
+set! extensions.ghostery.showClick2Play=false
+set! extensions.ghostery.showClick2PlayButton=false
+set! extensions.ghostery.toolbarButton=false
 
 " autoupdate bugs and stuff
-"set! extensions.ghostery.updateNotification=false
-"set! extensions.ghostery.autoUpdateBugs=true
+set! extensions.ghostery.updateNotification=false
+set! extensions.ghostery.autoUpdateBugs=true
 
 " other blockings
 "set! extensions.ghostery.cookieProtect=true
