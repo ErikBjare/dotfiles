@@ -38,7 +38,7 @@
       <property name="&lt;Super&gt;l" type="string" value="sh -c &quot;slock&amp; sleep 0.5; DISPLAY=:0 xset dpms force off&quot;"/>
       <property name="Print" type="string" value="screenshot-share"/>
       <property name="&lt;Primary&gt;&lt;Shift&gt;b" type="string" value="sh -c &quot;sleep 0.5; DISPLAY=:0 xset dpms force off&quot;"/>
-      <property name="&lt;Super&gt;Return" type="string" value="sh -c &quot;urxvt | terminator || xfce4-terminal&quot;"/>
+      <property name="&lt;Super&gt;Return" type="string" value="sh -c &quot;gnome-terminal || urxvt || terminator || xfce4-terminal&quot;"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">
