@@ -96,13 +96,16 @@
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule "home/.vim/bundle/vim-airline-themes"]
 	path = home/.vim/bundle/vim-airline-themes
-	url = git@github.com:vim-airline/vim-airline-themes.git
+	url = https://github.com/vim-airline/vim-airline-themes.git
 [submodule "home/.vim/bundle/neovim-colors-solarized-truecolor-only"]
 	path = home/.vim/bundle/neovim-colors-solarized-truecolor-only
-	url = git@github.com:frankier/neovim-colors-solarized-truecolor-only.git
+	url = https://github.com/frankier/neovim-colors-solarized-truecolor-only.git
 [submodule "home/.vim/bundle/vim-tmux-navigator"]
 	path = home/.vim/bundle/vim-tmux-navigator
-	url = git@github.com:christoomey/vim-tmux-navigator.git
+	url = https://github.com/christoomey/vim-tmux-navigator.git
 [submodule "home/.vim/bundle/vim-autopep8"]
 	path = home/.vim/bundle/vim-autopep8
-	url = git@github.com:tell-k/vim-autopep8.git
+	url = https://github.com/tell-k/vim-autopep8.git
+[submodule "home/.vim/bundle/vim-polyglot"]
+	path = home/.vim/bundle/vim-polyglot
+	url = https://github.com/sheerun/vim-polyglot.git
