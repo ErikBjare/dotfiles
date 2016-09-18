@@ -33,10 +33,15 @@ map <Leader>n :NERDTreeToggle<CR>
 map <Leader>h :sp<CR>
 map <Leader>v :vsp<CR>
 
+" Window switching
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+nnoremap <C-Up> <C-W><C-K>
+nnoremap <C-Down> <C-W><C-J>
+nnoremap <C-Right> <C-W><C-L>
+nnoremap <C-Left> <C-W><C-H>
 
 nnoremap <Leader>b :Unite buffer<CR>
 nnoremap <Leader>t :Unite tab<CR>
@@ -102,6 +107,10 @@ if !has('nvim')
     set ttymouse=xterm2
 endif
 
+if has('nvim')
+    set termguicolors
+endif
+
 " More 'natural' splits
 set splitbelow
 set splitright
@@ -163,6 +172,11 @@ let g:pathogen_disabled = []
 
 if has('nvim')
     call add(g:pathogen_disabled, 'vim-geeknote')
+    call add(g:pathogen_disabled, 'vim-colors-solarized')
+endif
+if !has('nvim')
+    call add(g:pathogen_disabled, 'vim-geeknote')
+    call add(g:pathogen_disabled, 'neovim-colors-solarized-truecolors-only')
 endif
 
 " Run pathogen
@@ -183,8 +197,23 @@ let g:solarized_termtrans=1
 set background=dark
 colorscheme solarized
 
+"
+" Syntastic config
+"
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 " Use Python 3 for syntastic highlighting
 let g:syntastic_python_python_exec = 'python3'
+let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_flake8_args='--ignore=E501,E225'
 
 " Use jshint for JS checking
 let g:syntastic_javascript_checkers = ['jshint']
@@ -196,6 +225,9 @@ let g:syntastic_html_tidy_blocklevel_tags = ['slides', 'slide', 'hgroup']
 " C++ syntastic stuff
 let g:syntastic_cpp_compiler = "g++"
 let g:syntastic_cpp_compiler_options = " -std=c++11"
+
+" Disable showing diff after :Autopep8
+let g:autopep8_disable_show_diff=1
 
 " YouCompleteMe close window after completion
 let g:ycm_autoclose_preview_window_after_completion=1

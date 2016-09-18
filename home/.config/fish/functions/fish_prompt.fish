@@ -6,11 +6,11 @@ function fish_prompt --description 'Write out the prompt'
   echo -n (whoami)
   set_color normal
 
-  echo -n '@'
 
   # Host
+  echo -n '@'
   set_color $fish_color_host
-  echo -n (hostname -s)
+  echo -n (hostname -s | grep -o '[^erb-].*')
   set_color normal
 
   echo -n ':'

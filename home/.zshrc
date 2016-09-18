@@ -56,3 +56,6 @@ fi
 
 # Uncomment this line and line 2 in the file to time performance
 #zprof
+
+# added by travis gem
+[ -f /home/erb/.travis/travis.sh ] && source /home/erb/.travis/travis.sh

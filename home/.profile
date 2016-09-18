@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ####################
 #  Initialization  #
 ####################
@@ -16,7 +18,7 @@ fi
 ############################
 
 export DEFAULT_USER="erb"
-export BROWSER="firefox"
+export BROWSER="google-chrome"
 export EDITOR="vim"
 export GPGKEY="86E4C130"
 export TZ="Europe/Stockholm"
@@ -93,3 +95,6 @@ if hash systemctl 2>/dev/null; then
 fi
 
 echo ".profile ran successfully" >> $logfile
+
+export NVM_DIR="/home/erb/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

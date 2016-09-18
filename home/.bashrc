@@ -92,3 +92,6 @@ fi
 if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
+
+# added by travis gem
+[ -f /home/erb/.travis/travis.sh ] && source /home/erb/.travis/travis.sh

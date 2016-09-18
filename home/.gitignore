@@ -5,8 +5,11 @@
 !.config/ipython/profile_default/ipython_config.py
 !.config/systemd/user
 .config/systemd/user/*.wants
+
+# Fish config stuff
 !.config/fish
 .config/fish/fish_history
+.config/fish/fish_read_history
 
 # A lot of scripts and bins are stored in .bin, not all should
 # be commited and all should be carefully hand-picked.
