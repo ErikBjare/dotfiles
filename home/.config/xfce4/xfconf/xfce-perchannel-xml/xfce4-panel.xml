@@ -60,6 +60,8 @@
     <property name="plugin-2" type="string" value="power-manager-plugin"/>
     <property name="plugin-5" type="string" value="systray">
       <property name="names-visible" type="array">
+        <value type="string" value="skype"/>
+        <value type="string" value="syncthing"/>
         <value type="string" value="task manager"/>
         <value type="string" value="deluge"/>
         <value type="string" value="steam"/>
@@ -70,9 +72,16 @@
         <value type="string" value="orage"/>
         <value type="string" value="wicd-client.py"/>
         <value type="string" value="vlc"/>
+        <value type="string" value="profile.py"/>
         <value type="string" value="xfce4-power-manager"/>
+        <value type="string" value="bluetooth"/>
+        <value type="string" value="qt4systrayicon.py"/>
         <value type="string" value="thunar"/>
         <value type="string" value="spotify"/>
+        <value type="string" value="klipper"/>
+        <value type="string" value="spideroakone"/>
+        <value type="string" value="google-chrome"/>
+        <value type="string" value="pidgin"/>
         <value type="string" value="network"/>
         <value type="string" value="google-chrome-stable"/>
         <value type="string" value="syncthing-gtk"/>
@@ -81,6 +90,15 @@
         <value type="string" value="redshift-gtk"/>
         <value type="string" value="synapse"/>
         <value type="string" value="rescuetime"/>
+        <value type="string" value="gopenvpn"/>
+        <value type="string" value="synergy"/>
+        <value type="string" value="slack"/>
+        <value type="string" value="evolution reminders"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="vivaldi-stable"/>
+        <value type="string" value="statusicon"/>
+        <value type="string" value="instantbird"/>
+        <value type="string" value="ibus panel"/>
         <value type="string" value="instantbird"/>
         <value type="string" value="networkmanager applet"/>
         <value type="string" value="synergy"/>
@@ -92,7 +110,12 @@
         <value type="string" value="__main__.py"/>
         <value type="string" value="psensor"/>
         <value type="string" value="update-notifier"/>
+        <value type="string" value="psensor"/>
+        <value type="string" value="__main__.py"/>
+        <value type="string" value="evolution-alarm-notify"/>
         <value type="string" value="indicator-cpufreq"/>
+        <value type="string" value="notes"/>
+        <value type="string" value="blueman-applet"/>
         <value type="string" value="ibus panel"/>
         <value type="string" value="statusicon"/>
       </property>

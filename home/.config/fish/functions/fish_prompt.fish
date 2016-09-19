@@ -10,7 +10,9 @@ function fish_prompt --description 'Write out the prompt'
   # Host
   echo -n '@'
   set_color $fish_color_host
-  echo -n (hostname -s | grep -o '[^erb-].*')
+  # I once used the -s flag for hostname, caused some crazy slow
+  # execution of the command however (>2s), so now I don't.
+  echo -n (hostname | grep -o '[^erb-].*')
   set_color normal
 
   echo -n ':'
