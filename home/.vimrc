@@ -232,7 +232,20 @@ let g:autopep8_disable_show_diff=1
 " YouCompleteMe close window after completion
 let g:ycm_autoclose_preview_window_after_completion=1
 
+" NERD Commenter
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
 " Show the git diff in vim when commiting
 " Stolen from:
 "   https://github.com/Coornail/coornails_dotfiles/blob/master/.vimrc#L131
 autocmd FileType gitcommit DiffGitCached | wincmd p
+
+" Highlight occurences of selected word
+autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+
+" Needed to make .pyi files highlight as Python files
+au BufNewFile,BufRead *.pyi set filetype=python
+
