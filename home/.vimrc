@@ -206,7 +206,7 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
@@ -248,4 +248,6 @@ autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<c
 
 " Needed to make .pyi files highlight as Python files
 au BufNewFile,BufRead *.pyi set filetype=python
+
+au BufNewFile,BufRead *.jrag set filetype=java
 
