@@ -112,3 +112,6 @@
 [submodule "home/.vim/bundle/nerdcommenter"]
 	path = home/.vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git
+[submodule "home/.vim/bundle/tender"]
+	path = home/.vim/bundle/tender
+	url = https://github.com/jacoborus/tender.vim.git
