@@ -248,6 +248,7 @@ autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<c
 
 " Needed to make .pyi files highlight as Python files
 au BufNewFile,BufRead *.pyi set filetype=python
+au BufNewFile,BufRead *.ipy set filetype=python
 
 au BufNewFile,BufRead *.jrag set filetype=java
 
