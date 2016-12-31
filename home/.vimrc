@@ -192,10 +192,11 @@ set cole=2
 set hlsearch
 
 " Use lighter color scheme
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
-set background=dark
-colorscheme solarized
+"let g:solarized_termcolors=256
+"let g:solarized_termtrans=1
+"set background=dark
+"colorscheme solarized
+colorscheme tender
 
 "
 " Syntastic config
