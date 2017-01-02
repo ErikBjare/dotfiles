@@ -17,3 +17,8 @@ begin
         echo "autojump was not found on system, won't be available"
     end
 end
+
+begin
+    set PATH $HOME/.bin $PATH
+
+end
