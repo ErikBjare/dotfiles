@@ -1,4 +1,8 @@
 begin
+    set PATH $PATH /usr/games
+end
+
+begin
     # Try with the users install
     set --local AUTOJUMP_PATH $HOME/.autojump/share/autojump/autojump.fish
 
