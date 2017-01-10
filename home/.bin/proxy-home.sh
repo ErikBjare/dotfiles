@@ -1,14 +1,15 @@
 #!/bin/bash
 
 # Creates a SOCKS5 proxy that routes traffic through any SSH server
-# LTH servers are used by default
 
-SSH_PORT="22"
-PROXY_PORT="10203"
-USER="dat13ebj"
-HOST="login.student.lth.se"
+SSH_PORT="1822"
+PROXY_PORT="10204"
 
-ssh -p $SSH_PORT -D $PROXY_PORT $USER@$HOST
+# Expected to be "user@hostname"
+# Use for example LTH servers
+USER_AND_HOST=$1
+
+ssh -p $SSH_PORT -D $PROXY_PORT $USER_AND_HOST
 # Found in guide:
 #   http://wiki.vpslink.com/Instant_SOCKS_Proxy_over_SSH#Linux
 # Also has instructions for equivalent functionality with PuTTY in Windows
