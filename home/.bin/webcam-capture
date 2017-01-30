@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DATE=$(date -Iseconds)
+FILE="$HOME/Pictures/Webcam/${DATE}.png"
+
+capture() {
+    fswebcam -r 1600x1200 --skip 5 --jpeg 99 "$FILE" -d /dev/video0 -i 0
+}
+
+capture
