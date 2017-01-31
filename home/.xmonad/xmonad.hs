@@ -229,8 +229,9 @@
         -- launch dmenu
         , ((modm,               xK_r     ), spawn "dmenu_run")
         -- lock with slock
-        , ((modm,               xK_l     ), spawn "slock")
-        , ((modm .|. shiftMask, xK_l     ), spawn "sleep 1; systemctl suspend; slock")
+        , ((modm,               xK_l     ), spawn "sleep 0.5; xset dpms force off; slock")
+        -- lock with slock and suspend
+        , ((modm .|. shiftMask, xK_l     ), spawn "sleep 0.5; systemctl suspend; slock")
         -- close focused window
         , ((modm,               xK_q     ), kill)
 
