@@ -1,5 +1,15 @@
 begin
-    set PATH $PATH /usr/games
+    set -x PATH $PATH ~/.bin
+
+    if test -e /usr/games
+        set -x PATH $PATH /usr/games
+    end
+
+    if test -e ~/.bin/git-subrepo/lib
+        set -x PATH $PATH ~/.bin/git-subrepo/lib
+    end
+
+    set -x MANPATH $MANPATH ~/.bin/git-subrepo/man
 end
 
 begin
@@ -18,7 +28,3 @@ begin
     end
 end
 
-begin
-    set PATH $HOME/.bin $PATH
-
-end
