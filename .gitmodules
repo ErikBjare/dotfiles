@@ -115,3 +115,9 @@
 [submodule "home/.vim/bundle/tender"]
 	path = home/.vim/bundle/tender
 	url = https://github.com/jacoborus/tender.vim.git
+[submodule "home/.vim/bundle/vim-signature"]
+	path = home/.vim/bundle/vim-signature
+	url = https://github.com/kshenoy/vim-signature.git
+[submodule "home/.vim/bundle/vim-disapprove-deep-indentation"]
+	path = home/.vim/bundle/vim-disapprove-deep-indentation
+	url = https://github.com/dodie/vim-disapprove-deep-indentation.git
