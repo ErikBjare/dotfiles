@@ -234,6 +234,11 @@ let g:autopep8_disable_show_diff=1
 " YouCompleteMe close window after completion
 let g:ycm_autoclose_preview_window_after_completion=1
 
+" UltiSnip
+let g:UltiSnipsExpandTrigger="<c-s>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
 " NERD Commenter
 " Use compact syntax for prettified multi-line comments
 let g:NERDCompactSexyComs = 1
