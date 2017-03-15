@@ -1,5 +1,19 @@
 begin
-    set -x PATH $PATH ~/.bin
+    if test -e ~/.bin
+        set -x PATH $PATH ~/.bin
+    end
+
+    if test -e ~/.local/bin
+        set -x PATH $PATH ~/.local/bin
+    end
+
+    if test -e ~/.cargo/bin
+        set -x PATH $PATH ~/.cargo/bin
+    end
+
+    if test -e ~/.gem/ruby/2.4.0/bin
+        set -x PATH $PATH ~/.gem/ruby/2.4.0/bin
+    end
 
     if test -e /usr/games
         set -x PATH $PATH /usr/games
