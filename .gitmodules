@@ -127,3 +127,6 @@
 [submodule "home/.vim/bundle/vim-snippets"]
 	path = home/.vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
+[submodule "home/.vim/bundle/ghcmod-vim"]
+	path = home/.vim/bundle/ghcmod-vim
+	url = https://github.com/eagletmt/ghcmod-vim.git
