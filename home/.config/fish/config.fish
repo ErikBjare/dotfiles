@@ -1,5 +1,5 @@
 begin
-    set -x PATH $PATH ~/.bin
+    set -x PATH ~/.bin $PATH
 
     if test -e /usr/games
         set -x PATH $PATH /usr/games
@@ -7,6 +7,10 @@ begin
 
     if test -e ~/.bin/git-subrepo/lib
         set -x PATH $PATH ~/.bin/git-subrepo/lib
+    end
+
+    if test -e ~/.cargo/bin
+        set -x PATH ~/.cargo/bin $PATH
     end
 
     set -x MANPATH $MANPATH ~/.bin/git-subrepo/man
