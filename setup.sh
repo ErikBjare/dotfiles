@@ -1,9 +1,21 @@
 #!/bin/bash
 
-git submodule init
-git submodule update
+REPO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-dotfiles () {
+# Helper functions used for coloring output
+CLEAR="\e[0m"
+echo_red()    { echo -e "\e[0;31m${1}${CLEAR}"; }
+echo_green()  { echo -e "\e[0;32m${1}${CLEAR}"; }
+echo_yellow() { echo -e "\e[0;33m${1}${CLEAR}"; }
+echo_bold()   { echo -e "\e[0;01m${1}${CLEAR}"; }
+
+submodules () {
+    git submodule init;
+    git submodule update;
+    echo_green "Submodules initalized and updated!"
+}
+
+symlinks () {
     ##########
     # This function is based on a blogpost by Michael Smalley
     # http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/
@@ -17,9 +29,8 @@ dotfiles () {
     ##########
 
     # Variables
-    cwd="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    dir=$cwd/home                    # files will symlink to ~/
-    backup=$cwd/backup               # old dotfiles backup directory
+    dir=$REPO_DIR/home                    # files will symlink to ~/
+    backup=$REPO_DIR/backup               # old dotfiles backup directory
 
     # files="zshrc config/awesome oh-my-zsh Xdefaults vimrc xmonad"   # list of files/folders to symlink in homedir
     files=$( cd $dir && find ./ -maxdepth 1 -mindepth 1 )
@@ -35,26 +46,23 @@ dotfiles () {
     # echo "...done"
 
     # move any existing dotfiles (excluding symlinks) in homedir to dotfiles_old directory, then create symlinks
-    RED="\e[0;31m"
-    YELLOW="\e[0;33m"
-    GREEN="\e[0;32m"
 
     for file in $files; do
         if [ -e ~/$file ]; then
             if [ ! -h ~/$file ]; then
-                echo -e "${RED}Collision: Moving existing ~/${file:2} to $backup"
+                echo_red "Collision: Moving existing ~/${file:2} to $backup"
                 mv ~/$file $backup
             else
-                echo -e "${YELLOW}Symlink already existed at ~/${file:2}"
+                echo_yellow "Symlink already existed at ~/${file:2}"
             fi
 	fi
         if [ ! -h ~/$file ]; then
-            echo -e "${GREEN}Creating symlink to ${file:2}"
+            echo_green "Creating symlink to ${file:2}"
             ln -si $dir/$file ~/$file
         fi
     done
 
-    cd $cwd
+    cd $REPO_DIR
 
     # Set certain permissions on the folders leading down to .ssh to prevent SSH issues
     chmod 744 .
@@ -63,9 +71,18 @@ dotfiles () {
     chmod 600 home/.ssh/authorized_keys
 }
 
+fortunes() {
+    cd $REPO_DIR/home/.fortunes
+    ./generate-dat.sh
+    cd $REPO_DIR
+    echo_green "Generated fortune .dat files!"
+}
+
 echo Welcome to my linux config setup script!
 
-for section in dotfiles; do
+SECTIONS=(submodules symlinks fortunes)
+
+for section in "${SECTIONS[@]}"; do
     echo -ne "Would you like to setup $section? (y/n): "
     read prompt
     if [ $prompt = y ]; then
@@ -73,6 +90,4 @@ for section in dotfiles; do
     fi
 done
 
-NC="\e[0m"  # No/reset color
-
-echo -e "${NC}Done!"
+echo "Done!"
