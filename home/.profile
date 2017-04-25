@@ -56,6 +56,11 @@ if [ -d "$HOME/.cabal/bin" ]; then
     export PATH="$HOME/.cabal/bin:$PATH"
 fi
 
+# user bin folder used by Cargo (Rust)
+if [ -d "$HOME/.cargo/bin" ]; then
+    export PATH="$HOME/.cargo/bin:$PATH"
+fi
+
 # set up the go environment
 if hash go 2>/dev/null; then
     # get default GOROOT
@@ -98,3 +103,4 @@ echo ".profile ran successfully" >> $logfile
 
 export NVM_DIR="/home/erb/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
