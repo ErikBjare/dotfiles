@@ -55,7 +55,7 @@ symlinks () {
             else
                 echo_yellow "Symlink already existed at ~/${file:2}"
             fi
-	fi
+        fi
         if [ ! -h ~/$file ]; then
             echo_green "Creating symlink to ${file:2}"
             ln -si $dir/$file ~/$file
