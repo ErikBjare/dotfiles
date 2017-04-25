@@ -4,10 +4,14 @@ REPO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Helper functions used for coloring output
 CLEAR="\e[0m"
-echo_red()    { echo -e "\e[0;31m${1}${CLEAR}"; }
-echo_green()  { echo -e "\e[0;32m${1}${CLEAR}"; }
-echo_yellow() { echo -e "\e[0;33m${1}${CLEAR}"; }
-echo_bold()   { echo -e "\e[0;01m${1}${CLEAR}"; }
+BOLD="\e[0;01m"
+RED="\e[0;31m"
+GREEN="\e[0;32m"
+YELLOW="\e[0;33m"
+echo_red()    { echo -e    "${RED}${1}${CLEAR}"; }
+echo_green()  { echo -e  "${GREEN}${1}${CLEAR}"; }
+echo_yellow() { echo -e "${YELLOW}${1}${CLEAR}"; }
+echo_bold()   { echo -e   "${BOLD}${1}${CLEAR}"; }
 
 submodules () {
     git submodule init;
@@ -73,21 +77,21 @@ symlinks () {
 
 fortunes() {
     cd $REPO_DIR/home/.fortunes
-    ./generate-dat.sh
+    ./generate-dat.sh 1>&/dev/null
     cd $REPO_DIR
     echo_green "Generated fortune .dat files!"
 }
 
-echo Welcome to my linux config setup script!
+echo_bold "Welcome to my dotfiles setup script!"
 
 SECTIONS=(submodules symlinks fortunes)
 
 for section in "${SECTIONS[@]}"; do
-    echo -ne "Would you like to setup $section? (y/n): "
+    echo -ne "Would you like to setup $section? (${GREEN}y${CLEAR}/${RED}n${CLEAR}): "
     read prompt
     if [ $prompt = y ]; then
         `echo $section`
     fi
 done
 
-echo "Done!"
+echo_green "Done!"
