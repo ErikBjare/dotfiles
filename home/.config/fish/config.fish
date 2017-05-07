@@ -22,7 +22,7 @@ begin
     # Should be first (or almost first) on PATH
     set -x PATH ~/.bin $PATH
 
-    set -x MANPATH $MANPATH ~/.bin/git-subrepo/man
+    set -x MANPATH ":$MANPATH" ~/.bin/git-subrepo/man
 end
 
 begin
