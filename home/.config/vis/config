@@ -1,0 +1,7 @@
+audio.sources=pulse
+audio.pulse.source=3
+
+visualizer.sgs.smoothing.points=1
+
+visualizer.spectrum.bar.width=2
+visualizer.spectrum.bar.spacing=1
