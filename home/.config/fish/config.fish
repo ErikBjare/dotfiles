@@ -25,6 +25,14 @@ begin
     set -x MANPATH ":$MANPATH" ~/.bin/git-subrepo/man
 end
 
+# Style
+begin
+    set fish_color_command green --bold
+    set fish_color_error yellow
+    set fish_color_redirection yellow --bold
+end
+
+
 begin
     # Try with the users install
     set --local AUTOJUMP_PATH $HOME/.autojump/share/autojump/autojump.fish
