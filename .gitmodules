@@ -118,9 +118,6 @@
 [submodule "home/.vim/bundle/vim-signature"]
 	path = home/.vim/bundle/vim-signature
 	url = https://github.com/kshenoy/vim-signature.git
-[submodule "home/.vim/bundle/vim-disapprove-deep-indentation"]
-	path = home/.vim/bundle/vim-disapprove-deep-indentation
-	url = https://github.com/dodie/vim-disapprove-deep-indentation.git
 [submodule "home/.vim/bundle/ultisnips"]
 	path = home/.vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
