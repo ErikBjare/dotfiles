@@ -118,9 +118,6 @@
 [submodule "home/.vim/bundle/vim-signature"]
 	path = home/.vim/bundle/vim-signature
 	url = https://github.com/kshenoy/vim-signature.git
-[submodule "home/.vim/bundle/vim-disapprove-deep-indentation"]
-	path = home/.vim/bundle/vim-disapprove-deep-indentation
-	url = https://github.com/dodie/vim-disapprove-deep-indentation.git
 [submodule "home/.vim/bundle/ultisnips"]
 	path = home/.vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
@@ -130,3 +127,6 @@
 [submodule "home/.vim/bundle/ghcmod-vim"]
 	path = home/.vim/bundle/ghcmod-vim
 	url = https://github.com/eagletmt/ghcmod-vim.git
+[submodule "home/.vim/bundle/vim-markdown-folding"]
+	path = home/.vim/bundle/vim-markdown-folding
+	url = https://github.com/nelstrom/vim-markdown-folding.git

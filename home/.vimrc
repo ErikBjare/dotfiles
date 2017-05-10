@@ -189,8 +189,9 @@ execute pathogen#infect()
 " Enable syntax highlighting
 syntax on
 
-" Enable conceal
-set cole=2
+" Conceal config
+set conceallevel=1
+set concealcursor=""  " Always disable conceal on current line, regardless of mode
 
 " Enable search highlighting
 set hlsearch

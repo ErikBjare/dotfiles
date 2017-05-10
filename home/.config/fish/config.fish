@@ -22,8 +22,16 @@ begin
     # Should be first (or almost first) on PATH
     set -x PATH ~/.bin $PATH
 
-    set -x MANPATH $MANPATH ~/.bin/git-subrepo/man
+    set -x MANPATH ":$MANPATH" ~/.bin/git-subrepo/man
 end
+
+# Style
+begin
+    set fish_color_command green --bold
+    set fish_color_error yellow
+    set fish_color_redirection yellow --bold
+end
+
 
 begin
     # Try with the users install
