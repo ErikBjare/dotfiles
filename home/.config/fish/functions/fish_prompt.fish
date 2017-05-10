@@ -31,7 +31,7 @@ function fish_prompt --description 'Write out the prompt'
   if not test $last_status -eq 0
     set_color -o red
   else
-    set_color -o grey
+    set_color -o normal
   end
 
   # Prompt
