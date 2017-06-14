@@ -22,12 +22,12 @@ We all feel strongly for our dotfiles, so why not share our love by sharing them
 These are my dotfiles that I use on a variety of hosts, from my desktop and laptop to my servers and Raspberry Pi's.
 
 Configuration files that are here (incomplete list):
-    - `xmonad`
-    - `fish` (+plugins)
-    - `vim` (+plugins)
-    - `editorconfig`
-    - `xinitrc` (sets up the X session)
-    - ssh authorized hosts
+ - `xmonad`
+ - `fish` (+plugins and some old configs for `bash` and `zsh`)
+ - `(neo)vim` (+plugins)
+ - `editorconfig`
+ - `xinitrc` (sets up the X session)
+ - ssh authorized hosts
 
 
 ### Keybindings
