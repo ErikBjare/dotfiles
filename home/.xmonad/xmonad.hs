@@ -55,7 +55,7 @@
     myModMask       = mod4Mask
 
     -- Sets default terminal
-    myTerminal = "urxvt"
+    myTerminal = "konsole"
 
     -- Sets name of the workspaces
     myWorkspaces    = map show [1..10]
@@ -94,16 +94,16 @@
     conkyText = init $ concat [ dcsc, "[", cpuSeg, memSeg, volSeg, batSeg, traySeg, clkSeg ]
 
     -- Bar
-    barFont     = "-*-terminus-*-*-*-*-*-*-*-*-*-*-iso10646-*"
-    -- barFont     = "-*-clean-*-*-*-*-15-*-*-*-*-*-iso10646-*"
+    -- barFont     = "-*-terminus-*-*-*-*-14-*-*-*-*-*-iso10646-*"
+    barFont     = "-*-clean-*-*-*-*-15-*-*-*-*-*-iso10646-*"
 
     barHeight   = "16"
     barColor    = "#303030"
     wsBarStartX = "60"
     wsBarStartY   = "5"
-    wsBarWidth = "1000"
+    wsBarWidth = "580"
     barSplitX = "500"
-    myXmonadBar = "dzen2 -xs '1' -x " ++ wsBarStartX ++ " -y " ++ wsBarStartY ++ " -w '" ++ wsBarWidth ++ "' -h '" ++ barHeight ++ "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '" ++ barColor ++ "' -fn '" ++ barFont ++ "'"
+    myXmonadBar = concat ["dzen2 -xs '0' -x ", wsBarStartX, " -y ", wsBarStartY, " -w '", wsBarWidth, "' -h '", barHeight, "' -ta 'l' -sa 'r' -fg '#FFFFFF' -bg '", barColor, "' -fn '", barFont, "'"]
     myStatusBar = concat ["conky -c ~/.xmonad/.conky_dzen -t '", conkyText , "' | dzen2 -xs '1' -x '", barSplitX, "' -h '", barHeight, "' -ta 'r' -bg '", barColor, "' -fg '#FFFFFF' -fn '", barFont, "'"]
     myTray      = "trayer --monitor 'primary' --edge top --align right --margin 197 --distancefrom top --distance 2 --widthtype pixel --width 200 --transparent true --alpha 0 --tint 0x" ++ tail barColor ++ " --heighttype pixel --height " ++ (show $ (read barHeight :: Int)-4 :: String)
 --}}}
@@ -228,7 +228,7 @@
         ((modm,               xK_Return), spawn $ XMonad.terminal conf)
         -- launch dmenu
         , ((modm,               xK_r     ), spawn "dmenu_run")
-        -- lock with slock
+        -- lock with slock after turning off screen
         , ((modm,               xK_l     ), spawn "sleep 0.5; xset dpms force off; slock")
         -- lock with slock and suspend
         , ((modm .|. shiftMask, xK_l     ), spawn "sleep 0.5; systemctl suspend; slock")
