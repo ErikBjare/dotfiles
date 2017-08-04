@@ -132,7 +132,7 @@
 	url = https://github.com/nelstrom/vim-markdown-folding.git
 [submodule "home/.vim/bundle/LanguageClient-neovim"]
 	path = home/.vim/bundle/LanguageClient-neovim
-	url = git@github.com:autozimu/LanguageClient-neovim.git
+	url = https://github.com/autozimu/LanguageClient-neovim.git
 [submodule "home/.git-subrepo"]
 	path = home/.git-subrepo
 	url = https://github.com/ingydotnet/git-subrepo
