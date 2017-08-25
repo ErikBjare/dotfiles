@@ -36,3 +36,5 @@
 .atom
 
 .vimperator/info
+
+*.spl
