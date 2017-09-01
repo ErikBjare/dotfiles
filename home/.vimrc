@@ -33,6 +33,10 @@ map <Leader>n :NERDTreeToggle<CR>
 map <Leader>h :sp<CR>
 map <Leader>v :vsp<CR>
 
+" Clipboard copying
+xmap <Leader>c :'<,'>w !xclip -sel clipboard<CR>
+
+
 " Window switching
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
