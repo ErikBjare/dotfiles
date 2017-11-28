@@ -13,9 +13,6 @@
 [submodule "home/.tmux/plugins/tmux-sensible"]
     path = home/.tmux/plugins/tmux-sensible
     url = https://github.com/tmux-plugins/tmux-sensible.git
-[submodule "home/.vim/bundle/syntastic"]
-    path = home/.vim/bundle/syntastic
-    url = https://github.com/scrooloose/syntastic.git
 [submodule "home/.vim/bundle/vim-colors-solarized"]
     path = home/.vim/bundle/vim-colors-solarized
     url = https://github.com/altercation/vim-colors-solarized.git
@@ -103,9 +100,6 @@
 [submodule "home/.vim/bundle/vim-tmux-navigator"]
 	path = home/.vim/bundle/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator.git
-[submodule "home/.vim/bundle/vim-autopep8"]
-	path = home/.vim/bundle/vim-autopep8
-	url = https://github.com/tell-k/vim-autopep8.git
 [submodule "home/.vim/bundle/vim-polyglot"]
 	path = home/.vim/bundle/vim-polyglot
 	url = https://github.com/sheerun/vim-polyglot.git
@@ -139,3 +133,6 @@
 [submodule "home/.vim/bundle/vim-wordy"]
 	path = home/.vim/bundle/vim-wordy
 	url = https://github.com/reedes/vim-wordy.git
+[submodule "home/.vim/bundle/ale"]
+	path = home/.vim/bundle/ale
+	url = https://github.com/w0rp/ale.git
