@@ -221,6 +221,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_python_checkers=['flake8', 'mypy']
 let g:syntastic_python_flake8_args='--ignore=E225,E402,E501'
+let g:syntastic_python_mypy_args='--ignore-missing-imports'
 
 " Use jshint for JS checking
 let g:syntastic_javascript_checkers = ['jshint']
