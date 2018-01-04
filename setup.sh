@@ -14,8 +14,7 @@ echo_yellow() { echo -e "${YELLOW}${1}${CLEAR}"; }
 echo_bold()   { echo -e   "${BOLD}${1}${CLEAR}"; }
 
 submodules () {
-    git submodule init;
-    git submodule update;
+    git submodule update --init --recursive;
     echo_green "Submodules initalized and updated!"
 }
 
