@@ -47,6 +47,9 @@ nnoremap <C-Down> <C-W><C-J>
 nnoremap <C-Right> <C-W><C-L>
 nnoremap <C-Left> <C-W><C-H>
 
+" Use :Sw to save as root
+command! -nargs=0 Sw w !sudo tee % > /dev/null
+
 nnoremap <Leader>b :Unite buffer<CR>
 nnoremap <Leader>t :Unite tab<CR>
 nnoremap <Leader>f :Unite file<CR>

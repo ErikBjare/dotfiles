@@ -3,4 +3,4 @@
 ~/.profile
 ~/.xprofile
 
-exec startxfce4
+exec i3
