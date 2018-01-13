@@ -47,6 +47,9 @@ nnoremap <C-Down> <C-W><C-J>
 nnoremap <C-Right> <C-W><C-L>
 nnoremap <C-Left> <C-W><C-H>
 
+" Use :Sw to save as root
+command! -nargs=0 Sw w !sudo tee % > /dev/null
+
 nnoremap <Leader>b :Unite buffer<CR>
 nnoremap <Leader>t :Unite tab<CR>
 nnoremap <Leader>f :Unite file<CR>
@@ -219,8 +222,15 @@ let g:syntastic_check_on_wq = 0
 
 " Use Python 3 for syntastic highlighting
 let g:syntastic_python_python_exec = 'python3'
-let g:syntastic_python_checkers=['flake8', 'mypy']
+let g:syntastic_python_checkers=[]   "['flake8', 'mypy']
 let g:syntastic_python_flake8_args='--ignore=E225,E402,E501'
+let g:syntastic_python_mypy_args='--ignore-missing-imports'
+
+let g:ale_linters = {
+\   'python': ['flake8', 'mypy'],
+\}
+let g:ale_python_flake8_options='--ignore=E225,E402,E501'
+let g:ale_python_mypy_options='--ignore-missing-imports'
 
 " Use jshint for JS checking
 let g:syntastic_javascript_checkers = ['jshint']

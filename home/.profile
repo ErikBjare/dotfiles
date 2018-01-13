@@ -20,6 +20,7 @@ fi
 export DEFAULT_USER="erb"
 export BROWSER="google-chrome"
 export EDITOR="vim"
+export VISUAL="vim"
 export GPGKEY="86E4C130"
 export TZ="Europe/Stockholm"
 export DISPLAY=":0"
