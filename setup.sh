@@ -81,9 +81,16 @@ fortunes() {
     echo_green "Generated fortune .dat files!"
 }
 
+youcompleteme() {
+    cd home/.vim/bundles/YouCompleteMe
+    git submodule update --init --recursive
+    ./install.py --clang-completer --racer-completer --tern-completer --gocode-completer
+    cd $REPO_DIR
+}
+
 echo_bold "Welcome to my dotfiles setup script!"
 
-SECTIONS=(submodules symlinks fortunes)
+SECTIONS=(submodules symlinks fortunes youcompleteme)
 
 for section in "${SECTIONS[@]}"; do
     echo -ne "Would you like to setup $section? (${GREEN}y${CLEAR}/${RED}n${CLEAR}): "

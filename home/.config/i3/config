@@ -92,12 +92,12 @@ bindsym $mod+Shift+space floating toggle
 # focus specific display
 bindsym $mod+a focus output DP-1
 bindsym $mod+s focus output HDMI-0
-bindsym $mod+d focus output DP-4
+bindsym $mod+d focus output DP-2
 
 # move window to display
 bindsym $mod+shift+a move workspace to output DP-1
 bindsym $mod+shift+s move workspace to output HDMI-0
-bindsym $mod+shift+d move workspace to output DP-4
+bindsym $mod+shift+d move workspace to output DP-2
 
 # switch to workspace
 bindsym $mod+1 workspace 1
@@ -133,6 +133,9 @@ bindsym XF86AudioLowerVolume  exec pamixer --decrease 5
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+
+# Start aw-qt
+exec --no-startup-id ~/Applications/ActivityWatch/activitywatch/aw-qt
 
 # lock and suspend
 bindsym $mod+l exec "i3lock -c 000000; systemctl suspend"
