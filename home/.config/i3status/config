@@ -5,7 +5,7 @@ general {
 }
 
 # order += "ipv6"
-order += "disk /"
+# order += "disk /"
 # order += "run_watch DHCP"
 # order += "run_watch VPNC"
 # order += "path_exists VPN"
@@ -14,12 +14,13 @@ order += "wireless _first_"
 order += "battery 0"
 order += "cpu_temperature 0"
 order += "load"
+order += "uptime"
 order += "tztime local"
 # order += "tztime berlin"
 
 wireless _first_ {
-        format_up = "W:%quality at %essid"  #, %bitrate, %ip
-        format_down = "W: down"
+        format_up = "📡%quality @ %essid"  #, %bitrate, %ip
+        format_down = "📡 down"
 }
 
 ethernet eth0 {
@@ -31,10 +32,10 @@ ethernet eth0 {
 battery 0 {
         format = "%status %percentage %remaining"  # %emptytime
         format_down = "No battery"
-        status_chr = "⚡ CHR"
+        status_chr = "⚡"
         status_bat = "🔋"
         status_unk = "? UNK"
-        status_full = "☻ FULL"
+        status_full = "☻"
         path = "/sys/class/power_supply/BAT%d/uevent"
         low_threshold = 20
         hide_seconds = true
@@ -56,19 +57,19 @@ path_exists VPN {
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M:%S"
+        format = "🕑 %Y-%m-%d %H:%M:%S"
 }
 
 load {
-        format = "%1min %5min %15min"
+        format = "⚖️ %1min %5min %15min"
 }
 
 cpu_temperature 0 {
-        format = "%degrees °C"
+        format = "🌡️%degrees °C"
         path = "/sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input"
 }
 
 disk "/" {
-        format = "%free"
+        format = "💾 %free"
 }
 
