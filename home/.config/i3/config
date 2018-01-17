@@ -134,9 +134,6 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
-# Start aw-qt
-exec --no-startup-id ~/Applications/ActivityWatch/activitywatch/aw-qt
-
 # lock and suspend
 bindsym $mod+l exec "i3lock -c 000000; systemctl suspend"
 
@@ -156,6 +153,14 @@ exec --no-startup-id /usr/bin/xss-lock -- i3lock -n --color 000000 -i ~/.backgro
 
 # set wallpaper
 exec_always --no-startup-id /usr/bin/feh --bg-scale /home/erb/.backgrounds/current
+
+# Start aw-qt
+exec --no-startup-id ~/Applications/ActivityWatch/activitywatch/aw-qt
+# Different name on another computer (might want to fix that)
+exec --no-startup-id ~/Applications/activitywatch/aw-qt
+
+# Redshift
+exec --no-startup-id redshift 3500:7000
 
 
 ###############
