@@ -19,6 +19,10 @@ begin
         set -x PATH $PATH ~/.bin/git-subrepo/lib
     end
 
+    if test -e ~/.config/fish/nvm-wrapper/nvm.fish
+        source ~/.config/fish/nvm-wrapper/nvm.fish
+    end
+
     # Should be first (or almost first) on PATH
     set -x PATH ~/.bin $PATH
 

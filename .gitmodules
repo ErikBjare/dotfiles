@@ -136,3 +136,6 @@
 [submodule "home/.vim/bundle/ale"]
 	path = home/.vim/bundle/ale
 	url = https://github.com/w0rp/ale.git
+[submodule "home/.config/fish/nvm-wrapper"]
+	path = home/.config/fish/nvm-wrapper
+	url = git@github.com:passcod/nvm-fish-wrapper.git
