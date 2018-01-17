@@ -126,8 +126,16 @@ bindsym $mod+Shift+0 move container to workspace 10
 bindsym XF86MonBrightnessUp   exec xbacklight +10
 bindsym XF86MonBrightnessDown exec xbacklight -10
 bindsym XF86AudioMute         exec pamixer --toggle-mute
+bindsym XF86AudioMicMute      exec pamixer --source 1 --toggle-mute
 bindsym XF86AudioRaiseVolume  exec pamixer --increase 5
 bindsym XF86AudioLowerVolume  exec pamixer --decrease 5
+
+# Full screenshot, save to folder
+bindsym --release Print          exec --no-startup-id xfce4-screenshooter --fullscreen --save ~/Public/Screenshots/
+# Region screenshot, save to clipboard
+# TODO: Also save to file by first saving to file and then putting it in the clipboard with `xclip -selection clipboard -t image/png -i $FILE`
+#       Could also use use `xdg-mime query filetype $FILE` to autodetect mimetype.
+bindsym --release $mod+Print     exec --no-startup-id xfce4-screenshooter --clipboard --region
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -154,10 +162,13 @@ exec --no-startup-id /usr/bin/xss-lock -- i3lock -n --color 000000 -i ~/.backgro
 # set wallpaper
 exec_always --no-startup-id /usr/bin/feh --bg-scale /home/erb/.backgrounds/current
 
+# Autostart .desktop files in ~/.config/autostart
+# Requires dex to be installed
+exec --no-startup-id dex -a -e i3
+
 # Start aw-qt
+# TODO: Currently only used on erb-main2-arch, should be replaced with a .desktop autostart file.
 exec --no-startup-id ~/Applications/ActivityWatch/activitywatch/aw-qt
-# Different name on another computer (might want to fix that)
-exec --no-startup-id ~/Applications/activitywatch/aw-qt
 
 # Redshift
 exec --no-startup-id redshift 3500:7000
