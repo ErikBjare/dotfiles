@@ -15,6 +15,10 @@ begin
         set -x PATH $PATH ~/.gem/ruby/2.4.0/bin
     end
 
+    if test -e ~/.gem/ruby/2.5.0/bin
+        set -x PATH $PATH ~/.gem/ruby/2.5.0/bin
+    end
+
     if test -e ~/.bin/git-subrepo/lib
         set -x PATH $PATH ~/.bin/git-subrepo/lib
     end
