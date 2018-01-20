@@ -131,11 +131,9 @@ bindsym XF86AudioRaiseVolume  exec pamixer --increase 5
 bindsym XF86AudioLowerVolume  exec pamixer --decrease 5
 
 # Full screenshot, save to folder
-bindsym --release Print          exec --no-startup-id xfce4-screenshooter --fullscreen --save ~/Public/Screenshots/
+bindsym --release Ctrl+Print  exec --no-startup-id "bash ~/.bin/screenshot.sh --fullscreen"
 # Region screenshot, save to clipboard
-# TODO: Also save to file by first saving to file and then putting it in the clipboard with `xclip -selection clipboard -t image/png -i $FILE`
-#       Could also use use `xdg-mime query filetype $FILE` to autodetect mimetype.
-bindsym --release $mod+Print     exec --no-startup-id xfce4-screenshooter --clipboard --region
+bindsym --release $mod+Print  exec --no-startup-id "bash ~/.bin/screenshot.sh --region"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -152,6 +150,9 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 ####################
 # AUTOSTART SECTION
 ####################
+
+# notification daemon
+exec --no-startup-id dunst
 
 # automatically lock and suspend after 5 minutes of inactivity
 exec --no-startup-id /usr/bin/xautolock -time 5 -detectsleep -locker "i3lock --color 000000 -i ~/.backgrounds/koan-inverted-bg.png; systemctl suspend"
