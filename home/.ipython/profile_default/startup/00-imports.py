@@ -1,15 +1,17 @@
 # Standard library
-import re
 import itertools
-from math import pi
-from time import sleep
 import random
 import secrets
-from pprint import pprint
-from typing import Optional, List, Dict, Union, Any
-from importlib import reload
-from datetime import datetime, timezone
+import re
+
 from collections import defaultdict
+from datetime import datetime, timedelta, timezone
+from importlib import reload
+from itertools import combinations, permutations
+from math import sin, cos, tan, pi, sqrt, exp
+from pprint import pprint
+from time import sleep
+from typing import Optional, List, Dict, Union, Any
 
 # PyPI packages
 import requests
