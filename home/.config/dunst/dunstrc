@@ -1,5 +1,5 @@
 [global]
-    font = Monospace 10
+    font = Fira Code 14
 
     # Allow a small subset of html markup:
     #   <b>bold</b>
@@ -64,11 +64,11 @@
     # the top and down respectevly.
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "300x10-30+20"
+    geometry = "600x5-30+30"
 
     # Shrink window if it's smaller than the width.  Will be ignored if
     # width is 0.
-    shrink = no
+    shrink = yes
 
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing windowmanager is
@@ -138,7 +138,7 @@
     # dmenu path.
     dmenu = /usr/bin/dmenu -p dunst:
 
-# Browser for opening urls in context menu.
+    # Browser for opening urls in context menu.
     browser = /usr/bin/firefox -new-tab
 
     # Align icons left/right/off
@@ -148,7 +148,7 @@
     icon_folders = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
 
 [frame]
-    width = 2
+    width = 4
     color = "#555555"
 
 [shortcuts]

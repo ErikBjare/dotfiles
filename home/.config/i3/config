@@ -154,8 +154,8 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # notification daemon
 exec --no-startup-id dunst
 
-# automatically lock and suspend after 5 minutes of inactivity
-exec --no-startup-id /usr/bin/xautolock -time 5 -detectsleep -locker "i3lock --color 000000 -i ~/.backgrounds/koan-inverted-bg.png; systemctl suspend"
+# automatically lock and suspend after 10 minutes of inactivity
+exec --no-startup-id /usr/bin/xautolock -time 10 -detectsleep -locker "i3lock --color 000000 -i ~/.backgrounds/koan-inverted-bg.png; systemctl suspend"
 
 # automatically lock after suspend
 exec --no-startup-id /usr/bin/xss-lock -- i3lock -n --color 000000 -i ~/.backgrounds/koan-inverted-bg.png
