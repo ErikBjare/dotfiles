@@ -37,7 +37,7 @@ battery 0 {
         status_unk = "? UNK"
         status_full = "☻"
         path = "/sys/class/power_supply/BAT%d/uevent"
-        low_threshold = 20
+        low_threshold = 30
         hide_seconds = true
         integer_battery_capacity = true
 }
@@ -66,7 +66,7 @@ load {
 
 cpu_temperature 0 {
         format = "🌡️%degrees °C"
-        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input"
 }
 
 disk "/" {

@@ -2,3 +2,5 @@ backup/
 *.swp
 npm-debug.log
 *.bkp
+.mypy_cache
+db

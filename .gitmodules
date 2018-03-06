@@ -127,9 +127,6 @@
 [submodule "home/.vim/bundle/LanguageClient-neovim"]
 	path = home/.vim/bundle/LanguageClient-neovim
 	url = https://github.com/autozimu/LanguageClient-neovim.git
-[submodule "home/.git-subrepo"]
-	path = home/.git-subrepo
-	url = https://github.com/ingydotnet/git-subrepo
 [submodule "home/.vim/bundle/vim-wordy"]
 	path = home/.vim/bundle/vim-wordy
 	url = https://github.com/reedes/vim-wordy.git

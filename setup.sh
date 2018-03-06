@@ -82,7 +82,8 @@ fortunes() {
 }
 
 youcompleteme() {
-    cd home/.vim/bundles/YouCompleteMe
+    cd home/.vim/bundle/YouCompleteMe
+    git checkout master
     git submodule update --init --recursive
     ./install.py --clang-completer --racer-completer --tern-completer --gocode-completer
     cd $REPO_DIR

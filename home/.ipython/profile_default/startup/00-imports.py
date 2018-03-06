@@ -4,11 +4,11 @@ import random
 import secrets
 import re
 
+from math import *
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from importlib import reload
 from itertools import combinations, permutations
-from math import sin, cos, tan, pi, sqrt, exp
 from pprint import pprint
 from time import sleep
 from typing import Optional, List, Dict, Union, Any
