@@ -85,7 +85,7 @@ youcompleteme() {
     cd home/.vim/bundle/YouCompleteMe
     git checkout master
     git submodule update --init --recursive
-    ./install.py --clang-completer --racer-completer --tern-completer --gocode-completer
+    ./install.py --racer-completer --tern-completer --gocode-completer #--clang-completer
     cd $REPO_DIR
 }
 

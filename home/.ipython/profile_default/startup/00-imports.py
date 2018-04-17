@@ -13,6 +13,9 @@ from pprint import pprint
 from time import sleep
 from typing import Optional, List, Dict, Union, Any
 
+from numpy import *
+from pylab import *
+
 # PyPI packages
 import requests
 

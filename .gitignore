@@ -4,3 +4,4 @@ npm-debug.log
 *.bkp
 .mypy_cache
 db
+*/.vim/swap
