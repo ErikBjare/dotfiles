@@ -215,33 +215,15 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" Use Python 3 for syntastic highlighting
-let g:syntastic_python_python_exec = 'python3'
-let g:syntastic_python_checkers=[]   "['flake8', 'mypy']
-let g:syntastic_python_flake8_args='--ignore=E225,E265,E402,E501'
-let g:syntastic_python_mypy_args='--ignore-missing-imports'
+let flake8_args='--ignore=E225,E265,E402,E501'
+let mypy_args='--ignore-missing-imports'
 
 let g:ale_linters = {
 \   'python': ['flake8', 'mypy'],
+\   'javascript': ['jshint'],
 \}
-let g:ale_python_flake8_options='--ignore=E225,E265,E402,E501'
-let g:ale_python_mypy_options='--ignore-missing-imports'
-
-" Use jshint for JS checking
-let g:syntastic_javascript_checkers = ['jshint']
-
-" HTML Tidy stuff
-let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute', 'trimming empty <span>', 'ng-', '"href" lacks value', 'trimming empty <li>', "isn't allowed in <head>"]
-let g:syntastic_html_tidy_blocklevel_tags = ['slides', 'slide', 'hgroup']
-
-" C++ syntastic stuff
-let g:syntastic_cpp_compiler = "g++"
-let g:syntastic_cpp_compiler_options = " -std=c++11"
+let g:ale_python_flake8_options=flake8_args
+let g:ale_python_mypy_options=mypy_args
 
 " Disable showing diff after :Autopep8
 let g:autopep8_disable_show_diff=1

@@ -2,7 +2,7 @@
 Comment=Track everything on your computer.
 GenericName=Log what you do on your computer.
 Name=ActivityWatch
-Exec=/home/erb/Applications/activitywatch/aw-qt
+Exec=aw-qt
 Hidden=false
 StartupNotify=true
 Terminal=false
