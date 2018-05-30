@@ -1,0 +1,8 @@
+[MESSAGES CONTROL]
+disable=
+    line-too-long,
+    invalid-name,
+    missing-docstring,
+    too-few-public-methods,
+    fixme,
+    logging-format-interpolation

@@ -18,3 +18,5 @@ abbr --add pe "pipenv"
 
 abbr --add tmain "tmux attach -t main; or tmux new-session -t main"
 abbr --add tsys "tmux attach -t system; or tmux new-session -t system"
+
+abbr --add vim "nvim"
