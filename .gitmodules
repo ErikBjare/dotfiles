@@ -136,3 +136,9 @@
 [submodule "home/.config/fish/nvm-wrapper"]
 	path = home/.config/fish/nvm-wrapper
 	url = https://github.com/passcod/nvm-fish-wrapper.git
+[submodule "home/.vim/bundle/vim-coverage"]
+	path = home/.vim/bundle/vim-coverage
+	url = https://github.com/google/vim-coverage.git
+[submodule "home/.vim/bundle/vim-maktaba"]
+	path = home/.vim/bundle/vim-maktaba
+	url = https://github.com/google/vim-maktaba.git
