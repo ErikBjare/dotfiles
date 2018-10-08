@@ -142,3 +142,6 @@
 [submodule "home/.vim/bundle/vim-maktaba"]
 	path = home/.vim/bundle/vim-maktaba
 	url = https://github.com/google/vim-maktaba.git
+[submodule "home/.vim/bundle/aw-watcher-vim"]
+	path = home/.vim/bundle/aw-watcher-vim
+	url = https://github.com/ActivityWatch/aw-watcher-vim.git
