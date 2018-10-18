@@ -102,13 +102,11 @@ if __name__ == '__main__':
         # j.insert(0, {'full_text': '%s' % get_governor(), 'name': 'gov'})
 
         brightness = get_screen_brightness()
-        j.insert(0, {'full_text': '🌞 %s%%' % brightness, 'name': 'brightness', 'color': '#FFCC00'})
+        brightnesscolor = colorpick(brightness, min_color="#883300", max_color="#FFFF00")
+        j.insert(0, {'full_text': '🌞 %s%%' % brightness, 'name': 'brightness', 'color': brightnesscolor})
 
         idletime = get_idletime()
-        color = colorpick(idletime, max_value=29, max_color="#888888", above_max_color="#FF5500")
-        idlecolor = "#" + str(round(3 + min(30, idletime) / 30 * 6)) * 6 if idletime < 30 else '#FF5500'
-        print(color)
-        print(idlecolor)
+        idlecolor = colorpick(idletime, max_value=29, max_color="#888888", above_max_color="#FF5500")
         j.insert(0, {'full_text': '💤 %ss' % idletime, 'name': 'idle', 'color': idlecolor})
 
         # and echo back new encoded json
