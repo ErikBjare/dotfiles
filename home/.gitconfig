@@ -6,6 +6,10 @@
 	autocrlf = input
 [color]
 	ui = true
+[color "status"]
+    changed = yellow
+    untracked = red
+    added = green bold
 [push]
 	default = current
 [difftool "sourcetree"]

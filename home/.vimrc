@@ -24,6 +24,10 @@
 let mapleader = "\<Space>"
 set timeoutlen=300
 
+" Set the title string to the current filename
+set title
+set titlestring="%t %{expand(\"%:p:h\")}"
+
 " Easymotion
 map <Leader><Leader> <Plug>(easymotion-prefix)
 
@@ -220,7 +224,12 @@ let mypy_args='--ignore-missing-imports'
 
 let g:ale_linters = {
 \   'python': ['flake8', 'mypy', 'pylint'],
-\   'javascript': ['jshint'],
+\   'javascript': ['jshint', 'eslint'],
+\   'typescript': ['tslint'],
+\}
+let g:ale_fixers = {
+\   'python': ['autopep8'],
+\   'javascript': ['prettier'],
 \}
 let g:ale_python_flake8_options=flake8_args
 let g:ale_python_mypy_options=mypy_args
@@ -241,6 +250,10 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:NERDCompactSexyComs = 1
 " Align line-wise comment delimiters flush left instead of following code indentation
 let g:NERDDefaultAlign = 'left'
+
+" Thing to make .vue linting less slow (at the cost of disabling highlighting)
+" https://github.com/posva/vim-vue/blob/3cc4ac7b02b4ee76a5f16d8b39bf559042f6b266/readme.md#vim-slows-down-when-using-this-plugin-how-can-i-fix-that
+" let g:vue_disable_pre_processors=1
 
 " Show the git diff in vim when commiting
 " Stolen from:

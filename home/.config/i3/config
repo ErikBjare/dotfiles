@@ -174,8 +174,12 @@ exec --no-startup-id dex -a -e i3
 # TODO: Currently only used on erb-main2-arch, should be replaced with a .desktop autostart file.
 exec --no-startup-id ~/Applications/ActivityWatch/activitywatch/aw-qt
 
+# Rescuetime
+# TODO: Replace with a .desktop autostart file (and submit it to the AUR package)
+exec --no-startup-id rescuetime
+
 # Redshift
-exec --no-startup-id redshift 3500:7000
+exec --no-startup-id redshift -l 55:13 -t 7000:3500
 
 
 ###############
