@@ -32,7 +32,7 @@ ethernet eth0 {
 battery 0 {
         format = "%status %percentage %remaining"  # %emptytime
         format_down = "No battery"
-        status_chr = "⚡"
+        status_chr = "🔌"
         status_bat = "🔋"
         status_unk = "? UNK"
         status_full = "☻"

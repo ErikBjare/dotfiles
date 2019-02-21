@@ -27,6 +27,7 @@
 import sys
 import json
 import subprocess
+import glob
 
 
 def get_governor():
@@ -46,6 +47,25 @@ def get_screen_brightness() -> int:
     with open('/sys/class/backlight/intel_backlight/brightness', 'r') as f:
         brightness = float(f.read())
     return int(brightness / max_brightness * 100)
+
+
+def get_ram_usage() -> float:
+    with open('/proc/meminfo', 'r') as f:
+        s = f.read()
+        lines = s.split("\n")
+        total = int(lines[0].split(":")[1].strip().split(" ")[0])
+        available = int(lines[2].split(":")[1].strip().split(" ")[0])
+    return round(100 * (total - available) / total)
+
+
+def get_power_draw() -> float:
+    files = glob.glob('/sys/class/power_supply/BAT*/power_now')
+    if files:
+        with open(files[0], 'r') as f:
+            power_draw = int(f.read()) / 1_000_000
+        return round(power_draw, 1)
+    else:
+        return 0
 
 
 def print_line(message):
@@ -100,6 +120,12 @@ if __name__ == '__main__':
         # insert information into the start of the json, but could be anywhere
         # CHANGE THIS LINE TO INSERT SOMETHING ELSE
         # j.insert(0, {'full_text': '%s' % get_governor(), 'name': 'gov'})
+
+        ram_usage = get_ram_usage()
+        j.insert(3, {'full_text': '🐏 %s%%' % ram_usage, 'name': 'brightness', 'color': colorpick(ram_usage, max_value=85, min_color="#00FF00", max_color="#FFFF00")})
+
+        power_draw = get_power_draw()
+        j.insert(1, {'full_text': '⚡ %sW' % power_draw, 'name': 'brightness', 'color': '#FFFF00'})
 
         brightness = get_screen_brightness()
         brightnesscolor = colorpick(brightness, min_color="#883300", max_color="#FFFF00")

@@ -145,3 +145,6 @@
 [submodule "home/.vim/bundle/aw-watcher-vim"]
 	path = home/.vim/bundle/aw-watcher-vim
 	url = https://github.com/ActivityWatch/aw-watcher-vim.git
+[submodule "home/.vim/bundle/vim-grammarous"]
+	path = home/.vim/bundle/vim-grammarous
+	url = https://github.com/rhysd/vim-grammarous.git

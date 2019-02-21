@@ -23,7 +23,7 @@ indent_size = 8
 indent_size = 4
 
 # 2 spaces for Ruby, HTML and CSS/SASS
-[*.{rb,html,css,scss,sass,less}]
+[*.{rb,html,css,scss,sass,less,pug}]
 indent_size = 2
 
 # 4 spaces for markdown

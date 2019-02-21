@@ -223,7 +223,7 @@ let flake8_args='--ignore=E225,E265,E402,E501'
 let mypy_args='--ignore-missing-imports'
 
 let g:ale_linters = {
-\   'python': ['flake8', 'mypy', 'pylint'],
+\   'python': ['flake8', 'mypy'],
 \   'javascript': ['jshint', 'eslint'],
 \   'typescript': ['tslint'],
 \}
