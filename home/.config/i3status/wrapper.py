@@ -132,7 +132,7 @@ if __name__ == '__main__':
         j.insert(0, {'full_text': '🌞 %s%%' % brightness, 'name': 'brightness', 'color': brightnesscolor})
 
         idletime = get_idletime()
-        idlecolor = colorpick(idletime, max_value=29, max_color="#888888", above_max_color="#FF5500")
+        idlecolor = colorpick(idletime, max_value=3 * 60, max_color="#AAAAAA", above_max_color="#FF5500")
         j.insert(0, {'full_text': '💤 %ss' % idletime, 'name': 'idle', 'color': idlecolor})
 
         # and echo back new encoded json

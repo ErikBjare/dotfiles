@@ -61,12 +61,12 @@ tztime local {
 }
 
 load {
-        format = "⚖️ %1min %5min %15min"
+        format = "⚖️ %1min"
 }
 
 cpu_temperature 0 {
-        format = "🌡️%degrees °C"
-        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input"
+        format = "🌡️%degrees°C"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input"
 }
 
 disk "/" {

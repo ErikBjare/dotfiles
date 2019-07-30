@@ -53,6 +53,13 @@ function fish_prompt --description 'Write out the prompt'
   if test $git_dir
     echo -n ' '(parse_git_branch)
   end
+
+  if set -q VIRTUAL_ENV
+    set_color 999 $bgcolor
+    #echo -n -s (set_color -b 111 white)
+    echo -n " (venv:"(basename "$VIRTUAL_ENV")")"
+  end
+
   set_color -b '000'
   echo
   set_color -b '000'

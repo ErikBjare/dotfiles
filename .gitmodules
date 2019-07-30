@@ -148,3 +148,6 @@
 [submodule "home/.vim/bundle/vim-grammarous"]
 	path = home/.vim/bundle/vim-grammarous
 	url = https://github.com/rhysd/vim-grammarous.git
+[submodule "home/.vim/bundle/coc.nvim"]
+	path = home/.vim/bundle/coc.nvim
+	url = https://github.com/neoclide/coc.nvim.git

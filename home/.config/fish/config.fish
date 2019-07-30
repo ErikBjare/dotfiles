@@ -19,6 +19,10 @@ begin
         set -x PATH $PATH ~/.gem/ruby/2.5.0/bin
     end
 
+    if test -e ~/.gem/ruby/2.6.0/bin
+        set -x PATH $PATH ~/.gem/ruby/2.6.0/bin
+    end
+
     if test -e ~/.bin/git-subrepo/lib
         set -x PATH $PATH ~/.bin/git-subrepo/lib
     end
@@ -57,3 +61,16 @@ begin
     end
 end
 
+# Virtualfish
+# Needs `pip install --user virtualfish`
+# https://github.com/excitedleigh/virtualfish
+begin
+    eval (python -m virtualfish auto_activation)
+end
+
+#source /opt/anaconda/etc/fish/conf.d/conda.fish
+
+
+# tabtab source for electron-forge package
+# uninstall by removing these lines or running `tabtab uninstall electron-forge`
+[ -f /tmp/yaourt-tmp-erb/aur-augur-git/src/augur-app/node_modules/tabtab/.completions/electron-forge.fish ]; and . /tmp/yaourt-tmp-erb/aur-augur-git/src/augur-app/node_modules/tabtab/.completions/electron-forge.fish

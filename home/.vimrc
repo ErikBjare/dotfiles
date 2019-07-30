@@ -233,6 +233,7 @@ let g:ale_fixers = {
 \}
 let g:ale_python_flake8_options=flake8_args
 let g:ale_python_mypy_options=mypy_args
+let g:ale_fix_on_save=1
 
 " Disable showing diff after :Autopep8
 let g:autopep8_disable_show_diff=1

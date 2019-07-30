@@ -12,9 +12,21 @@
 # Use super-key as modifier
 set $mod Mod4
 
+# Workspace names
+set $ws1 "1 👨‍💻"
+set $ws2 "2 🌍"
+set $ws3 "3 🛠️"
+set $ws4 "4 📝"
+set $ws5 "5 🎵"
+set $ws6 "6 💬"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9 📔"
+set $ws10 "⚙️"
+
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Fira Code 10
+font pango:Fira Code 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -37,7 +49,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+r exec dmenu_run
+bindsym $mod+r exec rofi -show combi
 
 # change focus
 #bindsym $mod+j focus left
@@ -100,28 +112,28 @@ bindsym $mod+shift+s move workspace to output HDMI-0
 bindsym $mod+shift+d move workspace to output DP-2
 
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
 
 bindsym XF86MonBrightnessUp   exec xbacklight +10
 bindsym XF86MonBrightnessDown exec xbacklight -10
@@ -230,6 +242,7 @@ client.background       #ffffff
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+    font pango:Fira Code 10
     status_command i3status | ~/.config/i3status/wrapper.py
     separator_symbol " ∥ "  # Alternative bar: ∣
 
@@ -238,9 +251,10 @@ bar {
         statusline #ffffff
         separator #ffffff
 
-        focused_workspace  #777777 #666666 #ffffff
+        #                  border  bg      text
+        focused_workspace  #9999FF #222299 #ffffff
         active_workspace   #333333 #5f676a #ffffff
-        inactive_workspace #333333 #222222 #888888
+        inactive_workspace #555555 #111111 #888888
         urgent_workspace   #2f343a #900000 #ffffff
         binding_mode       #2f343a #900000 #ffffff
     }
