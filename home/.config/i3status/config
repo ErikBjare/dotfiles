@@ -5,7 +5,7 @@ general {
 }
 
 # order += "ipv6"
-# order += "disk /"
+order += "disk /"
 # order += "run_watch DHCP"
 # order += "run_watch VPNC"
 # order += "path_exists VPN"
@@ -70,6 +70,6 @@ cpu_temperature 0 {
 }
 
 disk "/" {
-        format = "💾 %free"
+        format = "💾 %avail"
 }
 

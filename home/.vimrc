@@ -225,12 +225,14 @@ let mypy_args='--ignore-missing-imports'
 let g:ale_linters = {
 \   'python': ['flake8', 'mypy'],
 \   'javascript': ['jshint', 'eslint'],
-\   'typescript': ['tslint'],
+\   'typescript': ['eslint'],
 \}
 let g:ale_fixers = {
 \   'python': ['autopep8'],
 \   'javascript': ['prettier'],
+\   'rust': [],
 \}
+" ['rustfmt'],
 let g:ale_python_flake8_options=flake8_args
 let g:ale_python_mypy_options=mypy_args
 let g:ale_fix_on_save=1
