@@ -193,6 +193,18 @@ endif
 " Run pathogen
 execute pathogen#infect()
 
+" Install vim-plug if not installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Register plugins with vim-plug
+call plug#begin('~/.vim/plugged')
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+call plug#end()
+
 " Enable syntax highlighting
 syntax on
 
@@ -225,7 +237,7 @@ let mypy_args='--ignore-missing-imports'
 let g:ale_linters = {
 \   'python': ['flake8', 'mypy'],
 \   'javascript': ['jshint', 'eslint'],
-\   'typescript': ['eslint'],
+\   'typescript': ['eslint', 'tslint'],
 \}
 let g:ale_fixers = {
 \   'python': ['autopep8'],
@@ -239,9 +251,6 @@ let g:ale_fix_on_save=1
 
 " Disable showing diff after :Autopep8
 let g:autopep8_disable_show_diff=1
-
-" YouCompleteMe close window after completion
-let g:ycm_autoclose_preview_window_after_completion=1
 
 " UltiSnip
 let g:UltiSnipsExpandTrigger="<c-s>"
