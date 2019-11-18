@@ -1,11 +1,11 @@
 general {
         output_format = "i3bar"
         colors = true
-        interval = 5
+        interval = 1
 }
 
 # order += "ipv6"
-# order += "disk /"
+order += "disk /"
 # order += "run_watch DHCP"
 # order += "run_watch VPNC"
 # order += "path_exists VPN"
@@ -32,7 +32,7 @@ ethernet eth0 {
 battery 0 {
         format = "%status %percentage %remaining"  # %emptytime
         format_down = "No battery"
-        status_chr = "⚡"
+        status_chr = "🔌"
         status_bat = "🔋"
         status_unk = "? UNK"
         status_full = "☻"
@@ -61,15 +61,15 @@ tztime local {
 }
 
 load {
-        format = "⚖️ %1min %5min %15min"
+        format = "⚖️ %1min"
 }
 
 cpu_temperature 0 {
-        format = "🌡️%degrees °C"
-        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input"
+        format = "🌡️%degrees°C"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input"
 }
 
 disk "/" {
-        format = "💾 %free"
+        format = "💾 %avail"
 }
 

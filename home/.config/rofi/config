@@ -1,0 +1,5 @@
+rofi.combi-modi:    window,run,ssh
+rofi.theme:         gruvbox-dark
+rofi.font:          Fira Code 10
+rofi.modi:          combi
+rofi.show:          combi

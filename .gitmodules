@@ -46,9 +46,6 @@
 [submodule "home/.vim/bundle/vim-markdown"]
 	path = home/.vim/bundle/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown.git
-[submodule "home/.vim/bundle/YouCompleteMe"]
-	path = home/.vim/bundle/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe.git
 [submodule "home/.vim/bundle/vim-scala"]
 	path = home/.vim/bundle/vim-scala
 	url = https://github.com/derekwyatt/vim-scala.git
@@ -136,3 +133,18 @@
 [submodule "home/.config/fish/nvm-wrapper"]
 	path = home/.config/fish/nvm-wrapper
 	url = https://github.com/passcod/nvm-fish-wrapper.git
+[submodule "home/.vim/bundle/vim-coverage"]
+	path = home/.vim/bundle/vim-coverage
+	url = https://github.com/google/vim-coverage.git
+[submodule "home/.vim/bundle/vim-maktaba"]
+	path = home/.vim/bundle/vim-maktaba
+	url = https://github.com/google/vim-maktaba.git
+[submodule "home/.vim/bundle/aw-watcher-vim"]
+	path = home/.vim/bundle/aw-watcher-vim
+	url = https://github.com/ActivityWatch/aw-watcher-vim.git
+[submodule "home/.vim/bundle/vim-grammarous"]
+	path = home/.vim/bundle/vim-grammarous
+	url = https://github.com/rhysd/vim-grammarous.git
+[submodule "home/.vim/bundle/coc.nvim"]
+	path = home/.vim/bundle/coc.nvim
+	url = https://github.com/neoclide/coc.nvim.git

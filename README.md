@@ -19,59 +19,22 @@ If there are collisions with existing files they will be moved to `./backup/`
 
 We all feel strongly for our dotfiles, so why not share our love by sharing them?
 
-These are my dotfiles that I use on a variety of hosts, from my desktop and laptop to my servers and Raspberry Pi's.
+These are my dotfiles that I use on a variety of hosts, from my desktop and laptop, to my servers and Raspberry Pi's.
 
-Configuration files that are here (incomplete list):
- - `xmonad`
- - `fish` (+plugins and some old configs for `bash` and `zsh`)
- - `(neo)vim` (+plugins)
- - `editorconfig`
- - `xinitrc` (sets up the X session)
- - ssh authorized hosts
+## Current setup
+
+|               | Now         | Past        |
+|---------------|-------------|-------------|
+| **DE/WM**       | i3          | xmonad, KDE |
+| **Browser**     | firefox     | chromium    |
+| **Terminal**    | Alacritty   | terminator  |
+| **Shell**       | fish        |
+| **Editor**      | Neovim      | Vim, PyCharm (with vim-mode), Eclipse  |
+| **Terminal multiplexer** | tmux | screen |
+| File synchronization | Syncthing | Dropbox |
+| Archival/backup system      | git-annex |         |
 
 
-### Keybindings
-Incomplete section
-
-#### xmonad
- - `Super-[1-9]`, switch to workspace
- - `Super-Shift-[1-9]`, move window to workspace
- - `Super-q`, close window
- - `Super-Tab`, select next window on current workspace
- - `Super-r`, launches dmenu
- - `Super-l`, locks the computer with slock
-
-#### tmux
-
- - `Ctrl-Up/Down/Left/Right`, switch pane
- - `Ctrl-a + c`, new window
- - `Ctrl-a + Shift-2`, split horizontal
- - `Ctrl-a + Shift-5`, split vertical
- - `F[1-12]`, switch window
-
-#### vim
-
- - See `.vimrc`
-
-## Dependencies
-
-### Base
- - git
- - zsh
- - tmux
- - python3
-
-### Desktop Environment
-
-- xmonad, xmonad-contrib, xmonad-extras (get them using cabal)
- - dzen2, conky, dmenu, trayer, xfonts-terminus
- - redshift
- - zenity
- - Terminator (system terminal, might switch to urxvt later)
- - powerline-patched fonts (tmux & vim theme)
- - nm-applet, gnome-keyring (Managing WiFi)
- - feh (Sets background image)
- - suckless-tools (slock with super-l)
 
 ## Thanks to...
  - [Johan Bjäreholt](https://github.com/johan-bjareholt/) for his [dotfiles](https://github.com/johan-bjareholt/linux-configs)

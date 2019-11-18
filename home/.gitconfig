@@ -1,11 +1,16 @@
 [user]
 	email = erik@bjareho.lt
 	name = Erik Bjäreholt
-	signingkey = 86E4C130
+	signingkey = 0x73349C58108227B5
 [core]
 	autocrlf = input
+	editor = nvim
 [color]
 	ui = true
+[color "status"]
+    changed = yellow
+    untracked = red
+    added = green bold
 [push]
 	default = current
 [difftool "sourcetree"]
@@ -16,3 +21,5 @@
 	trustExitCode = true
 [status]
 	submoduleSummary = true
+[commit]
+	gpgsign = true
