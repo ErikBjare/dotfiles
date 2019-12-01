@@ -1,11 +1,13 @@
 A brief guide to using zfs
 ==========================
 
+NOTE: All shell commands use fish syntax (i.e. `(command)` instead of `$(command)`)
+
 Lets create our pool:
 
-```sh
+```fish
 truncate --size 1G pair1-disk1.img pair1-disk2.img
-sudo zpool create testpool mirror `pwd`/disk1.img `pwd`/disk2.img
+sudo zpool create testpool mirror (pwd)/disk1.img (pwd)/disk2.img
 ```
 
 Now lets inspect with `sudo zpool status`:
@@ -29,7 +31,7 @@ errors: No known data errors
 
 Let's add another set of mirrored drives to the array:
 
-```sh
+```fish
 truncate --size 2G pair2-disk1.img pair2-disk2.img
 sudo zpool add testpool mirror (pwd)/pair2-disk1.img (pwd)/pair2-disk2.img
 ```
@@ -54,11 +56,11 @@ config:
 errors: No known data errors
 ```
 
-## Adding spares
+## Using spares
 
 We will add spares for both our mirrors:
 
-```sh
+```fish
 truncate --size 1G spare1G.img
 truncate --size 2G spare2G.img
 sudo zpool add testpool spare (pwd)/spare1G.img
@@ -67,7 +69,7 @@ sudo zpool add testpool spare (pwd)/spare2G.img
 
 Now lets try to replace one of the disks and see the spare replace it.
 
-```sh
+```fish
 sudo zpool replace testpool (pwd)/pair2-disk2.img (pwd)/spare2G.img
 ```
 
@@ -147,7 +149,7 @@ Official: https://docs.oracle.com/cd/E53394_01/html/E54801/gpegp.html#SVZFSgjfbs
 
 Replace the failed disk with a new disk:
 
-```sh
+```fish
 sudo zpool replace testpool (pwd)/pair2-disk3.img (pwd)/pair2-disk2.img
 ```
 
