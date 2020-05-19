@@ -14,6 +14,10 @@ charset = utf-8
 [*.{py,js,json}]
 indent_size = 4
 
+# 2 space indentation for Yaml
+[*.{yml,yaml}]
+indent_size = 2
+
 # 8 spaces for Go, C & C++
 [*.{go,c,cpp}]
 indent_size = 8

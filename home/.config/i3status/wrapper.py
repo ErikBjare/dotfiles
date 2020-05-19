@@ -127,7 +127,7 @@ if __name__ == '__main__':
         # j.insert(0, {'full_text': '%s' % get_governor(), 'name': 'gov'})
 
         ram_usage = get_ram_usage()
-        j.insert(3, {'full_text': '🐏 %s%%' % ram_usage, 'name': 'brightness', 'color': colorpick(ram_usage, max_value=85, min_color="#00FF00", max_color="#FFFF00")})
+        j.insert(1, {'full_text': '🐏 %s%%' % ram_usage, 'name': 'brightness', 'color': colorpick(ram_usage, max_value=85, min_color="#00FF00", max_color="#FFFF00")})
 
         power_draw = get_power_draw()
         if power_draw:

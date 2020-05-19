@@ -1,10 +1,15 @@
 #!/bin/sh
 
-#set -e
+set -e
 
-xrandr --output DP-1 --auto --rotate right
-xrandr --output HDMI-0 --auto --primary --mode 3840x2160 --right-of DP-1
-xrandr --output DP-2 --auto --right-of HDMI-0
+
+xrandr --output DP-3 --off
+xrandr --output HDMI-0 --off
+
+
+xrandr --output HDMI-0 --primary --mode 3840x2160 --right-of DP-3 #--panning 0x0
+xrandr --output DP-3 --auto --left-of HDMI-0 --rotate right #--panning 0x0
+#xrandr --output DP-2 --auto --right-of HDMI-0
 
 # Disabled displays
-xrandr --output DVI-D-0 --off
+xrandr --output DP-0 --off

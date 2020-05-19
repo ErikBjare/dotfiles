@@ -13,7 +13,10 @@ DOWNLOADS_SIZE=$(ls-by-size | head -1 | cut -f 1)
 echo "Size of ~/Downloads: $DOWNLOADS_SIZE"
 popd
 
-sudo pacman -Sc --noconfirm
+# Redundant since also done by `yay -Scc`
+#sudo pacman -Sc --noconfirm
+
+yay -Scc
 
 echo "Storage after clean:"
 df -h

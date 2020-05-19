@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -ex
+
+# Web stuff
+WEBBROWSER="firefox.desktop"
+xdg-mime default $WEBBROWSER text/html
+xdg-mime default $WEBBROWSER x-scheme-handler/http
+xdg-mime default $WEBBROWSER x-scheme-handler/https
+xdg-mime default $WEBBROWSER x-scheme-handler/about
+
+# File manager
+FILEBROWSER="thunar.desktop"
+xdg-mime default $FILEBROWSER inode/directory
+xdg-mime default $FILEBROWSER x-scheme-handler/file
+
+# PDFs
+xdg-mime default 'okularApplication_pdf.desktop' application/pdf

@@ -203,6 +203,7 @@ endif
 " Register plugins with vim-plug
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'Yggdroot/indentLine'
 call plug#end()
 
 " Enable syntax highlighting
@@ -231,7 +232,7 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let flake8_args='--ignore=E225,E265,E402,E501'
+let flake8_args='--ignore=E203,E225,E265,E402,E501,W503'
 let mypy_args='--ignore-missing-imports'
 
 let g:ale_linters = {
@@ -240,11 +241,14 @@ let g:ale_linters = {
 \   'typescript': ['eslint', 'tslint'],
 \}
 let g:ale_fixers = {
-\   'python': ['autopep8'],
+\   'python': ['autopep8', 'black'],
 \   'javascript': ['prettier'],
-\   'rust': [],
+\   'javascript.jsx': ['prettier'],
+\   'typescript': ['prettier'],
+\   'vue': ['prettier'],
+\   'rust': ['rustfmt'],
 \}
-" ['rustfmt'],
+let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
 let g:ale_python_flake8_options=flake8_args
 let g:ale_python_mypy_options=mypy_args
 let g:ale_fix_on_save=1
@@ -281,3 +285,5 @@ au BufNewFile,BufRead *.ipy set filetype=python
 
 au BufNewFile,BufRead *.jrag set filetype=java
 
+let g:indentLine_char = '▏'
+" let g:indentLine_char_list = ['|', '¦', '┆', '┊']

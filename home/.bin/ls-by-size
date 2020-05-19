@@ -1,3 +1,4 @@
 #!/bin/bash
 
+# add `--dereference` to du if you want to follow symlinks
 du -ha ./ | sort -h -r | less

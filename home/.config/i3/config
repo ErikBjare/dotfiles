@@ -104,12 +104,12 @@ bindsym $mod+Shift+space floating toggle
 # focus specific display
 bindsym $mod+a focus output DP-3
 bindsym $mod+s focus output HDMI-0
-bindsym $mod+d focus output DP-2
+bindsym $mod+d focus output DP-0
 
 # move workspace to display
 bindsym $mod+shift+a move workspace to output DP-3
 bindsym $mod+shift+s move workspace to output HDMI-0
-bindsym $mod+shift+d move workspace to output DP-2
+bindsym $mod+shift+d move workspace to output DP-0
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -135,12 +135,18 @@ bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
+# Laptop function keys
 bindsym XF86MonBrightnessUp   exec xbacklight +10
 bindsym XF86MonBrightnessDown exec xbacklight -10
 bindsym XF86AudioMute         exec pamixer --toggle-mute
 bindsym XF86AudioMicMute      exec pamixer --source 1 --toggle-mute
 bindsym XF86AudioRaiseVolume  exec pamixer --increase 5
 bindsym XF86AudioLowerVolume  exec pamixer --decrease 5
+
+# Emulated function keys on a desktop keyboard
+bindsym $mod+Insert     exec pamixer --decrease 5
+bindsym $mod+Home       exec pamixer --toggle-mute
+bindsym $mod+Prior      exec pamixer --increase 5
 
 # Full screenshot, save to folder
 bindsym --release Ctrl+Print  exec --no-startup-id "bash ~/.bin/screenshot.sh --fullscreen"
@@ -166,13 +172,16 @@ exec --no-startup-id dunst
 # Compositor
 exec --no-startup-id compton
 
-# lock and suspend
-bindsym $mod+l exec "i3lock --color 000000 -i ~/.backgrounds/lockscreen.png; systemctl suspend"
+# lock
+bindsym $mod+l exec "i3lock --color 000000 -i ~/.backgrounds/lockscreen.png"
 
-# automatically lock and suspend after 10 minutes of inactivity
+# lock and suspend
+bindsym $mod+Shift+l exec "i3lock --color 000000 -i ~/.backgrounds/lockscreen.png; systemctl suspend"
+
+# automatically lock after 10 minutes of inactivity
 exec --no-startup-id /usr/bin/xautolock -time 10 -detectsleep -locker "i3lock --color 000000 -i ~/.backgrounds/lockscreen.png; systemctl suspend"
 
-# automatically lock after suspend
+# automatically lock after suspend (should be handled by xautolock)
 exec --no-startup-id /usr/bin/xss-lock -- i3lock -n --color 000000 -i ~/.backgrounds/koan-inverted-bg.png
 
 # set wallpaper
