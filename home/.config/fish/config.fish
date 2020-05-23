@@ -1,40 +1,40 @@
 begin
-    if test -e /usr/games
-        set -x PATH $PATH /usr/games
+    # TODO: Check if already in PATH?
+
+    function path_prepend
+        if test -e $argv
+            set -x PATH $argv $PATH
+        end
     end
 
-    if test -e ~/.local/bin
-        set -x PATH ~/.local/bin $PATH
+    function path_append
+        if test -e $argv
+            set -x PATH $PATH $argv
+        end
     end
 
-    if test -e ~/.cargo/bin
-        set -x PATH ~/.cargo/bin $PATH
-    end
+    # PATH PREPENDS
+    path_prepend  ~/.gem/ruby/2.4.0/bin
+    path_prepend  ~/.gem/ruby/2.5.0/bin
+    path_prepend  ~/.gem/ruby/2.6.0/bin
+    path_prepend  ~/.gem/ruby/2.6.0/bin
+    path_prepend ~/.bin/git-subrepo/lib
+    path_prepend ~/.local/bin
+    path_prepend ~/.cargo/bin
+    path_prepend ~/.bin
 
-    if test -e ~/.gem/ruby/2.4.0/bin
-        set -x PATH $PATH ~/.gem/ruby/2.4.0/bin
-    end
+    # PATH APPENDS
+    path_append /usr/games
 
-    if test -e ~/.gem/ruby/2.5.0/bin
-        set -x PATH $PATH ~/.gem/ruby/2.5.0/bin
-    end
+    set -x MANPATH ":$MANPATH" ~/.bin/git-subrepo/man
 
-    if test -e ~/.gem/ruby/2.6.0/bin
-        set -x PATH $PATH ~/.gem/ruby/2.6.0/bin
-    end
-
-    if test -e ~/.bin/git-subrepo/lib
-        set -x PATH $PATH ~/.bin/git-subrepo/lib
-    end
-
+    # Nvm wrapper
     if test -e ~/.config/fish/nvm-wrapper/nvm.fish
         source ~/.config/fish/nvm-wrapper/nvm.fish
     end
 
-    # Should be first (or almost first) on PATH
-    set -x PATH ~/.bin $PATH
-
-    set -x MANPATH ":$MANPATH" ~/.bin/git-subrepo/man
+    path_prepend ~/.npm-packages/$NPM_PACKAGES/bin
+    set MANPATH ~/.npm-packages/share/man $MANPATH
 end
 
 # Style
@@ -43,7 +43,6 @@ begin
     set fish_color_error yellow
     set fish_color_redirection yellow --bold
 end
-
 
 begin
     # Try with the users install
@@ -68,8 +67,19 @@ begin
     eval (python -m virtualfish auto_activation)
 end
 
+# pyenv
+begin
+    if type -q pyenv
+        source (pyenv init - | psub)
+    end
+end
+
 #source /opt/anaconda/etc/fish/conf.d/conda.fish
 
+
+begin
+    set -x GPG_TTY (tty)
+end
 
 # tabtab source for electron-forge package
 # uninstall by removing these lines or running `tabtab uninstall electron-forge`

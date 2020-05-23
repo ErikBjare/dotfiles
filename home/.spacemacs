@@ -180,7 +180,10 @@ layers configuration."
  '(ahs-idle-timer 0 t)
  '(ahs-inhibit-face-list nil)
  '(org-support-shift-select t)
- '(ring-bell-function (quote ignore) t))
+ '(package-selected-packages
+   (quote
+    (zenburn-theme window-numbering volatile-highlights vi-tilde-fringe smooth-scrolling smeargle rainbow-delimiters powerline paradox page-break-lines org-repo-todo org-pomodoro org-bullets neotree multi-term move-text markdown-toc magit-svn magit-gitflow magit-gh-pulls linum-relative leuven-theme indent-guide ido-vertical-mode hungry-delete hl-anything highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flyspell helm-descbinds helm-c-yasnippet helm-ag guide-key-tip google-translate golden-ratio gitignore-mode github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe gist flycheck-pos-tip flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-terminal-cursor-changer evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-indent-textobject evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav diminish company-quickhelp buffer-move base16-theme auto-highlight-symbol auto-dictionary aggressive-indent adaptive-wrap ace-window ace-link ace-jump-mode ac-ispell auto-complete avy company anzu iedit smartparens bind-map highlight flx flycheck fringe-helper git-gutter pos-tip guide-key popwin yasnippet projectile helm popup helm-core parent-mode gh marshal logito pcache ht magit-popup magit git-commit with-editor transient async markdown-mode s alert log4e gntp hydra spinner lv pkg-info epl evil-leader evil use-package bind-key dash monokai-theme)))
+ '(ring-bell-function (quote ignore)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

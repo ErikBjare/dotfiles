@@ -14,6 +14,10 @@ charset = utf-8
 [*.{py,js,json}]
 indent_size = 4
 
+# 2 space indentation for Yaml
+[*.{yml,yaml}]
+indent_size = 2
+
 # 8 spaces for Go, C & C++
 [*.{go,c,cpp}]
 indent_size = 8
@@ -24,6 +28,10 @@ indent_size = 4
 
 # 2 spaces for Ruby, HTML and CSS/SASS
 [*.{rb,html,css,scss,sass,less,pug}]
+indent_size = 2
+
+# 2 spaces for TeX
+[*.{tex}]
 indent_size = 2
 
 # 4 spaces for markdown

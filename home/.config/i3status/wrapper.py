@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # This script is a simple wrapper which prefixes each i3status line with custom
@@ -29,6 +29,8 @@ import json
 import subprocess
 import glob
 
+from typing import Optional
+
 
 def get_governor():
     """ Get the current governor for cpu0, assuming all CPUs use the same. """
@@ -41,12 +43,15 @@ def get_idletime() -> int:
     return int(round(int(str(p.stdout, 'ascii').strip()) / 1000))
 
 
-def get_screen_brightness() -> int:
-    with open('/sys/class/backlight/intel_backlight/max_brightness', 'r') as f:
-        max_brightness = int(f.read())
-    with open('/sys/class/backlight/intel_backlight/brightness', 'r') as f:
-        brightness = float(f.read())
-    return int(brightness / max_brightness * 100)
+def get_screen_brightness() -> Optional[int]:
+    try:
+        with open('/sys/class/backlight/intel_backlight/max_brightness', 'r') as f:
+            max_brightness = int(f.read())
+        with open('/sys/class/backlight/intel_backlight/brightness', 'r') as f:
+            brightness = float(f.read())
+        return int(brightness / max_brightness * 100)
+    except FileNotFoundError:
+        return None
 
 
 def get_ram_usage() -> float:
@@ -122,14 +127,16 @@ if __name__ == '__main__':
         # j.insert(0, {'full_text': '%s' % get_governor(), 'name': 'gov'})
 
         ram_usage = get_ram_usage()
-        j.insert(3, {'full_text': '🐏 %s%%' % ram_usage, 'name': 'brightness', 'color': colorpick(ram_usage, max_value=85, min_color="#00FF00", max_color="#FFFF00")})
+        j.insert(1, {'full_text': '🐏 %s%%' % ram_usage, 'name': 'brightness', 'color': colorpick(ram_usage, max_value=85, min_color="#00FF00", max_color="#FFFF00")})
 
         power_draw = get_power_draw()
-        j.insert(1, {'full_text': '⚡ %sW' % power_draw, 'name': 'brightness', 'color': '#FFFF00'})
+        if power_draw:
+            j.insert(1, {'full_text': '⚡ %sW' % power_draw, 'name': 'brightness', 'color': '#FFFF00'})
 
         brightness = get_screen_brightness()
-        brightnesscolor = colorpick(brightness, min_color="#883300", max_color="#FFFF00")
-        j.insert(0, {'full_text': '🌞 %s%%' % brightness, 'name': 'brightness', 'color': brightnesscolor})
+        if brightness is not None:
+            brightnesscolor = colorpick(brightness, min_color="#883300", max_color="#FFFF00")
+            j.insert(0, {'full_text': '🌞 %s%%' % brightness, 'name': 'brightness', 'color': brightnesscolor})
 
         idletime = get_idletime()
         idlecolor = colorpick(idletime, max_value=3 * 60, max_color="#AAAAAA", above_max_color="#FF5500")

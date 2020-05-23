@@ -9,3 +9,5 @@ db
 home/.vim/swap
 home/.vim/plugged
 home/.vim/autoload/plug.vim
+
+home/.ssh

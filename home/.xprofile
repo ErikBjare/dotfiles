@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Load .Xresources
+xrdb -merge ~/.Xresources
+
 # Keyboard setup
 setxkbmap -layout 'us(intl)'
 xmodmap ~/.config/xmodmap/erb.xmodmap
