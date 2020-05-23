@@ -32,6 +32,9 @@ begin
     if test -e ~/.config/fish/nvm-wrapper/nvm.fish
         source ~/.config/fish/nvm-wrapper/nvm.fish
     end
+
+    path_prepend ~/.npm-packages/$NPM_PACKAGES/bin
+    set MANPATH ~/.npm-packages/share/man $MANPATH
 end
 
 # Style
@@ -62,6 +65,13 @@ end
 # https://github.com/excitedleigh/virtualfish
 begin
     eval (python -m virtualfish auto_activation)
+end
+
+# pyenv
+begin
+    if type -q pyenv
+        source (pyenv init - | psub)
+    end
 end
 
 #source /opt/anaconda/etc/fish/conf.d/conda.fish

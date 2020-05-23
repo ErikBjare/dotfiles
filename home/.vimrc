@@ -16,7 +16,7 @@
 "
 " TODOs:
 "   - Fix proper pane/window/buffer config
-"   - Split into seperate files: one base, one for keys, one for theme, one for syntax
+"   - Split into seperate files: one base, one for keys, one for theme, one for syntax, one for plugins
 "   - Make pageup/pagedown move half page and center view
 "
 
@@ -34,12 +34,15 @@ map <Leader><Leader> <Plug>(easymotion-prefix)
 " NERDTree
 map <Leader>n :NERDTreeToggle<CR>
 
+" Split
 map <Leader>h :sp<CR>
 map <Leader>v :vsp<CR>
 
 " Clipboard copying
-xmap <Leader>c :'<,'>w !xclip -sel clipboard<CR>
-
+noremap <Leader>y "+y
+noremap <Leader>p "+p
+noremap <C-C> "+y
+noremap <C-V> "+p
 
 " Window switching
 nnoremap <C-J> <C-W><C-J>
@@ -58,6 +61,7 @@ nnoremap <Leader>b :Unite buffer<CR>
 nnoremap <Leader>t :Unite tab<CR>
 nnoremap <Leader>f :Unite file<CR>
 nnoremap <Leader>ff :Unite -start-insert file_rec<CR>
+nnoremap <Leader>cc :Unite grammarous
 
 " Better incsearch with incsearch.vim
 map /  <Plug>(incsearch-forward)
@@ -89,6 +93,27 @@ nnoremap <Leader>gb :Git branch<Space>
 nnoremap <Leader>go :Git checkout<Space>
 nnoremap <Leader>gps :Dispatch! git push<CR>
 nnoremap <Leader>gpl :Dispatch! git pull<CR>
+
+let g:grammarous#hooks = {}
+function! g:grammarous#hooks.on_check(errs) abort
+    nmap <buffer><C-n> <Plug>(grammarous-move-to-next-error)
+    nmap <buffer><C-p> <Plug>(grammarous-move-to-previous-error)
+endfunction
+
+function! g:grammarous#hooks.on_reset(errs) abort
+    nunmap <buffer><C-n>
+    nunmap <buffer><C-p>
+endfunction
+
+"let g:grammarous#show_first_error = 1
+" Disabled rules
+"  - DASH_RULE
+"  - WORD_CONTAINS_UNDERSCORE
+" Below setting disables some rules for each filetype. * means all filetypes, help means vim help.
+let g:grammarous#disabled_rules = {
+\ '*' : ['WHITESPACE_RULE', 'EN_QUOTES'],
+\ 'tex' : ['WHITESPACE_RULE', 'EN_QUOTES', 'SENTENCE_WHITESPACE', 'UPPERCASE_SENTENCE_START', 'DASH_RULE', 'WORD_CONTAINS_UNDERSCORE'],
+\ }
 
 " GoToDefinition for key
 "map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -147,10 +172,6 @@ nnoremap <C-n> :call NumberToggle()<cr>
 " significant slowdown.
 set number
 
-" <C-C> and <C-V> for copy and paste
-vmap <C-C> :!xclip -f -sel clip<CR>
-" TODO: Doesn't work
-"map <C-V> :set paste; -1r !xclip -o -sel clip; set nopaste<CR>
 
 " Indentation
 set cindent
@@ -202,16 +223,36 @@ endif
 
 " Register plugins with vim-plug
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'Yggdroot/indentLine'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'Yggdroot/indentLine'
+    Plug 'rhysd/vim-grammarous'
+
+    " vim-signify
+    if has('nvim') || has('patch-8.0.902')
+      Plug 'mhinz/vim-signify'
+    else
+      Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
+    endif
 call plug#end()
 
 " Enable syntax highlighting
 syntax on
 
 " Conceal config
-set conceallevel=1
-set concealcursor=""  " Always disable conceal on current line, regardless of mode
+set conceallevel=2
+set concealcursor="n"  " Always disable conceal on current line, regardless of mode
+"let g:indentLine_setConceal = 0
+let g:indentLine_conceallevel = 2
+let g:indentLine_concealcursor = "n"
+" default ''.
+" n for Normal mode
+" v for Visual mode
+" i for Insert mode
+" c for Command line editing, for 'incsearch'
+
+" Sets indentLine
+let g:indentLine_char = '▏'
+" let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
 " Enable search highlighting
 set hlsearch
@@ -229,7 +270,7 @@ colorscheme solarized
 "
 
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let flake8_args='--ignore=E203,E225,E265,E402,E501,W503'
@@ -284,6 +325,3 @@ au BufNewFile,BufRead *.pyi set filetype=python
 au BufNewFile,BufRead *.ipy set filetype=python
 
 au BufNewFile,BufRead *.jrag set filetype=java
-
-let g:indentLine_char = '▏'
-" let g:indentLine_char_list = ['|', '¦', '┆', '┊']

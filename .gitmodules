@@ -82,9 +82,6 @@
 [submodule "home/.vim/bundle/nerdtree-git-plugin"]
 	path = home/.vim/bundle/nerdtree-git-plugin
 	url = https://github.com/Xuyuanp/nerdtree-git-plugin.git
-[submodule "home/.vim/bundle/vim-gitgutter"]
-	path = home/.vim/bundle/vim-gitgutter
-	url = https://github.com/airblade/vim-gitgutter.git
 [submodule "home/.vim/bundle/vim-fugitive"]
 	path = home/.vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git

@@ -18,6 +18,7 @@ from pathlib import Path
 
 import pandas as pd
 import numpy as np
+import scipy
 
 from numpy import *
 from pylab import *
@@ -27,6 +28,7 @@ import requests
 
 # Set up logging
 import logging
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 

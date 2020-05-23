@@ -30,6 +30,10 @@ indent_size = 4
 [*.{rb,html,css,scss,sass,less,pug}]
 indent_size = 2
 
+# 2 spaces for TeX
+[*.{tex}]
+indent_size = 2
+
 # 4 spaces for markdown
 [*.md]
 indent_size = 4
