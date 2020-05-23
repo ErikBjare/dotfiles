@@ -49,9 +49,6 @@
 [submodule "home/.vim/bundle/vim-scala"]
 	path = home/.vim/bundle/vim-scala
 	url = https://github.com/derekwyatt/vim-scala.git
-[submodule "home/.vim/bundle/vim-vue"]
-	path = home/.vim/bundle/vim-vue
-	url = https://github.com/posva/vim-vue.git
 [submodule "home/.vim/bundle/vim-pug"]
 	path = home/.vim/bundle/vim-pug
 	url = https://github.com/digitaltoad/vim-pug.git
@@ -124,9 +121,6 @@
 [submodule "home/.vim/bundle/vim-wordy"]
 	path = home/.vim/bundle/vim-wordy
 	url = https://github.com/reedes/vim-wordy.git
-[submodule "home/.vim/bundle/ale"]
-	path = home/.vim/bundle/ale
-	url = https://github.com/w0rp/ale.git
 [submodule "home/.config/fish/nvm-wrapper"]
 	path = home/.config/fish/nvm-wrapper
 	url = https://github.com/passcod/nvm-fish-wrapper.git

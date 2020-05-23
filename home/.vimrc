@@ -224,8 +224,10 @@ endif
 " Register plugins with vim-plug
 call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'dense-analysis/ale'
     Plug 'Yggdroot/indentLine'
     Plug 'rhysd/vim-grammarous'
+    Plug 'posva/vim-vue'
 
     " vim-signify
     if has('nvim') || has('patch-8.0.902')
