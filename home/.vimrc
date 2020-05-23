@@ -223,31 +223,40 @@ colorscheme solarized
 "colorscheme tender
 "highlight Normal guibg=black guifg=white ctermbg=None
 
-"
 " Syntastic config
-"
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let flake8_args='--ignore=E225,E265,E402,E501'
-let mypy_args='--ignore-missing-imports'
+" Ale linters
 
 let g:ale_linters = {
 \   'python': ['flake8', 'mypy'],
 \   'javascript': ['jshint', 'eslint'],
 \   'typescript': ['eslint', 'tslint'],
 \}
+
+" E225: Missing whitespace around operator
+" E265: Block comment should start with '# '
+" E402: Module level import not at top of file
+" E501: Line too long
+" W503: Line break occurred before a binary operator
+let flake8_args='--ignore=E225,E265,E402,E501,W503'
+let g:ale_python_flake8_options=flake8_args
+
+let mypy_args='--ignore-missing-imports'
+let g:ale_python_mypy_options=mypy_args
+
+" Ale fixers
+
 let g:ale_fixers = {
-\   'python': ['autopep8'],
+\   'python': ['black'],
 \   'javascript': ['prettier'],
 \   'rust': [],
 \}
-" ['rustfmt'],
-let g:ale_python_flake8_options=flake8_args
-let g:ale_python_mypy_options=mypy_args
 let g:ale_fix_on_save=1
+
 
 " Disable showing diff after :Autopep8
 let g:autopep8_disable_show_diff=1

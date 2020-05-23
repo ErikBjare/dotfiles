@@ -164,7 +164,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 exec --no-startup-id dunst
 
 # Compositor
-exec --no-startup-id compton
+exec --no-startup-id picom
 
 # lock and suspend
 bindsym $mod+l exec "i3lock --color 000000 -i ~/.backgrounds/lockscreen.png; systemctl suspend"
