@@ -223,11 +223,29 @@ endif
 
 " Register plugins with vim-plug
 call plug#begin('~/.vim/plugged')
+    " Linting, fixing, and completion
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'dense-analysis/ale'
+    Plug 'SirVer/ultisnips'
+
+    " UI
+    Plug 'Shougo/unite.vim'
     Plug 'Yggdroot/indentLine'
-    Plug 'rhysd/vim-grammarous'
+    Plug 'bling/vim-airline'
+    Plug 'frankier/neovim-colors-solarized-truecolor-only'
+    Plug 'kshenoy/vim-signature'
+
+    " Language specific
     Plug 'posva/vim-vue'
+    Plug 'digitaltoad/vim-pug'
+    Plug 'rhysd/vim-grammarous'
+
+    " Tracking
+    Plug 'ActivityWatch/aw-watcher-vim'
+    Plug 'wakatime/vim-wakatime'
+
+    " Navigation
+    Plug 'christoomey/vim-tmux-navigator'
 
     " vim-signify
     if has('nvim') || has('patch-8.0.902')

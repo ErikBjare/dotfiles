@@ -31,27 +31,15 @@
 [submodule "home/.vim/bundle/nimrod.vim"]
 	path = home/.vim/bundle/nimrod.vim
 	url = https://github.com/zah/nimrod.vim.git
-[submodule "home/.vim/bundle/vim-wakatime"]
-	path = home/.vim/bundle/vim-wakatime
-	url = https://github.com/wakatime/vim-wakatime.git
 [submodule "home/.emacs.d"]
 	path = home/.emacs.d
 	url = https://github.com/syl20bnr/spacemacs.git
 [submodule "home/.vim/bundle/typescript-vim"]
 	path = home/.vim/bundle/typescript-vim
 	url = https://github.com/leafgarland/typescript-vim.git
-[submodule "home/.vim/bundle/vim-airline"]
-	path = home/.vim/bundle/vim-airline
-	url = https://github.com/bling/vim-airline
 [submodule "home/.vim/bundle/vim-markdown"]
 	path = home/.vim/bundle/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown.git
-[submodule "home/.vim/bundle/vim-scala"]
-	path = home/.vim/bundle/vim-scala
-	url = https://github.com/derekwyatt/vim-scala.git
-[submodule "home/.vim/bundle/vim-pug"]
-	path = home/.vim/bundle/vim-pug
-	url = https://github.com/digitaltoad/vim-pug.git
 [submodule "home/.vim/bundle/vim-solidity"]
 	path = home/.vim/bundle/vim-solidity
 	url = https://github.com/tomlion/vim-solidity.git
@@ -67,9 +55,6 @@
 [submodule "home/.vim/bundle/vim-lambdify"]
 	path = home/.vim/bundle/vim-lambdify
 	url = https://github.com/calebsmith/vim-lambdify.git
-[submodule "home/.vim/bundle/unite.vim"]
-	path = home/.vim/bundle/unite.vim
-	url = https://github.com/Shougo/unite.vim.git
 [submodule "home/.vim/bundle/vim-easymotion"]
 	path = home/.vim/bundle/vim-easymotion
 	url = https://github.com/easymotion/vim-easymotion.git
@@ -85,12 +70,6 @@
 [submodule "home/.vim/bundle/vim-airline-themes"]
 	path = home/.vim/bundle/vim-airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes.git
-[submodule "home/.vim/bundle/neovim-colors-solarized-truecolor-only"]
-	path = home/.vim/bundle/neovim-colors-solarized-truecolor-only
-	url = https://github.com/frankier/neovim-colors-solarized-truecolor-only.git
-[submodule "home/.vim/bundle/vim-tmux-navigator"]
-	path = home/.vim/bundle/vim-tmux-navigator
-	url = https://github.com/christoomey/vim-tmux-navigator.git
 [submodule "home/.vim/bundle/vim-polyglot"]
 	path = home/.vim/bundle/vim-polyglot
 	url = https://github.com/sheerun/vim-polyglot.git
@@ -100,12 +79,6 @@
 [submodule "home/.vim/bundle/tender"]
 	path = home/.vim/bundle/tender
 	url = https://github.com/jacoborus/tender.vim.git
-[submodule "home/.vim/bundle/vim-signature"]
-	path = home/.vim/bundle/vim-signature
-	url = https://github.com/kshenoy/vim-signature.git
-[submodule "home/.vim/bundle/ultisnips"]
-	path = home/.vim/bundle/ultisnips
-	url = https://github.com/SirVer/ultisnips.git
 [submodule "home/.vim/bundle/vim-snippets"]
 	path = home/.vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
@@ -130,12 +103,3 @@
 [submodule "home/.vim/bundle/vim-maktaba"]
 	path = home/.vim/bundle/vim-maktaba
 	url = https://github.com/google/vim-maktaba.git
-[submodule "home/.vim/bundle/aw-watcher-vim"]
-	path = home/.vim/bundle/aw-watcher-vim
-	url = https://github.com/ActivityWatch/aw-watcher-vim.git
-[submodule "home/.vim/bundle/vim-grammarous"]
-	path = home/.vim/bundle/vim-grammarous
-	url = https://github.com/rhysd/vim-grammarous.git
-[submodule "home/.vim/bundle/coc.nvim"]
-	path = home/.vim/bundle/coc.nvim
-	url = https://github.com/neoclide/coc.nvim.git
