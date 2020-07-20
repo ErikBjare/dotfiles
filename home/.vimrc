@@ -41,8 +41,9 @@ map <Leader>v :vsp<CR>
 " Clipboard copying
 noremap <Leader>y "+y
 noremap <Leader>p "+p
-noremap <C-C> "+y
-noremap <C-V> "+p
+" TODO: Only enable in insert-mode, otherwise will collide with other maps
+"noremap <C-C> "+y
+"noremap <C-V> "+p
 
 " Window switching
 nnoremap <C-J> <C-W><C-J>
@@ -254,6 +255,9 @@ call plug#begin('~/.vim/plugged')
       Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
     endif
 call plug#end()
+
+" Needed by ultisnips to avoid using the active virtualenv
+let g:python3_host_prog = '/usr/bin/python3'
 
 " Enable syntax highlighting
 syntax on
