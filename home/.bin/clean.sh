@@ -3,7 +3,7 @@
 set -xe
 
 echo "Storage before clean:"
-df -h
+df -h || true
 
 rm -rf ~/.cache/pipenv/http
 rm -rf ~/.cache/yarn

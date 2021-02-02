@@ -15,4 +15,17 @@ xdg-mime default $FILEBROWSER inode/directory
 xdg-mime default $FILEBROWSER x-scheme-handler/file
 
 # PDFs
-xdg-mime default 'okularApplication_pdf.desktop' application/pdf
+PDFREADER='okularApplication_pdf.desktop'
+xdg-mime default $PDFREADER application/pdf
+
+# Images
+IMAGEVIEWER="feh.desktop"
+xdg-mime default $IMAGEVIEWER image/png
+xdg-mime default $IMAGEVIEWER image/jpg
+xdg-mime default $WEBBROWSER image/svg+xml  # maybe use inkscape instead?
+
+# Videos
+VIDEOPLAYER="vlc.desktop"
+xdg-mime default $VIDEOPLAYER video/mp4
+xdg-mime default $VIDEOPLAYER video/avi
+xdg-mime default $VIDEOPLAYER video/mkv

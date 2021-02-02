@@ -1,3 +1,5 @@
+Xft.dpi: 157
+
 ! Plugins
 URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select
 URxvt.url-select.launcher:  chromium

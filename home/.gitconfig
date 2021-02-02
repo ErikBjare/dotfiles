@@ -2,24 +2,51 @@
 	email = erik@bjareho.lt
 	name = Erik Bjäreholt
 	signingkey = 0x73349C58108227B5
+
 [core]
 	autocrlf = input
 	editor = nvim
+	pager = delta --dark --diff-so-fancy
+
+[interactive]
+    #diffFilter = delta --color-only
+
+[status]
+	submoduleSummary = true
+
+[commit]
+	gpgsign = true
+
+[pull]
+	ff = only
+
+[push]
+	default = current
+
 [color]
 	ui = true
+
 [color "status"]
     changed = yellow
     untracked = red
     added = green bold
-[push]
-	default = current
+
+[delta]
+    features = decorations line-numbers #side-by-side
+    syntax-theme = Monokai Extended
+    #whitespace-error-style = 22 reverse
+    #plus-color = "#012800"
+    #minus-color = "#340001"
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
+
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =
+
 [mergetool "sourcetree"]
 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
-[status]
-	submoduleSummary = true
-[commit]
-	gpgsign = true

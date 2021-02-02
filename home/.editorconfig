@@ -34,9 +34,9 @@ indent_size = 2
 [*.{tex}]
 indent_size = 2
 
-# 4 spaces for markdown
+# 2 spaces for markdown
 [*.md]
-indent_size = 4
+indent_size = 2
 trim_trailing_whitespace = false
 
 # Hard TAB for Makefile

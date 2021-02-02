@@ -311,8 +311,11 @@ let g:ale_linters = {
 let flake8_args='--ignore=E203,E225,E265,E402,E501,W503'
 let g:ale_python_flake8_options=flake8_args
 
-let mypy_args='--ignore-missing-imports'
+let mypy_args='--ignore-missing-imports --check-untyped-defs'
 let g:ale_python_mypy_options=mypy_args
+
+"let black_args='--skip-string-normalization'
+"let g:ale_python_black_options=black_args
 
 " Ale fixers
 
@@ -345,6 +348,10 @@ let g:NERDDefaultAlign = 'left'
 " Thing to make .vue linting less slow (at the cost of disabling highlighting)
 " https://github.com/posva/vim-vue/blob/3cc4ac7b02b4ee76a5f16d8b39bf559042f6b266/readme.md#vim-slows-down-when-using-this-plugin-how-can-i-fix-that
 " let g:vue_disable_pre_processors=1
+
+" Disables polyglot for .vue files, potentially fixing slowness (https://github.com/posva/vim-vue/issues/95#issuecomment-538705061)
+" After testing, there was no significant difference...
+"let g:polyglot_disabled = ['vue']
 
 " Show the git diff in vim when commiting
 " Stolen from:

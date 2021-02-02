@@ -34,20 +34,20 @@ from typing import Optional
 
 def get_governor():
     """ Get the current governor for cpu0, assuming all CPUs use the same. """
-    with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:
+    with open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor") as fp:
         return fp.readlines()[0].strip()
 
 
 def get_idletime() -> int:
-    p = subprocess.run('xprintidle', capture_output=True)
-    return int(round(int(str(p.stdout, 'ascii').strip()) / 1000))
+    p = subprocess.run("xprintidle", capture_output=True)
+    return int(round(int(str(p.stdout, "ascii").strip()) / 1000))
 
 
 def get_screen_brightness() -> Optional[int]:
     try:
-        with open('/sys/class/backlight/intel_backlight/max_brightness', 'r') as f:
+        with open("/sys/class/backlight/intel_backlight/max_brightness", "r") as f:
             max_brightness = int(f.read())
-        with open('/sys/class/backlight/intel_backlight/brightness', 'r') as f:
+        with open("/sys/class/backlight/intel_backlight/brightness", "r") as f:
             brightness = float(f.read())
         return int(brightness / max_brightness * 100)
     except FileNotFoundError:
@@ -55,7 +55,7 @@ def get_screen_brightness() -> Optional[int]:
 
 
 def get_ram_usage() -> float:
-    with open('/proc/meminfo', 'r') as f:
+    with open("/proc/meminfo", "r") as f:
         s = f.read()
         lines = s.split("\n")
         total = int(lines[0].split(":")[1].strip().split(" ")[0])
@@ -64,9 +64,9 @@ def get_ram_usage() -> float:
 
 
 def get_power_draw() -> float:
-    files = glob.glob('/sys/class/power_supply/BAT*/power_now')
+    files = glob.glob("/sys/class/power_supply/BAT*/power_now")
     if files:
-        with open(files[0], 'r') as f:
+        with open(files[0], "r") as f:
             power_draw = int(f.read()) / 1_000_000
         return round(power_draw, 1)
     else:
@@ -75,7 +75,7 @@ def get_power_draw() -> float:
 
 def print_line(message):
     """ Non-buffered printing to stdout. """
-    sys.stdout.write(message + '\n')
+    sys.stdout.write(message + "\n")
     sys.stdout.flush()
 
 
@@ -93,7 +93,15 @@ def read_line():
         sys.exit()
 
 
-def colorpick(value, min_value=0, max_value=100, min_color="#333333", max_color="#FFFFFF", above_max_color="#FF0000", below_min_color="#0000FF"):
+def colorpick(
+    value,
+    min_value=0,
+    max_value=100,
+    min_color="#333333",
+    max_color="#FFFFFF",
+    above_max_color="#FF0000",
+    below_min_color="#0000FF",
+):
     if value > max_value:
         return above_max_color
     elif value < min_value:
@@ -103,11 +111,13 @@ def colorpick(value, min_value=0, max_value=100, min_color="#333333", max_color=
         max_color_v = [int("0x" + c, 16) for c in max_color[1:]]
         diff_color = [b - a for a, b in zip(min_color_v, max_color_v)]
         step = (value - min_value) / (max_value - min_value)
-        color = "".join([hex(round(m + d * step))[2:] for m, d in zip(min_color_v, diff_color)])
+        color = "".join(
+            [hex(round(m + d * step))[2:] for m, d in zip(min_color_v, diff_color)]
+        )
         return "#" + color
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Skip the first line which contains the version header.
     print_line(read_line())
 
@@ -115,10 +125,10 @@ if __name__ == '__main__':
     print_line(read_line())
 
     while True:
-        line, prefix = read_line(), ''
+        line, prefix = read_line(), ""
         # ignore comma at start of lines
-        if line.startswith(','):
-            line, prefix = line[1:], ','
+        if line.startswith(","):
+            line, prefix = line[1:], ","
 
         j = json.loads(line)
 
@@ -127,20 +137,52 @@ if __name__ == '__main__':
         # j.insert(0, {'full_text': '%s' % get_governor(), 'name': 'gov'})
 
         ram_usage = get_ram_usage()
-        j.insert(1, {'full_text': '🐏 %s%%' % ram_usage, 'name': 'brightness', 'color': colorpick(ram_usage, max_value=85, min_color="#00FF00", max_color="#FFFF00")})
+        j.insert(
+            1,
+            {
+                "full_text": "🐏 %s%%" % ram_usage,
+                "name": "brightness",
+                "color": colorpick(
+                    ram_usage,
+                    max_value=85,
+                    min_color="#00FF00",
+                    max_color="#FFFF00",
+                ),
+            },
+        )
 
         power_draw = get_power_draw()
         if power_draw:
-            j.insert(1, {'full_text': '⚡ %sW' % power_draw, 'name': 'brightness', 'color': '#FFFF00'})
+            j.insert(
+                1,
+                {
+                    "full_text": "⚡ %sW" % power_draw,
+                    "name": "brightness",
+                    "color": "#FFFF00",
+                },
+            )
 
         brightness = get_screen_brightness()
         if brightness is not None:
-            brightnesscolor = colorpick(brightness, min_color="#883300", max_color="#FFFF00")
-            j.insert(0, {'full_text': '🌞 %s%%' % brightness, 'name': 'brightness', 'color': brightnesscolor})
+            brightnesscolor = colorpick(
+                brightness, min_color="#883300", max_color="#FFFF00"
+            )
+            j.insert(
+                0,
+                {
+                    "full_text": "🌞 %s%%" % brightness,
+                    "name": "brightness",
+                    "color": brightnesscolor,
+                },
+            )
 
         idletime = get_idletime()
-        idlecolor = colorpick(idletime, max_value=3 * 60, max_color="#AAAAAA", above_max_color="#FF5500")
-        j.insert(0, {'full_text': '💤 %ss' % idletime, 'name': 'idle', 'color': idlecolor})
+        idlecolor = colorpick(
+            idletime, max_value=3 * 60, max_color="#AAAAAA", above_max_color="#FF5500"
+        )
+        j.insert(
+            0, {"full_text": "💤 %ss" % idletime, "name": "idle", "color": idlecolor}
+        )
 
         # and echo back new encoded json
         print_line(prefix + json.dumps(j))

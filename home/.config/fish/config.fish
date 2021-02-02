@@ -17,7 +17,7 @@ begin
     path_prepend  ~/.gem/ruby/2.4.0/bin
     path_prepend  ~/.gem/ruby/2.5.0/bin
     path_prepend  ~/.gem/ruby/2.6.0/bin
-    path_prepend  ~/.gem/ruby/2.6.0/bin
+    path_prepend  ~/.gem/ruby/2.7.0/bin
     path_prepend ~/.bin/git-subrepo/lib
     path_prepend ~/.local/bin
     path_prepend ~/.cargo/bin
@@ -63,9 +63,9 @@ end
 # Virtualfish
 # Needs `pip install --user virtualfish`
 # https://github.com/excitedleigh/virtualfish
-begin
-    eval (python -m virtualfish auto_activation)
-end
+#begin
+#    eval (python -m virtualfish auto_activation)
+#end
 
 # pyenv
 begin
@@ -76,11 +76,15 @@ end
 
 #source /opt/anaconda/etc/fish/conf.d/conda.fish
 
+# Set FREESURFER_HOME for easier surfin'
+set FREESURFER_HOME /opt/freesurfer
 
+# I don't remember the exact purpose of this...
 begin
     set -x GPG_TTY (tty)
 end
 
-# tabtab source for electron-forge package
-# uninstall by removing these lines or running `tabtab uninstall electron-forge`
-[ -f /tmp/yaourt-tmp-erb/aur-augur-git/src/augur-app/node_modules/tabtab/.completions/electron-forge.fish ]; and . /tmp/yaourt-tmp-erb/aur-augur-git/src/augur-app/node_modules/tabtab/.completions/electron-forge.fish
+# see https://wiki.archlinux.org/index.php/GNOME/Keyring#Terminal_applications
+if test -n "$DESKTOP_SESSION"
+    set -x (gnome-keyring-daemon --start | string split "=")
+end
