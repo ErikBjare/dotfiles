@@ -85,13 +85,17 @@ function parse_git_branch
 
   # Runs git status with timeout such that it's skipped for slow git repos
   # FIXME: If timeout is triggered, status will incorrectly always show as clean
-  set -l git_status (timeout 1 git status -s)
-
+  set -l git_status (timeout 0.5 git status -s)
+  set -l git_status_code $status
 
   set_color normal
   set_color -d grey -b $bgcolor
   echo -n '['$branch
-  if test -n "$git_status"
+
+  # if status code was 124 then command timed out
+  if test $git_status_code -eq 124
+    echo -n ''
+  else if test -n "$git_status"
     echo -n (set_color $fish_git_dirty_color)'*'
   else
     echo -n (set_color $fish_git_not_dirty_color)'✔️'

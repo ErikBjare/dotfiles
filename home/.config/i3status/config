@@ -9,6 +9,7 @@ order += "cpu_usage"
 order += "cpu_temperature 0"
 order += "disk /"
 order += "volume master"
+#order += "volume mic"  # Doesn't work...
 order += "ethernet enp0s31f6"
 order += "tztime local"
 
@@ -54,6 +55,15 @@ volume master {
         #mixer_idx = 0
 }
 
+# Doesn't work...
+volume mic {
+        format = "🎙️ %volume"
+        format_muted = "🤫 %volume"
+        device = "pulse:alsa_input.usb-046d_C922_Pro_Stream_Webcam_78A077B0-02.analog-stereo"  # alsamixer
+        mixer = "Capture"
+        mixer_idx = 1
+}
+
 run_watch DHCP {
         pidfile = "/var/run/dhclient*.pid"
 }
@@ -83,7 +93,7 @@ cpu_usage {
 
 cpu_temperature 0 {
         format = "🌡️%degrees°C"
-        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input"
+        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon4/temp1_input"
 }
 
 memory {

@@ -7,8 +7,15 @@ set -e
 
 sleep 0.5
 
-xrandr --output HDMI-0 --primary --mode 3840x2160 --panning 0x0
-xrandr --output DP-1 --mode 3840x2160 --right-of HDMI-0
+# ASUS
+xrandr --output HDMI-0 --primary --mode 3840x2160 --refresh 60 --pos 0x0 --panning 0x0
+
+# SwedTV
+xrandr --output DP-0 --mode 3840x2160 --refresh 60 --right-of HDMI-0
+
+# LG
+#xrandr --output HDMI-0 --off
+#xrandr --output HDMI-0 --mode 3840x2160 --refresh 60 --right-of DP-0
 #xrandr --output DVI-D-0 --mode 800x480 --right-of HDMI-0 #--panning 0x0
 #xrandr --output DP-2 --auto --right-of HDMI-0
 

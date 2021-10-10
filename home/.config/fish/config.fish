@@ -60,11 +60,22 @@ begin
     end
 end
 
+begin
+    if type -f zoxide -q
+        zoxide init fish | source
+    else
+        echo "zoxide was not found on system, won't be available"
+    end
+end
+
 # Virtualfish
 # Needs `pip install --user virtualfish`
 # https://github.com/excitedleigh/virtualfish
+# NOTE: Replaced by `vf install` on first install
 #begin
-#    eval (python -m virtualfish auto_activation)
+#    if type -q vf
+#       eval (python -m virtualfish auto_activation)
+#   end
 #end
 
 # pyenv

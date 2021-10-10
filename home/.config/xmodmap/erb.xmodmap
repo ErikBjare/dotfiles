@@ -16,6 +16,9 @@ clear control
 add control =   Caps_Lock           Control_L   Control_R
 keycode  66 =   Control_L           Caps_Lock   NoSymbol            NoSymbol
 
+! Sets Euro on AltGr+Shift+e
+keycode  26 =   e                   E           eacute              Eacute              eacute    EuroSign
+
 ! Sets å on AltGr+[, ä on AltGr+;, ö on AltGr+'
 keycode  34 =   bracketleft         braceleft   bracketleft         braceleft           aring       Aring
 keycode  47 =   semicolon           colon       semicolon           colon               odiaeresis  Odiaeresis

@@ -16,14 +16,11 @@ from time import sleep
 from typing import Optional, List, Dict, Union, Any
 from pathlib import Path
 
+# PyPI packages
 import pandas as pd
 import numpy as np
 import scipy
-
-from numpy import *
-from pylab import *
-
-# PyPI packages
+import matplotlib.pyplot as plt
 import requests
 
 # Set up logging

@@ -1,5 +1,16 @@
 {
     "python.venvFolders": [
         ".virtualenvs"
-    ]
+    ],
+    "window.title": "${dirty}${activeEditorMedium}${separator}${rootName}${separator}${appName}",
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.*cache": true,
+        "**/.idea": true,
+        "**/.ipynb_checkpoints": true,
+        "**/*.egg-info": true
+    },
+    "editor.fontSize": 10,
+    "git.autofetch": true,
+    "workbench.colorTheme": "Monokai"
 }

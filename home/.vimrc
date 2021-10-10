@@ -55,6 +55,12 @@ nnoremap <C-Down> <C-W><C-J>
 nnoremap <C-Right> <C-W><C-L>
 nnoremap <C-Left> <C-W><C-H>
 
+" Move correctly in wrapped mode
+map k gk
+map j gj
+map <Up> gk
+map <Down> gj
+
 " Use :Sw to save as root
 command! -nargs=0 Sw w !sudo tee % > /dev/null
 
@@ -364,5 +370,8 @@ autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<c
 " Needed to make .pyi files highlight as Python files
 au BufNewFile,BufRead *.pyi set filetype=python
 au BufNewFile,BufRead *.ipy set filetype=python
+
+" .abi files are probably JSON files
+au BufNewFile,BufRead *.abi set filetype=json
 
 au BufNewFile,BufRead *.jrag set filetype=java

@@ -8,4 +8,5 @@ setxkbmap -layout 'us(intl)'
 xmodmap ~/.config/xmodmap/erb.xmodmap
 
 # Background setup
-feh --bg-center ~/.backgrounds/koan-inverted.jpeg
+#feh --bg-center ~/.backgrounds/koan-inverted.jpeg
+feh --bg-fill "$HOME/.backgrounds/Andromeda Galaxy WISE - enhanced.jpg"

@@ -28,8 +28,15 @@ import sys
 import json
 import subprocess
 import glob
+import requests
+import logging
 
+from datetime import datetime, timedelta
+from pathlib import Path
 from typing import Optional
+
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
 def get_governor():
@@ -71,6 +78,69 @@ def get_power_draw() -> float:
         return round(power_draw, 1)
     else:
         return 0
+
+
+gasPricePath = Path("/tmp/gasPrice.json")
+ethPricePath = Path("/tmp/ethPrice.json")
+APIKEY = "8AKPUEVKW3UNFKIXRTS5HW5WMWG1UX68QH"
+
+
+def store_gas_price():
+    try:
+        r = requests.get(
+            f"https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey={APIKEY}"
+        )
+        r.raise_for_status()
+        data = r.json()
+        with open(gasPricePath, "w") as f:
+            json.dump(data, f)
+    except Exception as e:
+        logger.info(f"Couldn't get gas price: {e}")
+
+
+def get_gas_price() -> int:
+    now = datetime.now()
+    if not gasPricePath.exists():
+        store_gas_price()
+    else:
+        modified_time = datetime.fromtimestamp(gasPricePath.stat().st_mtime)
+        if modified_time < now - timedelta(minutes=10):
+            store_gas_price()
+
+    with open(gasPricePath, "r") as f:
+        d = json.load(f)
+    try:
+        return int(d["result"]["SafeGasPrice"])
+    except TypeError:
+        logger.error("Couldn't read gas price response")
+        return None
+
+
+def store_eth_price():
+    try:
+        r = requests.get(
+            f"https://api.etherscan.io/api?module=stats&action=ethprice&apikey={APIKEY}"
+        )
+        r.raise_for_status()
+        data = r.json()
+        with open(ethPricePath, "w") as f:
+            json.dump(data, f)
+    except Exception as e:
+        logger.info(f"Couldn't get gas price: {e}")
+
+
+def get_eth_price():
+    now = datetime.now()
+    if not ethPricePath.exists():
+        store_eth_price()
+    else:
+        modified_time = datetime.fromtimestamp(ethPricePath.stat().st_mtime)
+        if modified_time < now - timedelta(minutes=1):
+            store_eth_price()
+
+    with open(ethPricePath, "r") as f:
+        d = json.load(f)
+    return float(d["result"]["ethusd"])
 
 
 def print_line(message):
@@ -175,6 +245,34 @@ if __name__ == "__main__":
                     "color": brightnesscolor,
                 },
             )
+
+        gwei = get_gas_price()
+        if gwei:
+            j.insert(
+                0,
+                {
+                    "full_text": f"⛽ {gwei}",
+                    "name": "brightness",
+                    "color": colorpick(
+                        gwei,
+                        min_value=1,
+                        max_value=100,
+                        min_color="#00FF00",
+                        max_color="#FF5555",
+                        above_max_color="#FFFFFFF",
+                    ),
+                },
+            )
+
+        ethusd = get_eth_price()
+        j.insert(
+            0,
+            {
+                "full_text": f"ETH ${ethusd}",
+                "name": "brightness",
+                "color": "#00FF00",
+            },
+        )
 
         idletime = get_idletime()
         idlecolor = colorpick(

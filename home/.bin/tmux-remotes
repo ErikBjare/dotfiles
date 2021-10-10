@@ -3,7 +3,19 @@
 REATTACH_SCREEN_CMD="screen -R"
 REATTACH_TMUX_CMD="'if tmux has-session; then tmux attach; else tmux new-session; fi'"
 
-tmux new-session -d -s "remotes" -n "erb-pi2" "TERM=screen ssh -t erb-pi2 $REATTACH_TMUX_CMD" \; \
-     new-window -d -t "remotes" -n "erb-pi" "TERM=screen ssh -t pi@erb-pi $REATTACH_TMUX_CMD" \; \
-     new-window -d -t "remotes" -n "drop" "TERM=screen ssh -t drop.ngenia.net $REATTACH_TMUX_CMD"
+remotes="erb-pi4
+server2
+algobit"
+
+set -x
+
+# Create session if session doesn't exist
+tmux list-sessions | grep "remotes" || tmux new-session -d -s "remotes"
+tmux set automatic-rename off
+
+for remote in $remotes; do
+    echo $remote
+    tmux new-window -d -t "remotes" -n $remote "TERM=screen autossh -M 0 -t $remote"
+done
+
 tmux attach -t "remotes"

@@ -1,5 +1,5 @@
 [global]
-    font = Fira Code 14
+    font = Fira Code 11
 
     # Allow a small subset of html markup:
     #   <b>bold</b>
@@ -180,7 +180,7 @@
     timeout = 10
 
 [urgency_normal]
-    background = "#285577"
+    background = "#333333"
     foreground = "#ffffff"
     timeout = 30
 
