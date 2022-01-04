@@ -150,6 +150,10 @@ bindsym XF86AudioMicMute      exec pamixer --source 1 --toggle-mute
 bindsym XF86AudioRaiseVolume  exec pamixer --increase 5
 bindsym XF86AudioLowerVolume  exec pamixer --decrease 5
 
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioNext exec playerctl next
+
 # Emulated function keys on a desktop keyboard
 bindsym $mod+Insert     exec pamixer --decrease 5
 bindsym $mod+Home       exec pamixer --toggle-mute

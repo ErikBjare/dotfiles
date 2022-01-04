@@ -1,0 +1,101 @@
+// vim:ts=4:sw=4:et
+{
+    // workspace with 2 children
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "splith",
+    "marks": [],
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "normal",
+            "current_border_width": 4,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 600,
+               "width": 800,
+               "x": 0,
+               "y": 0
+            },
+            "marks": [],
+            "name": "Spotify",
+            "percent": 0.75,
+            "swallows": [
+               {
+                "class": "^Spotify$"
+               // "instance": "^spotify$",
+               // "title": "^Spotify$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            // splitv split container with 2 children
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "splitv",
+            "marks": [],
+            "percent": 0.25,
+            "type": "con",
+            "nodes": [
+                {
+                    // splith split container with 1 children
+                    "border": "normal",
+                    "floating": "auto_off",
+                    "layout": "splith",
+                    "marks": [],
+                    "percent": 0.5,
+                    "type": "con",
+                    "nodes": [
+                        {
+                            "border": "normal",
+                            "current_border_width": 4,
+                            "floating": "auto_off",
+                            "geometry": {
+                               "height": 2093,
+                               "width": 1161,
+                               "x": 0,
+                               "y": 0
+                            },
+                            "marks": [],
+                            "name": "Volume Control",
+                            "percent": 1,
+                            "swallows": [
+                               {
+                                "class": "^Pavucontrol$"
+                               // "instance": "^pavucontrol$",
+                               // "title": "^Volume\\ Control$"
+                               }
+                            ],
+                            "type": "con"
+                        }
+                    ]
+                },
+                {
+                    "border": "normal",
+                    "current_border_width": 4,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 2093,
+                       "width": 760,
+                       "x": 6912,
+                       "y": 26
+                    },
+                    "marks": [],
+                    "name": "Bluetooth Devices",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                        "class": "^Blueman\\-manager$"
+                       // "instance": "^blueman\\-manager$",
+                       // "title": "^Bluetooth\\ Devices$"
+                       }
+                    ],
+                    "type": "con"
+                }
+            ]
+        }
+    ]
+}
+
