@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $(hostname) == "erb-main2-arch" ]]; then
+if [[ $(hostname) == "erb-main2-arch" || $(hostname) == "erb-laptop2-arch" ]]; then
     # Fix for this maybe? https://unix.stackexchange.com/a/295652/45373
     source /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
 

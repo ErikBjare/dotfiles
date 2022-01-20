@@ -4,12 +4,15 @@ general {
         interval = 1
 }
 
+order += "battery 0"
 order += "load"
 order += "cpu_usage"
-order += "cpu_temperature 0"
+#order += "cpu_temperature 0"
 order += "disk /"
+# Crashes for some reason... maybe pipewire's fault?
 order += "volume master"
 #order += "volume mic"  # Doesn't work...
+order += "wireless _first_"
 order += "ethernet enp0s31f6"
 order += "tztime local"
 
@@ -19,7 +22,6 @@ order += "tztime local"
 # order += "run_watch VPNC"
 # order += "path_exists VPN"
 # order += "wireless _first_"
-# order += "battery 0"
 # order += "uptime"
 # order += "tztime berlin"
 
@@ -31,7 +33,7 @@ wireless _first_ {
 ethernet enp0s31f6 {
         # if you use %speed, i3status requires the cap_net_admin capability
         format_up = "🌐 %ip"
-        format_down = "🌐  down"
+        format_down = "🌐 down"
 }
 
 battery 0 {
@@ -50,7 +52,7 @@ battery 0 {
 volume master {
         format = "🔊 %volume"
         format_muted = "🔇 %volume"
-        device = "pulse"
+        #device = "pulse"
         #mixer = "Master"
         #mixer_idx = 0
 }

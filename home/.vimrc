@@ -246,6 +246,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'posva/vim-vue'
     Plug 'digitaltoad/vim-pug'
     Plug 'rhysd/vim-grammarous'
+    Plug 'lervag/vimtex'
 
     " Tracking
     Plug 'ActivityWatch/aw-watcher-vim'
