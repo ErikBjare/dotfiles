@@ -14,10 +14,11 @@ begin
     end
 
     # PATH PREPENDS
-    path_prepend  ~/.gem/ruby/2.4.0/bin
-    path_prepend  ~/.gem/ruby/2.5.0/bin
-    path_prepend  ~/.gem/ruby/2.6.0/bin
-    path_prepend  ~/.gem/ruby/2.7.0/bin
+    path_prepend ~/.gem/ruby/2.4.0/bin
+    path_prepend ~/.gem/ruby/2.5.0/bin
+    path_prepend ~/.gem/ruby/2.6.0/bin
+    path_prepend ~/.gem/ruby/2.7.0/bin
+    path_prepend ~/.gem/ruby/3.0.0/bin
     path_prepend ~/.bin/git-subrepo/lib
     path_prepend ~/.local/bin
     path_prepend ~/.cargo/bin
@@ -98,4 +99,12 @@ end
 # see https://wiki.archlinux.org/index.php/GNOME/Keyring#Terminal_applications
 if test -n "$DESKTOP_SESSION"
     set -x (gnome-keyring-daemon --start | string split "=")
+end
+
+begin
+    if type -f -q rbenv
+        status --is-interactive; and rbenv init - fish | source
+    else
+        echo "rbenv was not found on system, won't be available"
+    end
 end
