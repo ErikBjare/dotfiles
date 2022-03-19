@@ -235,6 +235,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'dense-analysis/ale'
     Plug 'SirVer/ultisnips'
 
+
+    " Copilot
+    Plug 'github/copilot.vim', {'branch': 'release'}
+
     " UI
     Plug 'Shougo/unite.vim'
     Plug 'Yggdroot/indentLine'
