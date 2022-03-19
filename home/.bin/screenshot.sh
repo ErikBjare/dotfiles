@@ -19,10 +19,10 @@ if [ "$1" == "--help" ]; then
     exit 0
 elif [ "$1" == "--region" ]; then
     echo "Doing a region shot!"
-    escrotum --select $FILE
+    escrotum --select $FILE || echo 'escrotum failed' && exit 1
     msg "Captured region"
 elif [ "$1" == "--fullscreen" ]; then
-    escrotum $FILE
+    escrotum $FILE || echo 'escrotum failed' && exit 1
     msg "Captured fullscreen"
 else
     echo "Needs a command line argument, see --help for info."
