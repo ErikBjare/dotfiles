@@ -14,6 +14,8 @@ begin
     end
 
     # PATH PREPENDS
+    path_prepend /opt/homebrew/bin
+    path_prepend /opt/homebrew/opt/coreutils/libexec/gnubin
     path_prepend ~/.gem/ruby/2.4.0/bin
     path_prepend ~/.gem/ruby/2.5.0/bin
     path_prepend ~/.gem/ruby/2.6.0/bin
