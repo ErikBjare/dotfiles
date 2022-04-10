@@ -230,14 +230,20 @@ endif
 
 " Register plugins with vim-plug
 call plug#begin('~/.vim/plugged')
+    " Indentation and stuff
+    Plug 'editorconfig/editorconfig-vim'
+
     " Linting, fixing, and completion
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'dense-analysis/ale'
-    Plug 'SirVer/ultisnips'
-
+    Plug 'rhysd/vim-grammarous'  " LanguageTool
+    Plug 'preservim/vim-wordy'   " Pure-vimscript grammar checker
 
     " Copilot
     Plug 'github/copilot.vim', {'branch': 'release'}
+
+    " Snippets
+    Plug 'SirVer/ultisnips'
 
     " UI
     Plug 'Shougo/unite.vim'
@@ -246,10 +252,21 @@ call plug#begin('~/.vim/plugged')
     Plug 'frankier/neovim-colors-solarized-truecolor-only'
     Plug 'kshenoy/vim-signature'
 
+    " Language pack
+    " Contains lots of stuff like:
+    "  - python-syntax
+    "  - vim-javascript
+    "  - vim-markdown
+    "  - vim-solidity
+    "  - rust.vim
+    "  - vim-ruby
+    "  - vim-go
+    "  - and many many more...
+    Plug 'sheerun/vim-polyglot'
+
     " Language specific
     Plug 'posva/vim-vue'
     Plug 'digitaltoad/vim-pug'
-    Plug 'rhysd/vim-grammarous'
     Plug 'lervag/vimtex'
 
     " Tracking
@@ -257,6 +274,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'wakatime/vim-wakatime'
 
     " Navigation
+    Plug 'haya14busa/incsearch.vim'
+    Plug 'preservim/nerdtree'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+    Plug 'preservim/nerdcommenter'
     Plug 'christoomey/vim-tmux-navigator'
 
     " vim-signify
