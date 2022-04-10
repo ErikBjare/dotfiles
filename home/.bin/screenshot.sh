@@ -5,7 +5,8 @@ msg() {
     notify-send --expire-time=3000 --app-name="Screenshot" $1;
 }
 
-FOLDER="$HOME/Public/Screenshots"
+HOSTNAME=$(hostnamectl --static)
+FOLDER="$HOME/annex/Logs/Screenshots/$HOSTNAME"
 FILE="$FOLDER/$(date --iso-8601=seconds).png"
 
 MSG_ERROR_ESCROTUM="escrotum not installed, please install it"
