@@ -1,6 +1,9 @@
 "
-" Erik Bjareholts .vimrc
-" https://github.com/ErikBjare/dotfiles
+" Erik Bjäreholt's .vimrc
+"
+" Part of my dotfiles:  https://github.com/ErikBjare/dotfiles
+"
+" > "Look again at that dot. That's here. That's home. That's us. "
 "
 
 " Summary:
@@ -243,7 +246,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'github/copilot.vim', {'branch': 'release'}
 
     " Snippets
-    Plug 'SirVer/ultisnips'
+    "Plug 'SirVer/ultisnips'
 
     " UI
     Plug 'Shougo/unite.vim'
@@ -274,7 +277,7 @@ call plug#begin('~/.vim/plugged')
 
     " Tracking
     Plug 'ActivityWatch/aw-watcher-vim'
-    Plug 'wakatime/vim-wakatime'
+    "Plug 'wakatime/vim-wakatime'
 
     " Navigation
     Plug 'haya14busa/incsearch.vim'
