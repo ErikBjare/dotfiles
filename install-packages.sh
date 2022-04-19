@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 # TODO: Do all necessary add-apt-repository (for google-chrome)
 # TODO: Fetch dpkg/alternative installers (for veracrypt)
 # TODO: Fix Arch support
@@ -55,12 +57,15 @@ if (lsb_release -a | grep 'Arch Linux'); then
         #   vf install
         #   vf addplugins auto_activation
     fi
+elif (lsb_release -a | grep 'Raspbian'); then
+    echo 'Detected Raspbian'
+    sudo apt install vim tmux fish git nodejs npm python3 python3-pip
 else
     echo 'Detected Ubuntu'
     sudo add-apt-repository ppa:webupd8team/tor-browser
     sudo add-apt-repository ppa:neovim-ppa/unstable
 
-    TERMINAL="zsh tmux"
+    TERMINAL="fish tmux"
     BROWSERS="firefox tor-browser"
     EDITORS="vim neovim"
     VCS="mercurial git"
