@@ -248,7 +248,10 @@ call plug#begin('~/.vim/plugged')
     " UI
     Plug 'Shougo/unite.vim'
     Plug 'Yggdroot/indentLine'
-    Plug 'bling/vim-airline'
+
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+
     Plug 'frankier/neovim-colors-solarized-truecolor-only'
     Plug 'kshenoy/vim-signature'
 
