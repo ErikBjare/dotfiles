@@ -9,7 +9,7 @@ if (lsb_release -a | grep 'Arch Linux'); then
     BROWSERS="firefox okular"
     EDITORS="vim neovim"
     VCS="git"  # since this script is in git, we probably already have it, but still
-    TOOLS="redshift zoxide"
+    TOOLS="redshift zoxide git-delta github-cli"
     MATH="octave"
     PYTHON="python ipython poetry pyenv"
     RUST="rustup"
@@ -39,7 +39,7 @@ if (lsb_release -a | grep 'Arch Linux'); then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
-        AUR_PACKAGES="spotify"
+        AUR_PACKAGES="spotify rbenv ruby-build"
         yay -S $AUR_PACKAGES
     fi
 
@@ -47,9 +47,11 @@ if (lsb_release -a | grep 'Arch Linux'); then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
-        PYTHON_PACKAGES="virtualfish numpy scipy pandas matplotlib black jupyterlab"
+        PYTHON_PACKAGES="numpy scipy pandas matplotlib"
         pip install --upgrade --user $PYTHON_PACKAGES
-        # After installation of virtualfish: 
+        PYTHON_PACKAGES_DEV="virtualfish black jupyterlab wheel pytest mypy"
+        pip install --upgrade --user $PYTHON_PACKAGES_DEV
+        # After installation of virtualfish:
         #   vf install
         #   vf addplugins auto_activation
     fi
