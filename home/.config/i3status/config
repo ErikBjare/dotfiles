@@ -12,8 +12,12 @@ order += "disk /"
 # Crashes for some reason... maybe pipewire's fault?
 order += "volume master"
 #order += "volume mic"  # Doesn't work...
+
+# Network
 order += "wireless _first_"
-order += "ethernet enp0s31f6"
+order += "ethernet _first_"
+#order += "ethernet enp0s31f6"
+#order += "ethernet enp2s0f0"
 order += "tztime local"
 
 # order += "memory"
@@ -30,9 +34,10 @@ wireless _first_ {
         format_down = "📡 down"
 }
 
-ethernet enp0s31f6 {
+ethernet _first_ {
         # if you use %speed, i3status requires the cap_net_admin capability
         format_up = "🌐 %ip"
+        #format_up = "🌐 %ip @ %speed"
         format_down = "🌐 down"
 }
 

@@ -13,14 +13,16 @@ begin
         end
     end
 
-    # PATH PREPENDS
+    # PATH PREPENDS (last has highest priority)
     path_prepend /opt/homebrew/bin
     path_prepend /opt/homebrew/opt/coreutils/libexec/gnubin
+
     path_prepend ~/.gem/ruby/2.4.0/bin
     path_prepend ~/.gem/ruby/2.5.0/bin
     path_prepend ~/.gem/ruby/2.6.0/bin
     path_prepend ~/.gem/ruby/2.7.0/bin
-    path_prepend ~/.gem/ruby/3.0.0/bin
+    path_prepend ~/.local/share/gem/ruby/3.0.0/bin
+
     path_prepend ~/.bin/git-subrepo/lib
     path_prepend ~/.local/bin
     path_prepend ~/.cargo/bin

@@ -11,15 +11,16 @@ if (lsb_release -a | grep 'Arch Linux'); then
     BROWSERS="firefox okular"
     EDITORS="vim neovim"
     VCS="git"  # since this script is in git, we probably already have it, but still
-    TOOLS="redshift zoxide git-delta github-cli"
+    TOOLS="redshift zoxide git-delta github-cli dunst dex"
     MATH="octave"
     PYTHON="python ipython poetry pyenv"
     RUST="rustup"
     NODE="nodejs nvm"
     TEX="texlive-core"
     X11="xclip xorg-xkill"
+    MISC="playerctl"
 
-    ALL="$TERMINAL $BROWSERS $EDITORS $VCS $MATH $PYTHON $TEX $X11 $RUST"
+    ALL="$TERMINAL $BROWSERS $EDITORS $VCS $MATH $PYTHON $TEX $X11 $RUST $MISC"
     set -x
     sudo pacman --needed -S $ALL
     set +x
@@ -30,18 +31,18 @@ if (lsb_release -a | grep 'Arch Linux'); then
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
         # Install yay if not available
-        TMP="$(mktemp)"
-        git clone https://aur.archlinux.org/yay.git
+        TMP="$(mktemp -d --suffix='-yay')"
+        git clone https://aur.archlinux.org/yay.git $TMP
         pushd $TMP
         makepkg -si
-        popd; popd
+        popd
     fi
 
     read -p "Want to install AUR packages? (y/N):  " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
-        AUR_PACKAGES="spotify rbenv ruby-build"
+        AUR_PACKAGES="spotify rbenv ruby-build escrotum-git"
         yay -S $AUR_PACKAGES
     fi
 

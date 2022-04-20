@@ -23,3 +23,5 @@ abbr --add vim "nvim"
 
 abbr --add sctl "systemctl"
 abbr --add usctl "systemctl --user"
+
+abbr --add own "sudo chown (whoami)"

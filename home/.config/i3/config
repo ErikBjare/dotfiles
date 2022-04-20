@@ -24,9 +24,9 @@ set $ws8 "8 🌈"
 set $ws9 "9 📔"
 set $ws10 "⚙️"
 
-set $monitorleft  HDMI-0
-set $monitormain  HDMI-0
-set $monitorright DP-0
+set $monitorleft  DisplayPort-0
+set $monitormain  DisplayPort-0
+set $monitorright HDMI-A-0
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -203,7 +203,8 @@ exec --no-startup-id /usr/bin/xautolock -time 10 -detectsleep -locker "i3lock --
 exec --no-startup-id /usr/bin/xss-lock -- i3lock -n --color 000000 -i ~/.backgrounds/koan-inverted-bg.png
 
 # set wallpaper
-exec_always --no-startup-id /usr/bin/feh --bg-scale /home/erb/.backgrounds/current
+#exec_always --no-startup-id /usr/bin/feh --bg-scale /home/erb/.backgrounds/current
+exec_always --no-startup-id /usr/bin/feh --bg-fill /home/erb/.backgrounds/current
 
 # Autostart .desktop files in ~/.config/autostart
 # Requires dex to be installed
