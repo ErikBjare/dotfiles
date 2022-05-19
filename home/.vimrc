@@ -286,6 +286,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'preservim/nerdcommenter'
     Plug 'christoomey/vim-tmux-navigator'
 
+    Plug 'ludovicchabant/vim-gutentags'
+
+    " Auto import for JS/TS (with vue support)
+    Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
+
     " vim-signify
     if has('nvim') || has('patch-8.0.902')
       Plug 'mhinz/vim-signify'
@@ -296,6 +301,16 @@ call plug#end()
 
 " Needed by ultisnips to avoid using the active virtualenv
 let g:python3_host_prog = '/usr/bin/python3'
+
+" Set up vim-js-file-import
+let g:js_file_import_from_root = 1
+let g:js_file_import_root = getcwd().'/src'
+let g:js_file_import_root_alias = '@/'
+let g:js_file_import_no_mappings = 1
+nmap <C-i> <Plug>(JsFileImport)
+nmap <C-u> <Plug>(PromptJsFileImport)
+nmap <C-g> <Plug>(JsGotoDefinition)
+set tagfunc=jsfileimport#tagfunc
 
 " Enable syntax highlighting
 syntax on

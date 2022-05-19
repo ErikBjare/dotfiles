@@ -45,19 +45,6 @@ if (lsb_release -a | grep 'Arch Linux'); then
         AUR_PACKAGES="spotify rbenv ruby-build escrotum-git"
         yay -S $AUR_PACKAGES
     fi
-
-    read -p "Want to install user-level Python packages? (y/N):  " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-        PYTHON_PACKAGES="numpy scipy pandas matplotlib"
-        pip install --upgrade --user $PYTHON_PACKAGES
-        PYTHON_PACKAGES_DEV="virtualfish black jupyterlab wheel pytest mypy"
-        pip install --upgrade --user $PYTHON_PACKAGES_DEV
-        # After installation of virtualfish:
-        #   vf install
-        #   vf addplugins auto_activation
-    fi
 elif (lsb_release -a | grep 'Raspbian'); then
     echo 'Detected Raspbian'
     sudo apt install vim tmux fish git nodejs npm python3 python3-pip
@@ -79,4 +66,17 @@ else
 
     sudo apt-get update
     sudo apt-get install $ALL
+fi
+
+read -p "Want to user-install Python packages? (y/N):  " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    PYTHON_PACKAGES="numpy scipy pandas matplotlib"
+    pip install --upgrade --user $PYTHON_PACKAGES
+    PYTHON_PACKAGES_DEV="virtualfish black jupyterlab wheel pytest mypy pyupgrade"
+    pip install --upgrade --user $PYTHON_PACKAGES_DEV
+    # After installation of virtualfish:
+    #   vf install
+    #   vf addplugins auto_activation
 fi
