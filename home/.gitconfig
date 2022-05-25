@@ -52,3 +52,5 @@
 	trustExitCode = true
 [init]
 	defaultBranch = master
+[alias]
+	merge-diff-theirs = diff HEAD...MERGE_HEAD
