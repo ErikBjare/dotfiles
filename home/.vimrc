@@ -257,6 +257,7 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'frankier/neovim-colors-solarized-truecolor-only'
     Plug 'kshenoy/vim-signature'
+    Plug 'ap/vim-css-color'
 
     " Language pack
     " Contains lots of stuff like:

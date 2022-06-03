@@ -4,6 +4,10 @@ abbr --add eg "egrep"
 
 abbr --add archive-targz "tar xzvf"
 
+abbr --add llt "ls -l --sort=time --reverse"
+abbr --add lld "ls -l --group-directories-first -X"
+abbr --add lsd "ls --group-directories-first -X"
+
 abbr --add gs "git status"
 abbr --add gss "git submodule summary"
 

@@ -13,6 +13,7 @@ mkdir -p $FOLDER
 MSG_ERROR_ESCROTUM="escrotum not installed, please install it"
 
 hash escrotum || (msg $MSG_ERROR_ESCROTUM && exit 1)
+mkdir -p $FOLDER
 
 if [ "$1" == "--help" ]; then
     echo "Arguments:"

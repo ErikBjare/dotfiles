@@ -5,8 +5,12 @@ set -xe
 echo "Storage before clean:"
 df -h || true
 
+rm -rf ~/.cache/pip/http
+rm -rf ~/.cache/pip/wheels
 rm -rf ~/.cache/pipenv/http
+rm -rf ~/.cache/pypoetry/artifacts
 rm -rf ~/.cache/yarn
+rm -rf ~/.cargo/registry
 
 pushd ~/Downloads
 DOWNLOADS_SIZE=$(ls-by-size | head -1 | cut -f 1)
