@@ -33,11 +33,6 @@ begin
 
     set -x MANPATH ":$MANPATH" ~/.bin/git-subrepo/man
 
-    # Nvm wrapper
-    if test -e ~/.config/fish/nvm-wrapper/nvm.fish
-        source ~/.config/fish/nvm-wrapper/nvm.fish
-    end
-
     path_prepend ~/.npm-packages/$NPM_PACKAGES/bin
     set MANPATH ~/.npm-packages/share/man $MANPATH
 end
