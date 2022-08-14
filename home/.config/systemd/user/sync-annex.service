@@ -1,0 +1,8 @@
+[Unit]
+Description=Sync annexes
+
+[Service]
+ExecStart=/usr/bin/bash /home/erb/.bin/sync-annex
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+for path in ~/*annex; do
+    echo "Syncing $path"
+    pushd $path
+    git annex sync || true
+done
