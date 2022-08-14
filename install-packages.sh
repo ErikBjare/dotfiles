@@ -11,7 +11,7 @@ if (lsb_release -a | grep 'Arch Linux'); then
     BROWSERS="firefox okular"
     EDITORS="vim neovim"
     VCS="git"  # since this script is in git, we probably already have it, but still
-    TOOLS="redshift zoxide git-delta github-cli dunst dex"
+    TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs"
     MATH="octave"
     PYTHON="python ipython poetry pyenv"
     RUST="rustup"

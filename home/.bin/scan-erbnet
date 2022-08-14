@@ -1,0 +1,12 @@
+#!/bin/bash
+
+target=172.22.0.0/24
+
+echo 'ping scan'
+echo '---------'
+nmap -sn $target
+
+echo
+echo 'quick scan'
+echo '----------'
+nmap -T4 -F $target

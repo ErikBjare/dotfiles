@@ -1,0 +1,11 @@
+#!/bin/bash
+
+i3lock --color 000000 -i ~/.backgrounds/lockscreen.png
+
+# if there is a battery, and we're on battery, suspend
+# NOTE: this might cause issues if called from xautolock after a resume from suspend
+if [ -e /sys/class/power_supply/BAT0/status ]; then
+    if [ $(cat /sys/class/power_supply/BAT0/status) == "Discharging" ]; then
+        systemctl suspend
+    fi
+fi

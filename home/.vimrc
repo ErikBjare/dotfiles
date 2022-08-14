@@ -287,7 +287,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'preservim/nerdcommenter'
     Plug 'christoomey/vim-tmux-navigator'
 
-    Plug 'ludovicchabant/vim-gutentags'
+    " Makes everything slow/refuses to exit when processing a lot of stuff...
+    "Plug 'ludovicchabant/vim-gutentags'
 
     " Auto import for JS/TS (with vue support)
     Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}

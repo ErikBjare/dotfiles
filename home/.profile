@@ -102,8 +102,8 @@ fi
 
 echo ".profile ran successfully" >> $logfile
 
-export NVM_DIR="/home/erb/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+#export NVM_DIR="/home/erb/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-export NVS_HOME="$HOME/.nvs"
-[ -s "$NVS_HOME/nvs.sh" ] && . "$NVS_HOME/nvs.sh"
+#export NVS_HOME="$HOME/.nvs"
+#[ -s "$NVS_HOME/nvs.sh" ] && . "$NVS_HOME/nvs.sh"
