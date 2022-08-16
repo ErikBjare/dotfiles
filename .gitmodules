@@ -10,15 +10,9 @@
 [submodule "home/.tmux/plugins/tmux-sensible"]
     path = home/.tmux/plugins/tmux-sensible
     url = https://github.com/tmux-plugins/tmux-sensible.git
-[submodule "home/.vim/bundle/vim-colors-solarized"]
-    path = home/.vim/bundle/vim-colors-solarized
-    url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "home/.emacs.d"]
-	path = home/.emacs.d
-	url = https://github.com/syl20bnr/spacemacs.git
-[submodule "home/.vim/bundle/vim-markdown-folding"]
-	path = home/.vim/bundle/vim-markdown-folding
-	url = https://github.com/nelstrom/vim-markdown-folding.git
+    path = home/.emacs.d
+    url = https://github.com/syl20bnr/spacemacs.git
 [submodule "home/.config/fish/nvm-wrapper"]
-	path = home/.config/fish/nvm-wrapper
-	url = https://github.com/passcod/nvm-fish-wrapper.git
+    path = home/.config/fish/nvm-wrapper
+    url = https://github.com/passcod/nvm-fish-wrapper.git

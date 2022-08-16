@@ -56,7 +56,7 @@ begin
     if test -e $AUTOJUMP_PATH
         source $AUTOJUMP_PATH
     else
-        echo "autojump was not found on system, won't be available"
+        # echo "autojump was not found on system, won't be available"
     end
 end
 
@@ -64,7 +64,7 @@ begin
     if type -f zoxide -q
         zoxide init fish | source
     else
-        echo "zoxide was not found on system, won't be available"
+        # echo "zoxide was not found on system, won't be available"
     end
 end
 
