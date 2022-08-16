@@ -2,6 +2,7 @@
 Description=Sync annexes
 
 [Service]
+Type=oneshot
 ExecStart=/usr/bin/bash /home/erb/.bin/sync-annex
 
 [Install]

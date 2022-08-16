@@ -1,0 +1,13 @@
+[Unit]
+Description=Pull ActivityWatch events from sync folder
+Wants=aw-server-rust-syncserver.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/echo "Syncing..."
+ExecStart=/usr/bin/bash %h/Programming/activitywatch/aw-server-rust/aw-sync/test-sync-push.sh
+ExecStart=/usr/bin/bash %h/Programming/activitywatch/aw-server-rust/aw-sync/test-sync-pull.sh
+WorkingDirectory=%h/Programming/activitywatch/aw-server-rust/aw-sync
+
+[Install]
+WantedBy=default.target

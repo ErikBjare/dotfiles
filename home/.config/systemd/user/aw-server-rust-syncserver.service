@@ -1,0 +1,11 @@
+[Unit]
+Description=aw-server-rust server for sync service
+Wants=
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/bash %h/Programming/activitywatch/aw-server-rust/aw-sync/test-server.sh
+WorkingDirectory= %h/Programming/activitywatch/aw-server-rust/aw-sync
+
+[Install]
+WantedBy=default.target
