@@ -1,10 +1,32 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # TODO: Do all necessary add-apt-repository (for google-chrome)
 # TODO: Fetch dpkg/alternative installers (for veracrypt)
 # TODO: Fix Arch support
 
-if (lsb_release -a | grep 'Arch Linux'); then
+# if macOS
+if (uname | grep 'Darwin'); then
+    echo 'Detected macOS'
+
+    # if brew not installed
+    if ! (which brew); then
+        echo 'Installing Homebrew'
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+
+    GNU_UTILS="coreutils gnu-sed grep"
+    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup tree"
+    GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone"
+    BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one"
+
+    read -p "Want to install brew packages? (y/N):  " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        brew install $GNU_UTILS $BREW_PACKAGES $GIT_PACKAGES
+        brew install --cask $BREW_CASK_PACKAGES
+    fi
+elif (lsb_release -a | grep 'Arch Linux'); then
     echo 'Detected Arch Linux'
 
     TERMINAL="fish tmux alacritty powerline"
@@ -67,16 +89,20 @@ else
     sudo apt-get update
     sudo apt-get install $ALL
 fi
+echo 'Done with OS-specific setup'
+echo
 
 read -p "Want to user-install Python packages? (y/N):  " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    PYTHON_PACKAGES="numpy scipy pandas matplotlib"
+    PYTHON_PACKAGES="numpy scipy pandas matplotlib powerline-status"
     pip install --upgrade --user $PYTHON_PACKAGES
-    PYTHON_PACKAGES_DEV="virtualfish black jupyterlab wheel pytest mypy pyupgrade"
+    PYTHON_PACKAGES_DEV="virtualfish jupyterlab wheel pytest"
+    PYTHON_PACKAGES_LINT="black bandit flake8 mypy pyupgrade"
     pip install --upgrade --user $PYTHON_PACKAGES_DEV
-    # After installation of virtualfish:
-    #   vf install
-    #   vf addplugins auto_activation
+
+    echo "! After installation of virtualfish, do:"
+    echo "!   vf install"
+    echo "!   vf addplugins auto_activation"
 fi

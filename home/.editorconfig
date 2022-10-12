@@ -22,6 +22,10 @@ indent_size = 2
 [*.{go,c,cpp}]
 indent_size = 8
 
+# 2 spaces for Swift
+[*.swift]
+indent_size = 2
+
 # 4 spaces for Nim and Rust
 [*.{nim,rs}]
 indent_size = 4
@@ -31,7 +35,7 @@ indent_size = 4
 indent_size = 2
 
 # 2 spaces for TeX
-[*.{tex}]
+[*.tex]
 indent_size = 2
 
 # 2 spaces for markdown

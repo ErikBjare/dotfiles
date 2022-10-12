@@ -16,12 +16,25 @@ begin
     # PATH PREPENDS (last has highest priority)
     path_prepend /opt/homebrew/bin
     path_prepend /opt/homebrew/opt/coreutils/libexec/gnubin
+    path_prepend /opt/homebrew/opt/gnu-sed/libexec/gnubin
+    path_prepend /opt/homebrew/opt/grep/libexec/gnubin
 
     path_prepend ~/.gem/ruby/2.4.0/bin
     path_prepend ~/.gem/ruby/2.5.0/bin
     path_prepend ~/.gem/ruby/2.6.0/bin
     path_prepend ~/.gem/ruby/2.7.0/bin
     path_prepend ~/.local/share/gem/ruby/3.0.0/bin
+
+    # To set system Python as default on macOS
+    #path_prepend ~/Library/Python/3.9/bin
+    path_prepend /opt/homebrew/opt/python@3.10/bin
+
+    # Setting PATH for Python 3.9
+    # The original version is saved in /Users/erb/.config/fish/config.fish.pysave
+    #set -x PATH "/Library/Frameworks/Python.framework/Versions/3.9/bin" "$PATH"
+
+    # I need 16 as my system node on macOS (Copilot)
+    path_prepend /opt/homebrew/opt/node@16/bin
 
     path_prepend ~/.bin/git-subrepo/lib
     path_prepend ~/.local/bin
@@ -104,6 +117,6 @@ begin
     if type -f -q rbenv
         status --is-interactive; and rbenv init - fish | source
     else
-        echo "rbenv was not found on system, won't be available"
+        # echo "rbenv was not found on system, won't be available"
     end
 end

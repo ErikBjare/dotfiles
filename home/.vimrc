@@ -353,7 +353,7 @@ set statusline+=%*
 " Ale linters
 
 let g:ale_linters = {
-\   'python': ['flake8', 'mypy'],
+\   'python': ['bandit', 'flake8', 'mypy'],
 \   'javascript': ['jshint', 'eslint'],
 \   'typescript': ['eslint', 'tslint'],
 \}
@@ -363,11 +363,13 @@ let g:ale_linters = {
 " E402: Module level import not at top of file
 " E501: Line too long
 " W503: Line break occurred before a binary operator
-let flake8_args='--ignore=E203,E225,E265,E402,E501,W503'
-let g:ale_python_flake8_options=flake8_args
-
-let mypy_args='--ignore-missing-imports --check-untyped-defs'
-let g:ale_python_mypy_options=mypy_args
+let g:ale_python_flake8_options='--ignore=E203,E225,E265,E402,E501,W503'
+let g:ale_python_mypy_options='--ignore-missing-imports --check-untyped-defs'
+let g:ale_python_autoflake_options='--remove-unused-variables --ignore-init-module-imports --ignore-pass-after-docstring --in-place'
+let g:ale_python_autoimport_options=''
+let g:ale_python_reorderpythonimports_options='--py38-plus'
+let g:ale_python_isort_options='--profile black --force-grid-wrap 4'
+let g:ale_python_bandit_options='--skip B101'
 
 "let black_args='--skip-string-normalization'
 "let g:ale_python_black_options=black_args
@@ -375,7 +377,7 @@ let g:ale_python_mypy_options=mypy_args
 " Ale fixers
 
 let g:ale_fixers = {
-\   'python': ['autopep8', 'black'],
+\   'python': ['autoflake', 'autoimport', 'reorder-python-imports', 'isort', 'autopep8', 'black'],
 \   'javascript': ['prettier'],
 \   'javascript.jsx': ['prettier'],
 \   'typescript': ['prettier'],

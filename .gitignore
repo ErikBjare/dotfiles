@@ -4,6 +4,7 @@ npm-debug.log
 *.bkp
 .mypy_cache
 db
+.DS_Store
 
 # Vim stuff
 home/.vim/swap

@@ -90,6 +90,10 @@ else
 fi
 export PATH="$JAVA_HOME/bin:$PATH"
 
+# check if brew bin exists in /opt/homebrew/bin first
+if [ -f "/opt/homebrew/bin/brew" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 ###########################
 #        Finish up        #
