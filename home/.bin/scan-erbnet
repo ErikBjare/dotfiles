@@ -2,6 +2,14 @@
 
 target=172.22.0.0/24
 
+# if on macOS, warn that you might need sudo (if not already root)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if [[ $EUID -ne 0 ]]; then
+        echo "WARNING: You might need to run this script with sudo to find anything other than localhost"
+        echo ""
+    fi
+fi
+
 echo 'ping scan'
 echo '---------'
 nmap -sn $target

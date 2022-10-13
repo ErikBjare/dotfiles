@@ -1,0 +1,14 @@
+# Sample config available here:
+# https://github.com/koekeishiya/skhd/blob/master/examples/skhdrc
+
+cmd - 1 : open /Applications/Alacritty.app
+cmd - 2 : open /Applications/Firefox.app
+cmd - 4 : open "/Applications/Roam Research.app"
+cmd - 5 : open /Applications/Spotify.app
+cmd - 6 : open /Applications/Discord.app
+
+# .blacklist [
+#    "kitty"
+#    "terminal"
+#    "qutebrowser"
+# ]

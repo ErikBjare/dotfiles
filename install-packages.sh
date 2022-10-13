@@ -15,7 +15,7 @@ if (uname | grep 'Darwin'); then
     fi
 
     GNU_UTILS="coreutils gnu-sed grep"
-    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup tree"
+    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup tree nmap"
     GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone"
     BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one"
 
