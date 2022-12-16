@@ -242,6 +242,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'rhysd/vim-grammarous'  " LanguageTool
     Plug 'preservim/vim-wordy'   " Pure-vimscript grammar checker
 
+    " Keys
+    Plug 'tpope/vim-unimpaired'
+
     " Copilot
     Plug 'github/copilot.vim', {'branch': 'release'}
 

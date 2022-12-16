@@ -33,14 +33,14 @@ elif (lsb_release -a | grep 'Arch Linux'); then
     BROWSERS="firefox okular"
     EDITORS="vim neovim"
     VCS="git"  # since this script is in git, we probably already have it, but still
-    TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs"
+    TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs tokei"
     MATH="octave"
     PYTHON="python ipython poetry pyenv"
     RUST="rustup"
     NODE="nodejs nvm"
     TEX="texlive-core"
     X11="xclip xorg-xkill"
-    MISC="playerctl"
+    MISC="playerctl age"
 
     ALL="$TERMINAL $BROWSERS $EDITORS $VCS $MATH $PYTHON $TEX $X11 $RUST $MISC"
     set -x

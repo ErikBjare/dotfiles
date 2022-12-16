@@ -191,16 +191,16 @@ exec --no-startup-id dunst
 exec --no-startup-id picom
 
 # lock
-bindsym $mod+l exec "i3lock --color 000000 -i ~/.backgrounds/lockscreen.png"
+bindsym $mod+l exec "bash ~/.bin/lock"
 
 # lock and suspend
-bindsym $mod+Shift+l exec "i3lock --color 000000 -i ~/.backgrounds/lockscreen.png; systemctl suspend"
+bindsym $mod+Shift+l exec "bash ~/.bin/lock --suspend"
 
 # automatically lock after 10 minutes of inactivity
-exec --no-startup-id /usr/bin/xautolock -time 10 -detectsleep -locker "i3lock --color 000000 -i ~/.backgrounds/lockscreen.png; systemctl suspend"
+exec --no-startup-id /usr/bin/xautolock -time 10 -detectsleep -locker "bash ~/.bin/lock"
 
 # automatically lock after suspend (should be handled by xautolock)
-exec --no-startup-id /usr/bin/xss-lock -- i3lock -n --color 000000 -i ~/.backgrounds/koan-inverted-bg.png
+#exec --no-startup-id /usr/bin/xss-lock -- i3lock -n --color 000000 -i ~/.backgrounds/koan-inverted-bg.png
 
 # set wallpaper
 #exec_always --no-startup-id /usr/bin/feh --bg-scale /home/erb/.backgrounds/current
