@@ -1,0 +1,6 @@
+configuration {
+ modi: "window,run,drun,ssh,combi";
+ font: "Fira Code 14";
+ combi-modi: "window,run,drun,ssh";
+}
+@theme "glue_pro_blue"

@@ -57,6 +57,9 @@ begin
     set fish_color_redirection yellow --bold
 end
 
+# set default node version
+set --universal nvm_default_version lts/gallium
+
 begin
     # Try with the users install
     set --local AUTOJUMP_PATH $HOME/.autojump/share/autojump/autojump.fish
