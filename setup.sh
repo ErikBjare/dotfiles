@@ -13,6 +13,25 @@ echo_green()  { echo -e  "${GREEN}${1}${CLEAR}"; }
 echo_yellow() { echo -e "${YELLOW}${1}${CLEAR}"; }
 echo_bold()   { echo -e   "${BOLD}${1}${CLEAR}"; }
 
+NOCONFIRM=${NOCONFIRM:-false}
+if [ "$NOCONFIRM" = true ]; then
+    echo 'NOCONFIRM is set, skipping confirmation'
+fi
+
+# function to ask for confirmation, or skip if NOCONFIRM is set
+# returns 0 if confirmed, 1 if not
+function ask() {
+    if [ "$NOCONFIRM" = false ]; then
+        read -p "$1 (${GREEN}y${CLEAR}/${RED}n${CLEAR}): " -n 1 -r
+        echo
+    fi
+    if [ "$NOCONFIRM" = true ] || [[ $REPLY =~ ^[Yy]$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 submodules () {
     git submodule update --init --recursive;
     echo_green "Submodules initalized and updated!"
@@ -86,9 +105,8 @@ echo_bold "Welcome to my dotfiles setup script!"
 SECTIONS=(submodules symlinks fortunes)
 
 for section in "${SECTIONS[@]}"; do
-    echo -ne "Would you like to setup $section? (${GREEN}y${CLEAR}/${RED}n${CLEAR}): "
-    read prompt
-    if [ $prompt = y ]; then
+    ask "Would you like to setup $section?"
+    if [ $? -eq 0 ]; then
         `echo $section`
     fi
 done

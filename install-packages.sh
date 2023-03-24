@@ -4,6 +4,25 @@
 # TODO: Fetch dpkg/alternative installers (for veracrypt)
 # TODO: Fix Arch support
 
+NOCONFIRM=${NOCONFIRM:-false}
+if [ "$NOCONFIRM" = true ]; then
+    echo 'NOCONFIRM is set, skipping confirmation'
+fi
+
+# function to ask for confirmation, or skip if NOCONFIRM is set
+# returns 0 if confirmed, 1 if not
+function ask() {
+    if [ "$NOCONFIRM" = false ]; then
+        read -p "$1 (y/N):  " -n 1 -r
+        echo
+    fi
+    if [ "$NOCONFIRM" = true ] || [[ $REPLY =~ ^[Yy]$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # if macOS
 if (uname | grep 'Darwin'); then
     echo 'Detected macOS'
@@ -15,14 +34,12 @@ if (uname | grep 'Darwin'); then
     fi
 
     GNU_UTILS="coreutils gnu-sed grep"
-    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup tree nmap"
+    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup tree nmap pandoc ripgrep wget jq"
     GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone"
-    BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one"
+    BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one visual-studio-code logseq koekeishiya/formulae/yabai"
 
-    read -p "Want to install brew packages? (y/N):  " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
+    ask "Want to install brew packages?"
+    if [ $? -eq 0 ]; then
         brew install $GNU_UTILS $BREW_PACKAGES $GIT_PACKAGES
         brew install --cask $BREW_CASK_PACKAGES
     fi
@@ -48,10 +65,8 @@ elif (lsb_release -a | grep 'Arch Linux'); then
     set +x
 
     # TODO: Check if yay is already installed
-    read -p "Want to install yay? (y/N):  " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
+    ask "Want to install yay?"
+    if [ $? -eq 0 ]; then
         # Install yay if not available
         TMP="$(mktemp -d --suffix='-yay')"
         git clone https://aur.archlinux.org/yay.git $TMP
@@ -60,10 +75,8 @@ elif (lsb_release -a | grep 'Arch Linux'); then
         popd
     fi
 
-    read -p "Want to install AUR packages? (y/N):  " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
+    ask "Want to install AUR packages?"
+    if [ $? -eq 0 ]; then
         AUR_PACKAGES="spotify rbenv ruby-build escrotum-git"
         yay -S $AUR_PACKAGES
     fi
@@ -92,10 +105,8 @@ fi
 echo 'Done with OS-specific setup'
 echo
 
-read -p "Want to user-install Python packages? (y/N):  " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
+ask "Want to user-install Python packages?"
+if [ $? -eq 0 ]; then
     PYTHON_PACKAGES="numpy scipy pandas matplotlib powerline-status"
     pip install --upgrade --user $PYTHON_PACKAGES
     PYTHON_PACKAGES_DEV="virtualfish jupyterlab wheel pytest"
