@@ -356,7 +356,7 @@ set statusline+=%*
 " Ale linters
 
 let g:ale_linters = {
-\   'python': ['bandit', 'flake8', 'mypy'],
+\   'python': ['bandit', 'flake8', 'mypy', 'ruff'],
 \   'javascript': ['jshint', 'eslint'],
 \   'typescript': ['eslint', 'tslint'],
 \}
@@ -379,6 +379,7 @@ let g:ale_python_bandit_options='--skip B101'
 
 " Ale fixers
 
+" NOTE: There is also https://github.com/hadialqattan/pycln which only removes unused imports (subset of autoimport)
 let g:ale_fixers = {
 \   'python': ['autoflake', 'autoimport', 'reorder-python-imports', 'isort', 'autopep8', 'black'],
 \   'javascript': ['prettier'],

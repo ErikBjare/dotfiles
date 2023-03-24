@@ -61,14 +61,17 @@ function fish_prompt --description 'Write out the prompt'
     echo -n " (venv:"(basename "$VIRTUAL_ENV")")"
   end
 
-  set_color -b '000'
+  # set_color -b '000'
   echo
-  set_color -b '000'
+  # set_color -b '000'
 
   #__informative_git_prompt
   set_color -o red; echo -n "➤"
   set_color -o yellow; echo -n "➤"
   set_color -o green; echo -n "➤ "
+
+  # reset color
+  set_color -b normal
 end
 
 

@@ -1,6 +1,14 @@
 #!/bin/bash
 
-target=172.22.0.0/24
+
+# If param given, take first as target
+# else use erbnet address range
+if [ -n "$1" ]; then
+    target="$1"
+else
+    target=172.22.0.0/24
+fi
+
 
 # if on macOS, warn that you might need sudo (if not already root)
 if [[ "$OSTYPE" == "darwin"* ]]; then

@@ -18,12 +18,16 @@ begin
     path_prepend /opt/homebrew/opt/coreutils/libexec/gnubin
     path_prepend /opt/homebrew/opt/gnu-sed/libexec/gnubin
     path_prepend /opt/homebrew/opt/grep/libexec/gnubin
+    path_prepend /opt/homebrew/opt/postgresql@15/bin
 
     path_prepend ~/.gem/ruby/2.4.0/bin
     path_prepend ~/.gem/ruby/2.5.0/bin
     path_prepend ~/.gem/ruby/2.6.0/bin
     path_prepend ~/.gem/ruby/2.7.0/bin
     path_prepend ~/.local/share/gem/ruby/3.0.0/bin
+
+    # Setting brew JDK on macOS
+    path_prepend /opt/homebrew/opt/openjdk/bin
 
     # To set system Python as default on macOS
     #path_prepend ~/Library/Python/3.9/bin
