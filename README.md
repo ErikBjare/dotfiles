@@ -1,7 +1,7 @@
 dotfiles
 ========
 
-[![Build Status](https://travis-ci.org/ErikBjare/dotfiles.svg)](https://travis-ci.org/ErikBjare/dotfiles)
+[![Test](https://github.com/ErikBjare/dotfiles/actions/workflows/test.yml/badge.svg)](https://github.com/ErikBjare/dotfiles/actions/workflows/test.yml)
 ![Works on my machine](https://forthebadge.com/images/badges/works-on-my-machine.svg)
 
 My dotfiles and a nice script for managing them, based on a previously private home repo.
