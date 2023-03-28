@@ -50,16 +50,16 @@ elif (lsb_release -a | grep 'Arch Linux'); then
     BROWSERS="firefox okular"
     EDITORS="vim neovim"
     VCS="git"  # since this script is in git, we probably already have it, but still
-    TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs tokei"
+    TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs tokei nmap"
     MATH="octave"
     PYTHON="python ipython poetry pyenv"
     RUST="rustup"
-    NODE="nodejs nvm"
+    NODE="nodejs"
     TEX="texlive-core"
     X11="xclip xorg-xkill"
     MISC="playerctl age"
 
-    ALL="$TERMINAL $BROWSERS $EDITORS $VCS $MATH $PYTHON $TEX $X11 $RUST $MISC"
+    ALL="$TERMINAL $BROWSERS $EDITORS $VCS $TOOLS $MATH $PYTHON $RUST $NODE $TEX $X11 $MISC"
     set -x
     sudo pacman --needed -S $ALL
     set +x
@@ -77,7 +77,7 @@ elif (lsb_release -a | grep 'Arch Linux'); then
 
     ask "Want to install AUR packages?"
     if [ $? -eq 0 ]; then
-        AUR_PACKAGES="spotify rbenv ruby-build escrotum-git"
+        AUR_PACKAGES="spotify rbenv ruby-build escrotum-git nvm"
         yay -S $AUR_PACKAGES
     fi
 elif (lsb_release -a | grep 'Raspbian'); then
