@@ -1,0 +1,6 @@
+[common_statements]
+"np" = "import numpy as np"
+"pd" = "import pandas as pd"
+"plt" = "import matplotlib.pyplot as plt"
+"pprint" = "from pprint import pprint"
+"datetime" = "from datetime import datetime"
