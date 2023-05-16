@@ -24,9 +24,9 @@ set $ws8 "8 🌈"
 set $ws9 "9 📔"
 set $ws10 "⚙️"
 
-set $monitorleft  DisplayPort-0
-set $monitormain  DisplayPort-0
-set $monitorright HDMI-A-0
+set $monitorleft  HDMI-0
+set $monitormain  DP-0
+set $monitorright DP-0
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
