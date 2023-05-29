@@ -6,3 +6,4 @@ tags.lock
 tags.temp
 .DS_Store
 __pycache__
+.hypothesis

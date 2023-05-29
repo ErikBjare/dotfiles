@@ -24,6 +24,8 @@
 .vim/.netrwhist
 .vim/shada
 
+.tmux/plugins
+
 # WeeChat
 .weechat/*
 !.weechat/python
