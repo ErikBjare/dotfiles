@@ -383,8 +383,8 @@ let g:ale_linters = {
 " E402: Module level import not at top of file
 " E501: Line too long
 " W503: Line break occurred before a binary operator
-let g:ale_python_flake8_options='--ignore=E203,E225,E265,E402,E501,W503'
-let g:ale_python_mypy_options='--ignore-missing-imports --check-untyped-defs'
+let g:ale_python_flake8_options='--ignore=E203,E225,E265,E402,E501,W503 --builtins=Analysis,PYZ,EXE,BUNDLE,MERGE,COLLECT'
+let g:ale_python_mypy_options='--ignore-missing-imports --check-untyped-defs --disable-error-code name-defined'
 let g:ale_python_autoflake_options='--remove-unused-variables --ignore-init-module-imports --ignore-pass-after-docstring --in-place'
 let g:ale_python_autoimport_options=''
 let g:ale_python_reorderpythonimports_options='--py38-plus'
@@ -447,3 +447,5 @@ au BufNewFile,BufRead *.ipy set filetype=python
 au BufNewFile,BufRead *.abi set filetype=json
 
 au BufNewFile,BufRead *.jrag set filetype=java
+
+lua require('plugins')
