@@ -33,10 +33,10 @@ if (uname | grep 'Darwin'); then
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
 
-    GNU_UTILS="coreutils gnu-sed grep"
-    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup rsync tree nmap pandoc ripgrep wget jq ncdu"
+    GNU_UTILS="coreutils gnu-sed grep moreutils"
+    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup rsync tree nmap pandoc ripgrep wget jq ncdu ruby"
     LIBS_PACKAGES="hdf5 c-blosc"
-    GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone"
+    GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone git-lfs"
     BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one visual-studio-code logseq koekeishiya/formulae/yabai"
 
     ask "Want to install brew packages?"
