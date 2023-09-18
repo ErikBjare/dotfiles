@@ -67,6 +67,9 @@ map <Down> gj
 " Use :Sw to save as root
 command! -nargs=0 Sw w !sudo tee % > /dev/null
 
+" ctrl+r in visual mode to replace
+vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
+
 nnoremap <Leader>b :Unite buffer<CR>
 nnoremap <Leader>t :Unite tab<CR>
 nnoremap <Leader>f :Unite file<CR>
@@ -86,6 +89,13 @@ map *  <Plug>(incsearch-nohl-*)
 map #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
+
+" vim-easy-align
+" For example, to align a markdown table:
+"   :EasyAlign*<Bar><Enter>
+" Source: https://thoughtbot.com/blog/align-github-flavored-markdown-tables-in-vim
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 
 " fugitive git bindings
 nnoremap <Leader>ga :Git add %:p<CR><CR>
@@ -233,8 +243,9 @@ endif
 
 " Register plugins with vim-plug
 call plug#begin('~/.vim/plugged')
-    " Indentation and stuff
+    " Formatting and indentation
     Plug 'editorconfig/editorconfig-vim'
+    Plug 'junegunn/vim-easy-align'
 
     " Linting, fixing, and completion
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -303,6 +314,12 @@ call plug#begin('~/.vim/plugged')
       Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
     endif
 call plug#end()
+
+" Config copilot
+let g:copilot_filetypes = {
+\    'markdown': v:true,
+\    'vue': v:true,
+\}
 
 " Needed by ultisnips to avoid using the active virtualenv
 let g:python3_host_prog = '/usr/bin/python3'
