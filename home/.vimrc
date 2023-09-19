@@ -147,6 +147,9 @@ let g:grammarous#disabled_rules = {
 " https://github.com/Xuyuanp/nerdtree-git-plugin/blob/1f3fe773bbc3d8bdd0096e19c26481dddab7cdfc/README.md#faq
 set shell=sh
 
+" Use python3 for neovim
+let g:python3_host_prog = '/usr/bin/python3'
+
 " Basics from vimrc_example.vim
 set nocompatible
 set ruler
@@ -250,6 +253,7 @@ call plug#begin('~/.vim/plugged')
     " Linting, fixing, and completion
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'dense-analysis/ale'
+    Plug 'davidhalter/jedi-vim'  " Python autocompletion
     Plug 'rhysd/vim-grammarous'  " LanguageTool
     Plug 'preservim/vim-wordy'   " Pure-vimscript grammar checker
 
@@ -320,9 +324,6 @@ let g:copilot_filetypes = {
 \    'markdown': v:true,
 \    'vue': v:true,
 \}
-
-" Needed by ultisnips to avoid using the active virtualenv
-let g:python3_host_prog = '/usr/bin/python3'
 
 " Set up vim-js-file-import
 let g:js_file_import_from_root = 1
@@ -447,5 +448,10 @@ au BufNewFile,BufRead *.ipy set filetype=python
 au BufNewFile,BufRead *.abi set filetype=json
 
 au BufNewFile,BufRead *.jrag set filetype=java
+
+" Show the syntax highlight group under cursor
+nnoremap <Leader>hi <cmd>echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+    \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+    \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<cr>
 
 lua require('plugins')
