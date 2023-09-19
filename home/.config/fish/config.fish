@@ -25,6 +25,9 @@ begin
     path_prepend ~/.gem/ruby/2.6.0/bin
     path_prepend ~/.gem/ruby/2.7.0/bin
     path_prepend ~/.local/share/gem/ruby/3.0.0/bin
+    # path_prepend /opt/homebrew/opt/ruby/bin
+    # path_prepend /opt/homebrew/opt/ruby@2.7/bin
+    path_prepend /opt/homebrew/opt/ruby@2.7/bin
 
     # Setting brew JDK on macOS
     path_prepend /opt/homebrew/opt/openjdk/bin

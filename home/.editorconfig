@@ -46,3 +46,7 @@ trim_trailing_whitespace = false
 # Hard TAB for Makefile
 [Makefile]
 indent_style = tab
+
+[*.patch]
+# allow trailing whitespace in patches
+trim_trailing_whitespace = false

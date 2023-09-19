@@ -8,6 +8,9 @@
 	editor = nvim
 	pager = delta --dark --diff-so-fancy
 
+[init]
+	defaultBranch = master
+
 [interactive]
     #diffFilter = delta --color-only
 
@@ -50,7 +53,17 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
-[init]
-	defaultBranch = master
+
 [alias]
 	merge-diff-theirs = diff HEAD...MERGE_HEAD
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[filter "notebook"]
+	clean = poetry run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --stdin --to=notebook --stdout
+	smudge = poetry run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --stdin --to=notebook --stdout
+	required = true

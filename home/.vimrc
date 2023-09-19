@@ -260,8 +260,11 @@ call plug#begin('~/.vim/plugged')
     " Keys
     Plug 'tpope/vim-unimpaired'
 
-    " Copilot
+    " Copilot/LLMs
     Plug 'github/copilot.vim', {'branch': 'release'}
+
+    " Highlight
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
     " Snippets
     "Plug 'SirVer/ultisnips'

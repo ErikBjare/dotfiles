@@ -4,3 +4,7 @@
 "plt" = "import matplotlib.pyplot as plt"
 "pprint" = "from pprint import pprint"
 "datetime" = "from datetime import datetime"
+"Optional" = "from typing import Optional"
+"Callable" = "from typing import Callable"
+"TypeVar" = "from typing import TypeVar"
+"TypeAlias" = "from typing import TypeAlias"
