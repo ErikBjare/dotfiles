@@ -179,6 +179,23 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 exec --no-startup-id 'bash ~/.config/i3/layouts.sh'
 bindsym $mod+u exec 'bash ~/.config/i3/layouts.sh'
 
+# Assign workspaces
+
+# Notes on workspace 4
+assign [class="Roam Research"] $ws4
+assign [class="Standard Notes"] $ws4
+assign [class="Logseq"] $ws4
+
+# Audio/music on workspace 5
+assign [class="Pavucontrol"] $ws5
+for_window [class="Spotify"] move to workspace $ws5
+
+# Chat on workspace 6
+assign [class="discord"] $ws6
+
+# Steam on workspace 8
+assign [class="Steam"] $ws8
+
 
 ####################
 # AUTOSTART SECTION

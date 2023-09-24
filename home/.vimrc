@@ -457,4 +457,5 @@ nnoremap <Leader>hi <cmd>echo "hi<" . synIDattr(synID(line("."),col("."),1),"nam
     \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<cr>
 
-lua require('plugins')
+" fails on erb-main2-arch
+"lua require('plugins')
