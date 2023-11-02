@@ -8,3 +8,4 @@ tags.temp
 __pycache__
 .hypothesis
 *.code-workspace
+.vim

@@ -9,3 +9,5 @@
 "TypeVar" = "from typing import TypeVar"
 "TypeAlias" = "from typing import TypeAlias"
 "dataclass" = "from dataclasses import dataclass"
+"sleep" = "from time import sleep"
+"Path" = "from pathlib import Path"
