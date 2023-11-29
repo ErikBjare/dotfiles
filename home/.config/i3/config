@@ -188,13 +188,14 @@ assign [class="Logseq"] $ws4
 
 # Audio/music on workspace 5
 assign [class="Pavucontrol"] $ws5
+assign [class="Blueman-manager"] $ws5
 for_window [class="Spotify"] move to workspace $ws5
 
 # Chat on workspace 6
 assign [class="discord"] $ws6
 
 # Steam on workspace 8
-assign [class="Steam"] $ws8
+assign [class="steam"] $ws8
 
 
 ####################

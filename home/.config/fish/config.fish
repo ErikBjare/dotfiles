@@ -116,6 +116,8 @@ end
 
 #source /opt/anaconda/etc/fish/conf.d/conda.fish
 
+set -x EDITOR nvim
+
 # Set FREESURFER_HOME for easier surfin'
 set FREESURFER_HOME /opt/freesurfer
 

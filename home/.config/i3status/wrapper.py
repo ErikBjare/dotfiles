@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # This script is a simple wrapper which prefixes each i3status line with custom
 # information. It is a python reimplementation of:
 # http://code.stapelberg.de/git/i3status/tree/contrib/wrapper.pl
@@ -23,30 +22,32 @@
 # the terms of the Do What The Fuck You Want To Public License (WTFPL), Version
 # 2, as published by Sam Hocevar. See http://sam.zoy.org/wtfpl/COPYING for more
 # details.
-
-import sys
-import json
-import subprocess
 import glob
-import requests
+import json
 import logging
-
+import subprocess
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
+
+import requests
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
 def get_governor():
-    """ Get the current governor for cpu0, assuming all CPUs use the same. """
+    """Get the current governor for cpu0, assuming all CPUs use the same."""
     with open("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor") as fp:
         return fp.readlines()[0].strip()
 
 
 def get_idletime() -> int:
-    p = subprocess.run("xprintidle", capture_output=True)
+    try:
+        p = subprocess.run("xprintidle", capture_output=True)
+    except FileNotFoundError:
+        return 666 * 24 * 60 * 60
     return int(round(int(str(p.stdout, "ascii").strip()) / 1000))
 
 
@@ -78,6 +79,18 @@ def get_power_draw() -> float:
         return round(power_draw, 1)
     else:
         return 0
+
+
+def format_idle_time(idle_time: int) -> str:
+    idlestr = ""
+    if idle_time > 60 * 60 * 24:
+        idlestr += f"{idle_time // (60 * 60 * 24)}d "
+    if idle_time > 60 * 60:
+        idlestr += f"{idle_time // (60 * 60) % 24}h "
+    if idle_time > 60:
+        idlestr += f"{idle_time // 60 % 60}m "
+    idlestr += f"{idle_time % 60}s"
+    return idlestr
 
 
 gasPricePath = Path("/tmp/gasPrice.json")
@@ -140,17 +153,17 @@ def get_eth_price():
 
     with open(ethPricePath, "r") as f:
         d = json.load(f)
-    return float(d["result"]["ethusd"])
+    return round(float(d["result"]["ethusd"]))
 
 
 def print_line(message):
-    """ Non-buffered printing to stdout. """
+    """Non-buffered printing to stdout."""
     sys.stdout.write(message + "\n")
     sys.stdout.flush()
 
 
 def read_line():
-    """ Interrupted respecting reader for stdin. """
+    """Interrupted respecting reader for stdin."""
     # try reading a line, removing any extra whitespace
     try:
         line = sys.stdin.readline().strip()
@@ -276,10 +289,18 @@ if __name__ == "__main__":
 
         idletime = get_idletime()
         idlecolor = colorpick(
-            idletime, max_value=3 * 60, max_color="#AAAAAA", above_max_color="#FF5500"
+            idletime,
+            max_value=3 * 60,
+            max_color="#AAAAAA",
+            above_max_color="#FF5500",
         )
         j.insert(
-            0, {"full_text": "💤 %ss" % idletime, "name": "idle", "color": idlecolor}
+            0,
+            {
+                "full_text": "💤 %s" % format_idle_time(idletime),
+                "name": "idle",
+                "color": idlecolor,
+            },
         )
 
         # and echo back new encoded json

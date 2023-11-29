@@ -11,3 +11,4 @@
 "dataclass" = "from dataclasses import dataclass"
 "sleep" = "from time import sleep"
 "Path" = "from pathlib import Path"
+"pytest" = "import pytest"

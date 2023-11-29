@@ -21,7 +21,6 @@
 "   - Fix proper pane/window/buffer config
 "   - Split into seperate files: one base, one for keys, one for theme, one for syntax, one for plugins
 "   - Make pageup/pagedown move half page and center view
-"
 
 " Set leader key to space
 let mapleader = "\<Space>"
@@ -326,6 +325,7 @@ call plug#end()
 let g:copilot_filetypes = {
 \    'markdown': v:true,
 \    'vue': v:true,
+\    'yml': v:true,
 \}
 
 " Set up vim-js-file-import
