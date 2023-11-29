@@ -1,11 +1,39 @@
+# My yabai config
+#
+# This is a shell script that is run by yabai when it starts up.
+#
+# Here are some good guides and example configs:
+#  - https://d12frosted.io/posts/2022-04-23-yabai-spaces.html
+
+# load scripting additions
+# NOTE: requires disabling System Integrity Protection (SIP)
+#sudo yabai --load-sa
+#yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
 # bsp or float (default: float)
 yabai -m config layout bsp
 
 # Override default layout for space 2 only
-yabai -m config --space 2 layout float
+#yabai -m config --space 2 layout float
 
 # New window spawns to the left if vertical split, or top if horizontal split
 #yabai -m config window_placement first_child
 
 # New window spawns to the right if vertical split, or bottom if horizontal split
-#yabai -m config window_placement second_child
+yabai -m config window_placement second_child
+
+# Move apps to specific spaces
+# Note: you can show all spaces with `yabai -m query --spaces`
+# main terminal
+yabai -m rule --add app="^Alacritty$" space=^1
+# browsers
+yabai -m rule --add app="^Safari$" space=^2
+yabai -m rule --add app="^FireFox$" space=^2
+# notes
+yabai -m rule --add app="^Standard Notes$" space=^4
+yabai -m rule --add app="^Roam Research$" space=^4
+# music
+yabai -m rule --add app="^Music$" space=5
+yabai -m rule --add app="^Spotify$" space=5
+# chat
+yabai -m rule --add app="^Discord$" space=6
