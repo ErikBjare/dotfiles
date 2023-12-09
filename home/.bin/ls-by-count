@@ -1,11 +1,16 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 
+# use gfind on macOS
+find="find"
+if [[ $(uname) == "Darwin" ]]; then
+    find="gfind"
+fi
 
-subdirs=("${(@f)$(find -maxdepth 4 -type d)}");
+subdirs=("${(@f)$($find -maxdepth 4 -type d)}");
 
 rows=""
 foreach dir in $subdirs; do
-    rows="$(find $dir ! -path '*/.git/*' | wc -l)\t$dir\n$rows";
+    rows="$($find $dir ! -path '*/.git/*' | wc -l)\t$dir\n$rows";
 done;
 
 echo $rows | sort -nr # | less

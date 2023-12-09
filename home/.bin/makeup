@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Store the original directory
+original_dir=$(pwd)
+
+# Function to walk up the directory structure
+function find_makefile {
+    if [[ -f "Makefile" ]]; then
+        echo $(pwd)
+    elif [[ $(pwd) == "/" ]]; then
+        echo ""
+    else
+        cd ..
+        find_makefile
+    fi
+}
+
+# Find the directory containing the Makefile
+makefile_dir=$(find_makefile)
+
+# Return to the original directory
+cd $original_dir
+
+# If a Makefile was found, ask for confirmation and run make
+if [[ -n $makefile_dir ]]; then
+    read -p "Makefile found in $makefile_dir. Do you want to run make here? (Y/n) " -n 1 -r
+    REPLY=${REPLY:-Y}
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        cd $makefile_dir
+        make $@
+        cd $original_dir
+    fi
+else
+    echo "No Makefile found in this directory or any parent directories."
+fi
