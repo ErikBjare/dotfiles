@@ -33,7 +33,7 @@ if (uname | grep 'Darwin'); then
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
 
-    GNU_UTILS="coreutils gnu-sed grep moreutils"
+    GNU_UTILS="coreutils gnu-sed grep moreutils findutils"
     BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup rsync tree nmap pandoc ripgrep wget jq ncdu ruby graphviz gimp"
     LIBS_PACKAGES="hdf5 c-blosc"
     GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone git-lfs"
