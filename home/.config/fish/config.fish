@@ -141,3 +141,7 @@ begin
         # echo "rbenv was not found on system, won't be available"
     end
 end
+
+if status is-interactive
+    source ~/.config/fish/create_abbrs.fish
+end

@@ -7,15 +7,20 @@
 "
 
 " Summary:
-"   - <Space> is the leader key
-"   - <Leader>-b opens buffer search (using Unite)
-"   - <Leader>-f opens file search (using Unite)
-"   - <Leader>-n opens nerdtree
-"   - <Leader><Leader> triggers easymotion
-"   - <C-{H,J,K,L}> changes panes
-"   - Folds are enabled (in some languages) and uses default bindings
-"   - q and wq only closes buffers, use qa to close vim entirely
+"  - <Space> is the leader key
+"  - <Leader>-b opens buffer search (using Unite)
+"  - <Leader>-f opens file search (using Unite)
+"  - <Leader>-n opens nerdtree
+"  - <Leader><Leader> triggers easymotion
+"  - <C-{H,J,K,L}> changes panes
+"  - Folds are enabled (in some languages) and uses default bindings
+"  - q and wq only closes buffers, use qa to close vim entirely
 "       - Looking for a better solution
+"
+" Navigation:
+"  - gd: Go to definition
+"  - gf: Go to file
+"  - <C-]>: Go to definition (jumps to files)
 "
 " TODOs:
 "   - Fix proper pane/window/buffer config
@@ -249,6 +254,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'editorconfig/editorconfig-vim'
     Plug 'junegunn/vim-easy-align'
 
+    " Fuzzy finding
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
     " Linting, fixing, and completion
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'dense-analysis/ale'
@@ -404,8 +412,9 @@ let g:ale_python_bandit_options='--skip B101'
 let g:ale_fixers = {
 \   'python': ['autoflake', 'autoimport', 'reorder-python-imports', 'isort', 'autopep8', 'black'],
 \   'javascript': ['prettier'],
-\   'javascript.jsx': ['prettier'],
+\   'javascriptreact': ['prettier'],
 \   'typescript': ['prettier'],
+\   'typescriptreact': ['prettier'],
 \   'vue': ['prettier'],
 \   'rust': ['rustfmt'],
 \}

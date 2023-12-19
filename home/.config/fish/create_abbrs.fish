@@ -24,6 +24,7 @@ abbr --add tmain "tmux attach -t main; or tmux new-session -t main"
 abbr --add tsys "tmux attach -t system; or tmux new-session -t system"
 
 abbr --add vim "nvim"
+abbr --add fvim "nvim \$(fzf --height 40%)"
 
 abbr --add sctl "systemctl"
 abbr --add usctl "systemctl --user"
