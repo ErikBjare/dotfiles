@@ -1,9 +1,28 @@
 #!/bin/bash
 
 set -e
+shopt -s nullglob
 
-for path in ~/*annex; do
+paths="~/*annex /tank/*/*-annex"
+
+for path in $paths; do
     echo "Syncing $path"
     pushd $path
     git annex sync || true
 done
+
+if [[ $1 == '--get' ]]; then
+    for path in $paths; do
+        echo "Syncing $path"
+        pushd $path
+        git annex get -J4 || true
+    done
+fi
+
+if [[ $1 == '--content' ]]; then
+    for path in $paths; do
+        echo "Syncing $path"
+        pushd $path
+        git annex sync --content || true
+    done
+fi
