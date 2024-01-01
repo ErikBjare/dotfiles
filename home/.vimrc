@@ -390,6 +390,9 @@ let g:ale_linters = {
 \   'typescript': ['eslint', 'tslint'],
 \}
 
+" Auto-detect poetry
+let g:ale_python_auto_poetry = 1
+
 " E225: Missing whitespace around operator
 " E265: Block comment should start with '# '
 " E402: Module level import not at top of file
@@ -410,7 +413,7 @@ let g:ale_python_bandit_options='--skip B101'
 
 " NOTE: There is also https://github.com/hadialqattan/pycln which only removes unused imports (subset of autoimport)
 let g:ale_fixers = {
-\   'python': ['autoflake', 'autoimport', 'reorder-python-imports', 'isort', 'autopep8', 'black'],
+\   'python': ['autoflake', 'autoimport', 'reorder-python-imports', 'isort', 'autopep8', 'black', 'ruff'],
 \   'javascript': ['prettier'],
 \   'javascriptreact': ['prettier'],
 \   'typescript': ['prettier'],

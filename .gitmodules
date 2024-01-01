@@ -13,6 +13,3 @@
 [submodule "home/.emacs.d"]
     path = home/.emacs.d
     url = https://github.com/syl20bnr/spacemacs.git
-[submodule "home/.config/fish/nvm-wrapper"]
-    path = home/.config/fish/nvm-wrapper
-    url = https://github.com/passcod/nvm-fish-wrapper.git

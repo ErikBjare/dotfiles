@@ -74,7 +74,7 @@ begin
 end
 
 # set default node version
-set --universal nvm_default_version lts/gallium
+set --universal nvm_default_version v20.10.0
 
 begin
     # Try with the users install
