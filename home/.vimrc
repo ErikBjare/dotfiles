@@ -118,6 +118,16 @@ nnoremap <Leader>go :Git checkout<Space>
 nnoremap <Leader>gps :Dispatch! git push<CR>
 nnoremap <Leader>gpl :Dispatch! git pull<CR>
 
+"let g:jedi#goto_command = "<leader>d"
+"let g:jedi#goto_assignments_command = "<leader>g"
+"let g:jedi#goto_stubs_command = "<leader>s"
+"let g:jedi#goto_definitions_command = ""
+"let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>u"
+"let g:jedi#completions_command = "<C-Space>"
+"let g:jedi#rename_command = "<leader>r"
+"let g:jedi#rename_command_keep_name = "<leader>R"
+
 let g:grammarous#hooks = {}
 function! g:grammarous#hooks.on_check(errs) abort
     nmap <buffer><C-n> <Plug>(grammarous-move-to-next-error)

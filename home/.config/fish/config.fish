@@ -50,7 +50,8 @@ begin
     #set -x PATH "/Library/Frameworks/Python.framework/Versions/3.9/bin" "$PATH"
 
     # I need 16 as my system node on macOS (Copilot)
-    path_prepend /opt/homebrew/opt/node@16/bin
+    #path_prepend /opt/homebrew/opt/node@16/bin
+    path_prepend /opt/homebrew/opt/node@18/bin
 
     path_prepend ~/.bin/git-subrepo/lib
     path_prepend ~/.local/bin

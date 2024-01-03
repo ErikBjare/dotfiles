@@ -2,7 +2,6 @@
 
 # TODO: Do all necessary add-apt-repository (for google-chrome)
 # TODO: Fetch dpkg/alternative installers (for veracrypt)
-# TODO: Fix Arch support
 
 NOCONFIRM=${NOCONFIRM:-false}
 if [ "$NOCONFIRM" = true ]; then
@@ -38,11 +37,19 @@ if (uname | grep 'Darwin'); then
     LIBS_PACKAGES="hdf5 c-blosc"
     GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone git-lfs"
     BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one visual-studio-code logseq koekeishiya/formulae/yabai"
+    PIPX_PACKAGES="poetry powerline-status"
 
     ask "Want to install brew packages?"
     if [ $? -eq 0 ]; then
         brew install $GNU_UTILS $BREW_PACKAGES $GIT_PACKAGES $LIBS_PACKAGES
         brew install --cask $BREW_CASK_PACKAGES
+    fi
+
+    ask "Want to install pipx packages?"
+    if [ $? -eq 0 ]; then
+        for package in $PIPX_PACKAGES; do
+            pipx install $package
+        done
     fi
 elif (lsb_release -a | grep 'Arch Linux'); then
     echo 'Detected Arch Linux'
