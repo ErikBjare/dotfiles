@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+poetry="$HOME/.local/bin/poetry"
+
+echo "Syncing activitywatch data to Google Sheets..."
+
+cd $HOME/Programming/activitywatch/aw-client/examples
+. $HOME/.virtualenvs/activitywatch/bin/activate
+$poetry run python3 working_hours_gspread.py '1YcPTwTqYf3ZPG6JAdADAp7orz5tKd4OT677rQG9dv-U' 'Lovable|gpt-engineer|GPT Engineer|Playwright Test|cloud.google.com|firebase.google.com|Linear|linear.app'
