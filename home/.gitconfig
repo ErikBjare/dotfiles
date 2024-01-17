@@ -22,9 +22,13 @@
 
 [pull]
 	ff = only
+	rebase = true
 
 [push]
 	default = current
+
+[rebase]
+	autoStash = true
 
 [color]
 	ui = true
