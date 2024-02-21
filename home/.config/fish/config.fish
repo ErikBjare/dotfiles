@@ -145,4 +145,7 @@ end
 
 if status is-interactive
     source ~/.config/fish/create_abbrs.fish
+
+    # if atuin is installed, load it
+    type -q atuin > /dev/null; and atuin init fish --disable-up-arrow | source
 end
