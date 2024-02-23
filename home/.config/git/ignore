@@ -4,8 +4,13 @@
 tags
 tags.lock
 tags.temp
-.DS_Store
 __pycache__
 .hypothesis
+
+# Editors
 *.code-workspace
 .vim
+.idea
+
+# OS generated files
+.DS_Store
