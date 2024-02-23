@@ -260,6 +260,11 @@ endif
 
 " Register plugins with vim-plug
 call plug#begin('~/.vim/plugged')
+    " LSP
+    Plug 'williamboman/mason.nvim'
+    Plug 'williamboman/mason-lspconfig.nvim'
+    Plug 'neovim/nvim-lspconfig'
+
     " Formatting and indentation
     Plug 'editorconfig/editorconfig-vim'
     Plug 'junegunn/vim-easy-align'
@@ -268,7 +273,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
     " Linting, fixing, and completion
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    "Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'dense-analysis/ale'
     Plug 'davidhalter/jedi-vim'  " Python autocompletion
     Plug 'rhysd/vim-grammarous'  " LanguageTool
@@ -474,10 +479,12 @@ au BufNewFile,BufRead *.abi set filetype=json
 
 au BufNewFile,BufRead *.jrag set filetype=java
 
+au BufNewFile,BufRead *.env.* set filetype=sh
+
 " Show the syntax highlight group under cursor
 nnoremap <Leader>hi <cmd>echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
     \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<cr>
 
 " fails on erb-main2-arch
-"lua require('plugins')
+lua require('plugins')

@@ -97,3 +97,6 @@ fi
 [ -f /home/erb/.travis/travis.sh ] && source /home/erb/.travis/travis.sh
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"
