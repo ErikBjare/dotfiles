@@ -1,0 +1,103 @@
+#!/usr/bin/env python
+"""
+Usage: python gitanalyse.py [repo_path] [file1] [file2] ...
+"""
+
+# TODO: fix bug where dirs are not counted correctly
+"""
+Bug example:
+
+$ git-show-coedited ~/dotfiles/ install-packages.sh
+Path                             Frequency
+-----------------------------  -----------
+home/.vimrc                       0.782609
+home                              0.695652    <--- should be at least 0.782609
+home/.config                      0.608696
+"""
+
+import itertools
+import sys
+from collections import Counter, defaultdict
+
+from git import Repo
+from tabulate import tabulate
+from tqdm import tqdm
+
+
+def main():
+    # Path to your local Git repository
+    if len(sys.argv) >= 3:
+        repo_path, *files = sys.argv[1:]
+    else:
+        print(__doc__.strip())
+        sys.exit(1)
+
+    coedit_frequency = analyze_coedits(repo_path)
+
+    for file in files:
+        print_file_stats(coedit_frequency, file)
+
+
+def print_file_stats(coedit_frequency, file):
+    print(f"Co-editing frequency for {file}")
+    print(
+        tabulate(
+            sorted(coedit_frequency[file].items(), key=lambda t: t[1], reverse=True)[
+                :10
+            ],
+            headers=["Path", "Frequency"],
+        )
+    )
+
+
+def analyze_coedits(repo_path):
+    print(f"Analyzing co-edits in {repo_path}")
+    repo = Repo(repo_path)
+    coedit_count: dict[str, dict[str, int]] = defaultdict(Counter)
+    total_commits = 0
+    file_commits: dict[str, int] = defaultdict(int)
+
+    # Traverse the commit history
+    for commit in tqdm(list(repo.iter_commits())[:1000]):
+        files_in_commit = set(commit.stats.files.keys())
+        if len(files_in_commit) > 100:
+            # Skip commits with more than 100 files
+            print(f"Skipping commit {commit.hexsha} with {len(files_in_commit)} files")
+            continue
+
+        total_commits += 1
+
+        # Collect directories for each file and count commits per file and directory
+        dirs_in_commit = set()
+        for file in files_in_commit:
+            file_commits[file] += 1
+            sub_path = ""
+            for part in file.split("/"):
+                sub_path = "/".join([sub_path, part]) if sub_path else part
+                dirs_in_commit.add(sub_path)
+
+        # Update commit counts for directories
+        for directory in dirs_in_commit:
+            file_commits[directory] += 1
+
+        # Count pairs of files and directories that are edited together
+        all_items_in_commit = list(files_in_commit) + list(dirs_in_commit)
+        for item_pair in itertools.combinations(all_items_in_commit, 2):
+            coedit_count[item_pair[0]][item_pair[1]] += 1
+            coedit_count[item_pair[1]][item_pair[0]] += 1
+
+    # Calculate co-editing frequency
+    coedit_frequency = {
+        file: {
+            coedited_file: count / file_commits[file]
+            for coedited_file, count in counters.items()
+            if file != coedited_file
+        }
+        for file, counters in coedit_count.items()
+    }
+
+    return coedit_frequency
+
+
+if __name__ == "__main__":
+    main()
