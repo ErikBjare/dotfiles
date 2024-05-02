@@ -6,6 +6,7 @@ tags.lock
 tags.temp
 __pycache__
 .hypothesis
+.syncthing.*.tmp
 
 # Editors
 *.code-workspace

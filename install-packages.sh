@@ -33,7 +33,7 @@ if (uname | grep 'Darwin'); then
     fi
 
     GNU_UTILS="coreutils gnu-sed grep moreutils findutils"
-    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup rsync tree nmap pandoc ripgrep wget jq ncdu ruby graphviz gimp fzf"
+    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup rsync tree nmap pandoc ripgrep wget jq ncdu ruby graphviz gimp fzf websocat"
     LIBS_PACKAGES="hdf5 c-blosc"
     GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone git-lfs"
     BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one visual-studio-code logseq koekeishiya/formulae/yabai"
