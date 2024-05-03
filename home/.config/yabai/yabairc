@@ -23,6 +23,7 @@ yabai -m config layout bsp
 yabai -m config window_placement second_child
 
 # Move apps to specific spaces
+# If ^ is present as in `space=^1`, follow focus.
 # Note: you can show all spaces with `yabai -m query --spaces`
 # main terminal
 yabai -m rule --add app="^Alacritty$" space=^1
@@ -37,7 +38,15 @@ yabai -m rule --add app="^Standard Notes$" space=^4
 yabai -m rule --add app="^Roam Research$" space=^4
 yabai -m rule --add app="^Limitless$" space=^4
 # music
-yabai -m rule --add app="^Music$" space=5
-yabai -m rule --add app="^Spotify$" space=5
+yabai -m rule --add app="^Music$" space=^5
+yabai -m rule --add app="^Spotify$" space=^5
 # chat
-yabai -m rule --add app="^Discord$" space=6
+yabai -m rule --add app="^Discord$" space=^6
+# video
+yabai -m rule --add app="^VLC$" space=^7
+# games
+yabai -m rule --add app="^Steam$" space=^8
+# space 9 left for misc
+# system
+yabai -m rule --add app="^System Preferences$" space=^10
+yabai -m rule --add app="^Activity Monitor$" space=^10

@@ -3,6 +3,10 @@
 # Set the default editor
 set -x EDITOR nvim
 
+# Bind virtual Home and End keys with Cmd+Shift+Left and Cmd+Shift+Right
+bind \e\[1\;4D beginning-of-line
+bind \e\[1\;4C end-of-line
+
 # PATH setup
 begin
     # TODO: Check if already in PATH?
@@ -118,12 +122,10 @@ begin
     end
 end
 
-#source /opt/anaconda/etc/fish/conf.d/conda.fish
-
-set -x EDITOR nvim
-
 # Set FREESURFER_HOME for easier surfin'
-set FREESURFER_HOME /opt/freesurfer
+if test -d /opt/freesurfer
+    set FREESURFER_HOME /opt/freesurfer
+end
 
 # I don't remember the exact purpose of this...
 begin

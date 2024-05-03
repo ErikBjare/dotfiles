@@ -7,6 +7,9 @@ cmd - 4 : open "/Applications/Roam Research.app"
 cmd - 5 : open /Applications/Spotify.app
 cmd - 6 : open /Applications/Discord.app
 
+# Open terminal on cmd + enter
+cmd - return : /Applications/Alacritty.app/Contents/MacOS/alacritty
+
 # .blacklist [
 #    "kitty"
 #    "terminal"
