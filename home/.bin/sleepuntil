@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Sleep until some condition is met, such as a time or system load going above/below a certain threshold.
+# If the argument is a time, it will calculate the number of seconds to sleep until that time and sleeps for that amount of time.
+# Usage: sleepuntil <time>
+
+function _sleepuntil() {
+    # Get the current time
+    now=$(date +%s)
+
+    # Get the time to sleep until
+    future=$(date -d "$1" +%s)
+
+    # Calculate the time to sleep
+    sleep_time=$((future - now))
+
+    # If sleep time is negative, it means the time has already passed, and we should sleep until the next day
+    sleep_time=$((sleep_time < 0 ? sleep_time + 86400 : sleep_time))
+
+    # Sleep until the specified time
+    # Print status message that updates every second, rewriting the same line
+    while [ $sleep_time -gt 0 ]; do
+        echo -en "\rSleeping for $sleep_time seconds until $1, time is now $(date +%H:%M:%S)"
+        sleep 1
+        now=$(date +%s)
+        sleep_time=$((future - now))
+        sleep_time=$((sleep_time < 0 ? sleep_time + 86400 : sleep_time))
+    done
+    echo "Time is now $(date +%H:%M:%S)"
+}
+
+# if --load-below is specified, sleep until the load average is below the specified value
+if [ "$1" = "--load-below" ]; then
+    if [ $# -ne 2 ]; then
+        echo "Usage: sleepuntil --load-below <load>"
+        exit 1
+    fi
+    # get the current load average on macos with sysctl -n vm.loadavg
+    while [ $(sysctl -n vm.loadavg | grep -oe '{ [0-9]\+\.[0-9]\+' | grep -oe '[0-9]\+\.[0-9]\+') \> $2 ]; do
+        echo -en "\rLoad average is above $2, current load is $(sysctl -n vm.loadavg)"
+        sleep 1
+    done
+    echo -en "\rLoad average is below $2, current load is $(sysctl -n vm.loadavg)"
+    exit 0
+# if $1 is a time, sleep until that time
+elif [[ $1 =~ ^[0-9]{2}:[0-9]{2}(:[0-9]{2})?$ ]]; then
+    _sleepuntil $1
+# if no arguments are specified, print usage message
+elif [ $# -lt 1 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    echo "Usage: sleepuntil <HH:mm>"
+    echo "Usage: sleepuntil --load-below <load>"
+    exit 1
+fi
