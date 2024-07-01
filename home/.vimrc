@@ -261,8 +261,8 @@ endif
 " Register plugins with vim-plug
 call plug#begin('~/.vim/plugged')
     " LSP
-    Plug 'williamboman/mason.nvim'
-    Plug 'williamboman/mason-lspconfig.nvim'
+    Plug 'williamboman/mason.nvim', {'branch': 'main'}
+    Plug 'williamboman/mason-lspconfig.nvim', {'branch': 'main'}
     Plug 'neovim/nvim-lspconfig'
 
     " Formatting and indentation
@@ -449,6 +449,8 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " NERD Commenter
+" https://github.com/preservim/nerdcommenter
+let g:NERDCreateDefaultMappings = 1
 " Use compact syntax for prettified multi-line comments
 let g:NERDCompactSexyComs = 1
 " Align line-wise comment delimiters flush left instead of following code indentation

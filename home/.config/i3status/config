@@ -9,6 +9,8 @@ order += "load"
 order += "cpu_usage"
 #order += "cpu_temperature 0"
 order += "disk /"
+#order += "disk /tank"
+#order += "disk /fast"
 # Crashes for some reason... maybe pipewire's fault?
 order += "volume master"
 #order += "volume mic"  # Doesn't work...
@@ -110,4 +112,9 @@ memory {
 disk "/" {
         format = "💾 %avail"
 }
-
+#disk "/tank" {
+#        format = "💾 %avail"
+#}
+#disk "/fast" {
+#        format = "💾 %avail"
+#}
