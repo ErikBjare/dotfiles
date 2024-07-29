@@ -12,7 +12,7 @@ echo
 echo "Checking size of commonly large folders:"
 pushd ~/Downloads > /dev/null
 DOWNLOADS_SIZE=$(ls-by-size | head -1 | cut -f 1)
-echo " - Size of ~/Downloads: $DOWNLOADS_SIZE"
+echo -e "\nSize of ~/Downloads: $DOWNLOADS_SIZE"
 popd > /dev/null
 
 echo
@@ -25,11 +25,28 @@ rm -rf ~/.cache/pypoetry/*cache
 rm -rf ~/.cache/yarn
 rm -rf ~/.cargo/registry
 
-# Redundant since also done by `yay -Scc`
-#sudo pacman -Sc --noconfirm
+# if we have yay
+if command -v yay; then
+  echo -e "\n# Yay found! Cleaning pacman cache"
+  yay -Scc --noconfirm
+fi
 
-echo "Cleaning pacman cache"
-yay -Scc --noconfirm
+# if we have docker, clean up dangling images
+if (command -v docker > /dev/null); then
+  echo -e "\n# Docker found!"
+
+  echo -e "## Dangling images:"
+  docker images -f dangling=true | true
+
+  echo ""
+  read -p "Do you want to prune dangling images? (y/N): " -n 1 -r
+  echo ""
+
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "# Pruning dangling images"
+    docker image prune -f | true
+  fi
+fi
 
 # get current free space and calculate how much was freed
 FREE_SPACE_AFTER=$(df / | tail -1 | awk '{print $4}')

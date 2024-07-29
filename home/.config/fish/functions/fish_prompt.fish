@@ -43,7 +43,8 @@ function fish_prompt --description 'Write out the prompt'
   set_color -b '111'
 
   set_color -o 'fff'
-  echo -n ' 🗁  '
+#  echo -n ' 🗁  '
+  echo -n ' '
   set_color '999'
   echo -n (prompt_pwd)' '
 
