@@ -1,4 +1,17 @@
 #!/bin/bash
 
+# Usage:
+#  ls-by-size [--dereference]
+
+if [ "$1" == "-h" ]; then
+    echo "Usage: ls-by-size [--dereference]"
+    echo "  --dereference: follow symlinks"
+    exit 0
+fi
+
+if [ "$1" == "--dereference" ]; then
+    DEREFERENCE=--dereference
+fi
+
 # add `--dereference` to du if you want to follow symlinks
-du -ha ./ | sort -h -r | less
+du $DEREFERENCE -ha ./ | sort -h -r | less
