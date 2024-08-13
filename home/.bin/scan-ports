@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$(uname)" == "Darwin" ]; then
+    # https://x.com/seldo/status/1823126087423099192
+    sudo lsof -iTCP -sTCP:LISTEN -n -P | awk 'NR>1 {print $9, $1, $2}' | sed 's/.*://' | while read port process pid; do echo "$port: $(ps -p $pid -o command= | sed 's/^-//') (PID: $pid)"; done | sort -n
+else
+    # on Linux
+    sudo netstat -tulnp | grep LISTEN
+fi
