@@ -18,7 +18,7 @@
 	submoduleSummary = true
 
 [commit]
-	gpgsign = true
+	gpgSign = true
 
 [pull]
 	ff = only
