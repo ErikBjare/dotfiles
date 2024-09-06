@@ -111,7 +111,7 @@ def store_gas_price():
         logger.info(f"Couldn't get gas price: {e}")
 
 
-def get_gas_price() -> int:
+def get_gas_price() -> float | None:
     now = datetime.now()
     if not gasPricePath.exists():
         store_gas_price()
@@ -123,7 +123,7 @@ def get_gas_price() -> int:
     with open(gasPricePath, "r") as f:
         d = json.load(f)
     try:
-        return int(d["result"]["SafeGasPrice"])
+        return round(float(d["result"]["SafeGasPrice"]))
     except TypeError:
         logger.error("Couldn't read gas price response")
         return None
