@@ -46,7 +46,7 @@
     #plus-color = "#012800"
     #minus-color = "#340001"
 
-[delta "decorations"]
+    [delta "decorations"]
     commit-decoration-style = bold yellow box ul
     file-style = bold yellow ul
     file-decoration-style = none

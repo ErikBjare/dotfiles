@@ -4,7 +4,7 @@ general {
         interval = 1
 }
 
-order += "battery 0"
+#order += "battery 0"
 order += "load"
 order += "cpu_usage"
 #order += "cpu_temperature 0"
@@ -12,7 +12,7 @@ order += "disk /"
 #order += "disk /tank"
 #order += "disk /fast"
 # Crashes for some reason... maybe pipewire's fault?
-order += "volume master"
+#order += "volume master"
 #order += "volume mic"  # Doesn't work...
 
 # Network

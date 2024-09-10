@@ -151,3 +151,5 @@ if status is-interactive
     # if atuin is installed, load it
     type -q atuin > /dev/null; and atuin init fish --disable-up-arrow | source
 end
+# Run venv check on shell start
+check_and_activate_venv

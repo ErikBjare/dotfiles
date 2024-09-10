@@ -22,6 +22,9 @@ function ask() {
     fi
 }
 
+# platform-independent
+PIPX_PACKAGES="autoimport isort reorder-python-imports"
+
 # if macOS
 if (uname | grep 'Darwin'); then
     echo 'Detected macOS'
@@ -37,19 +40,12 @@ if (uname | grep 'Darwin'); then
     LIBS_PACKAGES="hdf5 c-blosc"
     GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone git-lfs"
     BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one visual-studio-code logseq koekeishiya/formulae/yabai flutter"
-    PIPX_PACKAGES="poetry powerline-status"
+    PIPX_PACKAGES="poetry powerline-status $PIPX_PACKAGES"
 
     ask "Want to install brew packages?"
     if [ $? -eq 0 ]; then
         brew install $GNU_UTILS $BREW_PACKAGES $GIT_PACKAGES $LIBS_PACKAGES
         brew install --cask $BREW_CASK_PACKAGES
-    fi
-
-    ask "Want to install pipx packages?"
-    if [ $? -eq 0 ]; then
-        for package in $PIPX_PACKAGES; do
-            pipx install $package
-        done
     fi
 elif (lsb_release -a | grep 'Arch Linux'); then
     echo 'Detected Arch Linux'
@@ -65,12 +61,15 @@ elif (lsb_release -a | grep 'Arch Linux'); then
     NODE="nodejs"
     TEX="texlive-core"
     X11="xclip xorg-xkill"
-    MISC="playerctl age"
+    MISC="playerctl age feh"
 
     ALL="$TERMINAL $BROWSERS $EDITORS $VCS $TOOLS $MATH $PYTHON $RUST $NODE $TEX $X11 $MISC"
-    set -x
-    sudo pacman --needed -S $ALL
-    set +x
+    ask "Want to install pacman packages?"
+    if [ $? -eq 0 ]; then
+        set -x
+        sudo pacman --needed -S $ALL
+        set +x
+    fi
 
     # TODO: Check if yay is already installed
     ask "Want to install yay?"
@@ -112,6 +111,13 @@ else
 fi
 echo 'Done with OS-specific setup'
 echo
+
+ask "Want to install pipx packages?"
+if [ $? -eq 0 ]; then
+    for package in $PIPX_PACKAGES; do
+        pipx install $package
+    done
+fi
 
 ask "Want to user-install Python packages?"
 if [ $? -eq 0 ]; then
