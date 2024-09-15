@@ -25,9 +25,11 @@
 # The top properties below are applied to every block, but can be overridden.
 # Each block command defaults to the script name to avoid boilerplate.
 # Change $SCRIPT_DIR to the location of your scripts!
+
 command=/home/erb/.config/i3blocks-contrib/$BLOCK_NAME/$BLOCK_NAME
-separator_block_width=40
+separator_block_width=15
 markup=none
+separator=false
 
 # Volume indicator
 #
@@ -46,10 +48,87 @@ markup=none
 #
 # The type defaults to "mem" if the instance is not specified.
 [memory]
-label=🐏 
+label=🐏
 percent=false
 interval=5
-PERCENT=false
+
+# Idle time
+[custom_idle]
+command=~/.config/i3blocks/custom_scripts/idle.sh
+interval=5
+
+[separator]
+full_text=‖
+color=#666666
+
+# Network interface monitoring
+#
+# If the instance is not specified, use the interface used for default route.
+# The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
+#[iface]
+#IFACE=wlan0
+#color=#00FF00
+#interval=10
+
+#[wifi]
+#INTERFACE=wlp3s0
+#label=📡
+#interval=10
+#separator=false
+#
+#[bandwidth]
+#INTERFACE=eth0
+#interval=5
+
+# ETH Price
+[custom_eth_price]
+command=~/.config/i3blocks/custom_scripts/eth_price.sh
+interval=60
+
+[separator]
+full_text=‖
+color=#666666
+
+# Gas Price
+[custom_gas_price]
+command=~/.config/i3blocks/custom_scripts/gas_price.sh
+interval=60
+
+[separator]
+full_text=‖
+color=#666666
+
+# CPU Temperature
+[cpu_temp]
+command=~/.config/i3blocks/custom_scripts/cpu_temp.sh
+interval=10
+
+[separator]
+full_text=‖
+color=#666666
+
+# CPU Usage
+[cpu_usage]
+command=~/.config/i3blocks/custom_scripts/cpu_usage.sh
+interval=5
+
+[separator]
+full_text=‖
+color=#666666
+
+# Load Average
+[custom_load]
+command=~/.config/i3blocks/custom_scripts/load_average.sh
+interval=10
+
+[separator]
+full_text=‖
+color=#666666
+
+# RAM Usage
+[memory]
+command=~/.config/i3blocks/custom_scripts/memory.sh
+interval=5
 
 #[memory]
 #label=SWAP
@@ -57,60 +136,85 @@ PERCENT=false
 #interval=30
 #PERCENT=false
 
+#[memory]
+#label=SWAP
+#instance=swap
+#interval=30
+#PERCENT=false
+#
+# Idle time
+#[custom_idle]
+#command=~/.config/i3blocks/custom_scripts/idle.sh
+#interval=5
+
 # Disk usage
 #
 # The directory defaults to $HOME if the instance is not specified.
 # The script may be called with a optional argument to set the alert
 # (defaults to 10 for 10%).
-[disk]
-label=💾 
-PERCENT=false
+#[disk]
+#label=💾
+#PERCENT=false
 #DIR=/mnt/data
+#interval=30
+
+[separator]
+full_text=‖
+color=#666666
+
+# GPU Load
+[gpu_load]
+command=~/.config/i3blocks/custom_scripts/gpu_load.sh
+interval=10
+
+[separator]
+full_text=‖
+color=#666666
+
+# GPU VRAM
+[gpu_vram]
+command=~/.config/i3blocks/custom_scripts/gpu_vram.sh
+interval=10
+
+[separator]
+full_text=‖
+color=#666666
+
+# Disk Usage
+[disk]
+command=~/.config/i3blocks/custom_scripts/disk_usage.sh
 interval=30
 
-# Network interface monitoring
-#
-# If the instance is not specified, use the interface used for default route.
-# The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
-[iface]
-#IFACE=wlan0
-color=#00FF00
-interval=10
+[separator]
+full_text=‖
+color=#666666
 
-#[wifi]
-#INTERFACE=wlp3s0
-#label=📡
-#interval=10
-#separator=false
-
-[bandwidth]
-#INTERFACE=eth0
+# Network
+[custom_network]
+command=~/.config/i3blocks/custom_scripts/network.sh
 interval=5
 
-# CPU usage
-#
-# The script may be called with -w and -c switches to specify thresholds,
-# see the script for details.
-[cpu_usage]
-label=🏭 
-interval=10
-min_width=CPU 100.00%
-#separator=false
-
-[load_average]
-label=⚖️ 
-interval=10
+[separator]
+full_text=‖
+color=#666666
 
 # Battery indicator
 #
 # The battery instance defaults to 0.
-[battery]
-label=BAT
+#[battery]
+#label=BAT
 #label=⚡
-interval=30
 
-# Date Time
-#
+# Power Draw
+[custom_power]
+command=~/.config/i3blocks/custom_scripts/power_draw.sh
+interval=5
+
+[separator]
+full_text=‖
+color=#666666
+
+# Date and Time
 [time]
 command=date '+%Y-%m-%d %H:%M:%S'
 interval=1
