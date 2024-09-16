@@ -6,12 +6,26 @@
 "  - <Leader>-f opens file search (using Unite)
 "  - <Leader>-n opens nerdtree
 "  - <Leader><Leader> triggers easymotion
-"  - <C-{H,J,K,L}> changes panes
+"  - <C-{h,j,k,l}> changes panes
 "
 " Navigation:
 "  - gd: Go to definition
+"  - gD: Go to declaration
+"  - gi: Go to implementation
+"  - gr: Find references
+"  - gt: Go to type definition
 "  - gf: Go to file
-"  - <C-]>: Go to definition (jumps to files)
+"  - K: Show hover information
+"  - <C-k>: Show signature help
+"  - <leader>rn: Rename symbol
+"  - <leader>ca: Code action
+"  - [d and ]d: Navigate to previous/next diagnostic
+"  - <leader>f: Format document
+"  - <C-]>: Go to definition (ctags)
+"  - <C-t>: Jump back from definition
+"  - <C-o> and <C-i>: Navigate through jump list (back and forward)
+"  - %: Jump between matching brackets
+"  - * and #: Search for word under cursor (forward and backward)
 
 
 let mapleader = "\<Space>"

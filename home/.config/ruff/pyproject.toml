@@ -1,2 +1,2 @@
-[tool.ruff]
+[tool.ruff.lint]
 ignore = ["E402", "E501"]

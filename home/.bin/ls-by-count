@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 # use gfind on macOS
 find="find"
@@ -6,11 +6,13 @@ if [[ $(uname) == "Darwin" ]]; then
     find="gfind"
 fi
 
-subdirs=("${(@f)$($find -maxdepth 4 -type d)}");
+# Use process substitution to create an array of subdirectories
+readarray -t subdirs < <($find . -maxdepth 4 -type d)
 
 rows=""
-foreach dir in $subdirs; do
-    rows="$($find $dir ! -path '*/.git/*' | wc -l)\t$dir\n$rows";
-done;
+for dir in "${subdirs[@]}"; do
+    count=$($find "$dir" ! -path '*/.git/*' | wc -l)
+    rows+="${count}	${dir}\n"
+done
 
-echo $rows | sort -nr # | less
+echo -e "$rows" | sort -nr # | less

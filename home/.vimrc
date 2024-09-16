@@ -13,6 +13,11 @@
 "  - languages.vim: Language-specific settings
 "
 " See individual files in ~/.vim/config/ for more detailed summaries.
+"
+" TODOs:
+"   - Fix proper pane/window/buffer config
+"   - Split into seperate files: one base, one for keys, one for theme, one for syntax, one for plugins
+"   - Make pageup/pagedown move half page and center view
 
 " Source configuration files
 source ~/.vim/config/basic.vim

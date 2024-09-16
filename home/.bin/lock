@@ -1,6 +1,6 @@
 #!/bin/bash
 
-i3lock --color 000000 -i ~/.backgrounds/lockscreen.png
+i3lock --color 000000 -i ~/.backgrounds/lockscreen_4k.png
 
 # if there is a battery, and we're on battery, suspend
 # NOTE: this might cause issues if called from xautolock after a resume from suspend
