@@ -1,21 +1,18 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
+-- Neovim-specific Lua configurations
 
--- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
+-- Example: Set up which-key plugin
+if pcall(require, "which-key") then
+  require("which-key").setup {
+    -- Your which-key configuration here
+  }
+end
 
-return require('packer').startup(function(use)
-  -- Packer can manage itself
-  use 'wbthomason/packer.nvim'
+-- Add more Neovim-specific plugin configurations here
+-- For example:
+-- if pcall(require, "nvim-treesitter") then
+--   require("nvim-treesitter.configs").setup {
+--     -- Your treesitter configuration here
+--   }
+-- end
 
-  use({
-    "jackMort/ChatGPT.nvim",
-      config = function()
-        require("chatgpt").setup()
-      end,
-      requires = {
-        "MunifTanjim/nui.nvim",
-        "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim"
-      }
-  })
-end)
+-- You can add more Lua-based configurations for other Neovim-specific plugins here
