@@ -34,22 +34,18 @@ let mapleader = "\<Space>"
 map <Leader><Leader> <Plug>(easymotion-prefix)
 
 " NERDTree
-map <Leader>n :NERDTreeToggle<CR>
+noremap <Leader>n :NERDTreeToggle<CR>
 
 " LSP
 " See ~/.config/nvim/plugin/lspconfig.lua
 
 " Window config
-" Remap <C-w> to <Leader>w
-" Doesn't work?
-"map <Leader>w <C-W>
-
 " Split pane
 noremap <Leader>ws :sp<CR>
 noremap <Leader>wv :vsp<CR>
 
 " Close pane
-map <Leader>wc <C-W>c
+noremap <Leader>wc <C-W>c
 
 " Clipboard copying
 noremap <Leader>y "+y
@@ -66,10 +62,10 @@ nnoremap <C-Right> <C-W><C-L>
 nnoremap <C-Left> <C-W><C-H>
 
 " Move correctly in wrapped mode
-map k gk
-map j gj
-map <Up> gk
-map <Down> gj
+noremap k gk
+noremap j gj
+noremap <Up> gk
+noremap <Down> gj
 
 " Use :Sw to save as root
 command! -nargs=0 Sw w !sudo tee % > /dev/null

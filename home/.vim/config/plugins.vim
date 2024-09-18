@@ -34,6 +34,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'williamboman/mason-lspconfig.nvim', {'branch': 'main'}
     Plug 'neovim/nvim-lspconfig'
 
+    " A little bit of everything
+    Plug 'echasnovski/mini.nvim', { 'branch': 'stable' }
+
     " Git
     Plug 'tpope/vim-fugitive'
 
