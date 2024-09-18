@@ -34,6 +34,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'williamboman/mason-lspconfig.nvim', {'branch': 'main'}
     Plug 'neovim/nvim-lspconfig'
 
+    " Git
+    Plug 'tpope/vim-fugitive'
+
     " Formatting and indentation
     Plug 'editorconfig/editorconfig-vim'
     Plug 'junegunn/vim-easy-align'
@@ -43,7 +46,6 @@ call plug#begin('~/.vim/plugged')
 
     " Linting, fixing, and completion
     Plug 'dense-analysis/ale'
-    Plug 'davidhalter/jedi-vim'
     Plug 'rhysd/vim-grammarous'
     Plug 'preservim/vim-wordy'
 
@@ -93,6 +95,9 @@ call plug#begin('~/.vim/plugged')
     else
       Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
     endif
+
+    " Add nvim-web-devicons for better icon support
+    Plug 'nvim-tree/nvim-web-devicons'
 call plug#end()
 
 " Copilot

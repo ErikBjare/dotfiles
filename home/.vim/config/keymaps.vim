@@ -36,9 +36,20 @@ map <Leader><Leader> <Plug>(easymotion-prefix)
 " NERDTree
 map <Leader>n :NERDTreeToggle<CR>
 
-" Split
-map <Leader>h :sp<CR>
-map <Leader>v :vsp<CR>
+" LSP
+" See ~/.config/nvim/plugin/lspconfig.lua
+
+" Window config
+" Remap <C-w> to <Leader>w
+" Doesn't work?
+"map <Leader>w <C-W>
+
+" Split pane
+noremap <Leader>ws :sp<CR>
+noremap <Leader>wv :vsp<CR>
+
+" Close pane
+map <Leader>wc <C-W>c
 
 " Clipboard copying
 noremap <Leader>y "+y
@@ -91,24 +102,21 @@ nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
 " fugitive git bindings
+nnoremap <Leader>gs :Git<CR>
 nnoremap <Leader>ga :Git add %:p<CR><CR>
-nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gc :Gcommit -v -q<CR>
 nnoremap <Leader>gt :Gcommit -v -q %:p<CR>
-nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>gd :Gvdiffsplit<CR>
 nnoremap <Leader>ge :Gedit<CR>
 nnoremap <Leader>gr :Gread<CR>
 nnoremap <Leader>gw :Gwrite<CR><CR>
-nnoremap <Leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <Leader>gl :Git log<CR>
 nnoremap <Leader>gp :Ggrep<Space>
 nnoremap <Leader>gm :Gmove<Space>
 nnoremap <Leader>gb :Git branch<Space>
 nnoremap <Leader>go :Git checkout<Space>
-nnoremap <Leader>gps :Dispatch! git push<CR>
-nnoremap <Leader>gpl :Dispatch! git pull<CR>
-
-" Jedi
-let g:jedi#usages_command = "<leader>u"
+nnoremap <Leader>gps :Git push<CR>
+nnoremap <Leader>gpl :Git pull<CR>
 
 " Relative line numbers toggle
 function! NumberToggle()
