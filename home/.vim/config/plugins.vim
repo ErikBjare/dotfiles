@@ -53,8 +53,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'preservim/vim-wordy'
 
     " Keys
-    Plug 'tpope/vim-unimpaired'
     Plug 'folke/which-key.nvim'
+    Plug 'tpope/vim-unimpaired'
 
     " Copilot/LLMs
     Plug 'github/copilot.vim', {'branch': 'release'}
@@ -134,16 +134,8 @@ let g:ale_linters = {
 \   'typescript': ['eslint', 'tslint'],
 \}
 
-let g:ale_python_flake8_options='--ignore=E203,E225,E265,E402,E501,W503 --builtins=Analysis,PYZ,EXE,BUNDLE,MERGE,COLLECT'
-let g:ale_python_mypy_options='--ignore-missing-imports --check-untyped-defs --disable-error-code name-defined'
-let g:ale_python_autoflake_options='--remove-unused-variables --ignore-init-module-imports --ignore-pass-after-docstring --in-place'
-let g:ale_python_autoimport_options=''
-let g:ale_python_reorderpythonimports_options='--py38-plus'
-let g:ale_python_isort_options='--profile black --force-grid-wrap 4'
-let g:ale_python_bandit_options='--skip B101'
-
 let g:ale_fixers = {
-\   'python': ['autoflake', 'autoimport', 'reorder-python-imports', 'isort', 'autopep8', 'black', 'ruff'],
+\   'python': ['autoflake', 'autoimport', 'reorder-python-imports', 'isort', 'autopep8', 'black', 'ruff', 'ruff_format'],
 \   'javascript': ['prettier'],
 \   'javascriptreact': ['prettier'],
 \   'typescript': ['prettier'],
@@ -151,8 +143,16 @@ let g:ale_fixers = {
 \   'vue': ['prettier'],
 \   'rust': ['rustfmt'],
 \}
-let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
+
 let g:ale_fix_on_save=1
+let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
+let g:ale_python_flake8_options='--ignore=E203,E225,E265,E402,E501,W503 --builtins=Analysis,PYZ,EXE,BUNDLE,MERGE,COLLECT'
+let g:ale_python_mypy_options='--ignore-missing-imports --check-untyped-defs --disable-error-code name-defined'
+let g:ale_python_autoflake_options='--remove-unused-variables --ignore-init-module-imports --ignore-pass-after-docstring --in-place'
+let g:ale_python_autoimport_options=''
+let g:ale_python_reorderpythonimports_options='--py38-plus'
+let g:ale_python_isort_options='--profile black --force-grid-wrap 4'
+let g:ale_python_bandit_options='--skip B101'
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<c-s>"

@@ -50,12 +50,12 @@ separator=false
 [memory]
 label=🐏
 percent=false
-interval=5
+interval=1
 
 # Idle time
 [custom_idle]
 command=~/.config/i3blocks/custom_scripts/idle.sh
-interval=5
+interval=1
 
 [separator]
 full_text=‖
@@ -101,7 +101,7 @@ color=#666666
 # CPU Temperature
 [cpu_temp]
 command=~/.config/i3blocks/custom_scripts/cpu_temp.sh
-interval=10
+interval=1
 
 [separator]
 full_text=‖
@@ -110,7 +110,7 @@ color=#666666
 # CPU Usage
 [cpu_usage]
 command=~/.config/i3blocks/custom_scripts/cpu_usage.sh
-interval=5
+interval=1
 
 [separator]
 full_text=‖
@@ -119,7 +119,7 @@ color=#666666
 # Load Average
 [custom_load]
 command=~/.config/i3blocks/custom_scripts/load_average.sh
-interval=10
+interval=1
 
 [separator]
 full_text=‖
@@ -128,7 +128,7 @@ color=#666666
 # RAM Usage
 [memory]
 command=~/.config/i3blocks/custom_scripts/memory.sh
-interval=5
+interval=1
 
 #[memory]
 #label=SWAP
@@ -162,16 +162,11 @@ interval=5
 full_text=‖
 color=#666666
 
-# GPU Load
-[gpu_load]
+# GPU
+[gpu]
 command=~/.config/i3blocks/custom_scripts/gpu_load.sh
 interval=10
 
-[separator]
-full_text=‖
-color=#666666
-
-# GPU VRAM
 [gpu_vram]
 command=~/.config/i3blocks/custom_scripts/gpu_vram.sh
 interval=10
@@ -218,6 +213,10 @@ color=#666666
 [time]
 command=date '+%Y-%m-%d %H:%M:%S'
 interval=1
+
+[separator]
+full_text=‖
+color=#666666
 
 # Generic media player support
 #
