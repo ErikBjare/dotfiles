@@ -52,7 +52,10 @@ syntax on
 let g:ale_python_auto_poetry = 1
 
 " Highlight occurences of selected word
-autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+" (only in vim, nvim uses mini.cursorword)
+if !has('nvim')
+    autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+endif
 
 " Show the git diff in vim when commiting
 autocmd FileType gitcommit DiffGitCached | wincmd p

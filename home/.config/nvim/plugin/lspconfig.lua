@@ -40,6 +40,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, { buffer = ev.buf, desc = 'Format' })
 
     -- Enable completion triggered by <c-x><c-o>
+    -- NOTE: we use mini.completion for this
     vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
     -- Workspace management

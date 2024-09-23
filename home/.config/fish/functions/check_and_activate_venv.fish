@@ -22,6 +22,7 @@ function check_and_activate_venv --description 'Check for venv or Poetry env and
         end
         set check_dir (dirname "$check_dir")
     end
+    cd $current_dir
 
     # Determine the new environment
     set -l new_env
