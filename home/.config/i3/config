@@ -210,6 +210,9 @@ exec --no-startup-id dunst
 # Compositor
 exec --no-startup-id picom
 
+# xsettingsd
+exec --no-startup-id xsettingsd
+
 # lock
 bindsym $mod+l exec "bash ~/.bin/lock"
 

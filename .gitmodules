@@ -13,3 +13,6 @@
 [submodule "home/.emacs.d"]
     path = home/.emacs.d
     url = https://github.com/syl20bnr/spacemacs.git
+[submodule "home/.config/i3blocks-contrib"]
+	path = home/.config/i3blocks-contrib
+	url = git@github.com:vivien/i3blocks-contrib.git

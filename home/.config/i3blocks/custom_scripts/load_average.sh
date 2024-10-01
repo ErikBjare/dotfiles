@@ -8,7 +8,7 @@ get_load_color() {
     local load=$1
     local cores=$(nproc)
     local threshold=$(echo "$cores * 0.7" | bc)
-    
+
     if (( $(echo "$load > $threshold" | bc -l) )); then
         echo "#FF0000"  # High load (Red)
     elif (( $(echo "$load > $cores * 0.5" | bc -l) )); then

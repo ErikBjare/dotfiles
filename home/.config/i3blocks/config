@@ -31,26 +31,19 @@ separator_block_width=15
 markup=none
 separator=false
 
-# Volume indicator
+# Generic media player support
 #
-# The first parameter sets the step (and units to display)
-# The second parameter overrides the mixer selection
-# See the script for details.
+# This displays "ARTIST - SONG" if a music is playing.
+# Supported players are: spotify, vlc, audacious, xmms2, mplayer, and others.
+# Set to %any to automatically pick (Requires playerctl >=2.1.1)
+[mediaplayer]
+instance=vlc,%any,spotify  # This picks any player, with vlc as first, and spotify as last choice
+interval=5
+signal=10
 
-#[volume]
-#label=♪
-#label=VOL
-#interval=once
-#signal=10
-#STEP=5%
-
-# Memory usage
-#
-# The type defaults to "mem" if the instance is not specified.
-[memory]
-label=🐏
-percent=false
-interval=1
+[separator]
+full_text=‖
+color=#666666
 
 # Idle time
 [custom_idle]
@@ -98,36 +91,24 @@ interval=60
 full_text=‖
 color=#666666
 
-# CPU Temperature
-[cpu_temp]
-command=~/.config/i3blocks/custom_scripts/cpu_temp.sh
-interval=1
-
-[separator]
-full_text=‖
-color=#666666
-
 # CPU Usage
 [cpu_usage]
 command=~/.config/i3blocks/custom_scripts/cpu_usage.sh
 interval=1
 
-[separator]
-full_text=‖
-color=#666666
+# RAM Usage
+[memory]
+command=~/.config/i3blocks/custom_scripts/memory.sh
+interval=1
 
 # Load Average
 [custom_load]
 command=~/.config/i3blocks/custom_scripts/load_average.sh
 interval=1
 
-[separator]
-full_text=‖
-color=#666666
-
-# RAM Usage
-[memory]
-command=~/.config/i3blocks/custom_scripts/memory.sh
+# CPU Temperature
+[cpu_temp]
+command=~/.config/i3blocks/custom_scripts/cpu_temp.sh
 interval=1
 
 #[memory]
@@ -164,11 +145,7 @@ color=#666666
 
 # GPU
 [gpu]
-command=~/.config/i3blocks/custom_scripts/gpu_load.sh
-interval=10
-
-[gpu_vram]
-command=~/.config/i3blocks/custom_scripts/gpu_vram.sh
+command=~/.config/i3blocks/custom_scripts/gpu.sh
 interval=10
 
 [separator]
@@ -209,6 +186,26 @@ interval=5
 full_text=‖
 color=#666666
 
+# Volume indicator
+[volume]
+command=~/.config/i3blocks/custom_scripts/volume.sh
+interval=1
+signal=10
+
+[separator]
+full_text=‖
+color=#666666
+
+# Bluetooth toggle
+[bluetooth]
+command=~/.config/i3blocks/custom_scripts/bluetooth_toggle.sh
+interval=5
+signal=11
+
+[separator]
+full_text=‖
+color=#666666
+
 # Date and Time
 [time]
 command=date '+%Y-%m-%d %H:%M:%S'
@@ -217,17 +214,6 @@ interval=1
 [separator]
 full_text=‖
 color=#666666
-
-# Generic media player support
-#
-# This displays "ARTIST - SONG" if a music is playing.
-# Supported players are: spotify, vlc, audacious, xmms2, mplayer, and others.
-# Set to %any to automatically pick (Requires playerctl >=2.1.1)
-#[mediaplayer]
-# This picks any player, with vlc as first, and spotify as last choice
-#instance=vlc,%any,spotify
-#interval=5
-#signal=10
 
 # OpenVPN support
 #

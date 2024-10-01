@@ -135,7 +135,7 @@ let g:ale_linters = {
 \}
 
 let g:ale_fixers = {
-\   'python': ['autoflake', 'autoimport', 'reorder-python-imports', 'isort', 'autopep8', 'black', 'ruff', 'ruff_format'],
+\   'python': ['autoflake', 'autoimport', 'reorder-python-imports', 'isort', 'black', 'ruff', 'ruff_format'],
 \   'javascript': ['prettier'],
 \   'javascriptreact': ['prettier'],
 \   'typescript': ['prettier'],

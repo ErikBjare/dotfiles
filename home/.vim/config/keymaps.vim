@@ -133,3 +133,5 @@ nmap <C-g> <Plug>(JsGotoDefinition)
 nnoremap <Leader>hi <cmd>echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
     \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<cr>
+" GPTme mapping
+vnoremap <Leader>g :w !gptme --non-interactive<Space>
