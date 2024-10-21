@@ -49,6 +49,7 @@ size = 9
 
 [font.normal]
 family = "FiraCode Nerd Font Mono"
+#family = "Fira Code"
 style = "Retina"
 
 [font.bold]
