@@ -46,6 +46,10 @@ if (command -v docker > /dev/null); then
     echo "# Pruning dangling images"
     docker image prune -f | true
   fi
+
+  # TODO: use these instead?
+  # docker system df
+  # docker system prune
 fi
 
 # get current free space and calculate how much was freed

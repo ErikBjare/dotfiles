@@ -30,6 +30,10 @@ if [ -n "$gpu_info" ]; then
         color="#00FF00"
     fi
 
+    # pad with spaces
+    gpu_load=$(printf "%2s" $gpu_load)
+    vram_usage=$(printf "%2s" $vram_usage)
+
     # Output
     echo "🖥️ ${gpu_load}% 🐏 ${vram_usage}%"
     echo "🖥️ ${gpu_load}% 🐏 ${vram_usage}%"

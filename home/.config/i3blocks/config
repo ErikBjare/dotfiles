@@ -146,7 +146,7 @@ color=#666666
 # GPU
 [gpu]
 command=~/.config/i3blocks/custom_scripts/gpu.sh
-interval=10
+interval=1
 
 [separator]
 full_text=‖
@@ -155,7 +155,7 @@ color=#666666
 # Disk Usage
 [disk]
 command=~/.config/i3blocks/custom_scripts/disk_usage.sh
-interval=30
+interval=5
 
 [separator]
 full_text=‖
@@ -180,7 +180,7 @@ color=#666666
 # Power Draw
 [custom_power]
 command=~/.config/i3blocks/custom_scripts/power_draw.sh
-interval=5
+interval=2
 
 [separator]
 full_text=‖
@@ -199,7 +199,7 @@ color=#666666
 # Bluetooth toggle
 [bluetooth]
 command=~/.config/i3blocks/custom_scripts/bluetooth_toggle.sh
-interval=5
+interval=2
 signal=11
 
 [separator]
