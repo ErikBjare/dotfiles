@@ -1,0 +1,13 @@
+{
+  "IS_MAXIMIZED": false,
+  "IS_MINIMIZED": false,
+  "WINDOW_BOUNDS": {
+    "x": 2,
+    "y": 17,
+    "width": 2337,
+    "height": 1274
+  },
+  "trayBalloonShown": true,
+  "BACKGROUND_COLOR": "#202225",
+  "SKIP_HOST_UPDATE": false
+}
