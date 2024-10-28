@@ -36,7 +36,7 @@ if (uname | grep 'Darwin'); then
     fi
 
     GNU_UTILS="coreutils gnu-sed grep moreutils findutils"
-    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup rsync tree nmap pandoc ripgrep wget jq ncdu ruby graphviz gimp fzf websocat broot"
+    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup rsync tree nmap pandoc ripgrep wget jq ncdu ruby graphviz gimp fzf websocat broot lynx"
     LIBS_PACKAGES="hdf5 c-blosc"
     GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone git-lfs"
     BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one visual-studio-code logseq koekeishiya/formulae/yabai flutter"
@@ -51,7 +51,7 @@ elif (lsb_release -a | grep 'Arch Linux'); then
     echo 'Detected Arch Linux'
 
     TERMINAL="fish tmux alacritty powerline broot"
-    BROWSERS="firefox okular"
+    BROWSERS="firefox okular lynx"
     EDITORS="vim neovim"
     VCS="git"  # since this script is in git, we probably already have it, but still
     TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs tokei nmap fzf jq bc wireless_tools"

@@ -219,6 +219,9 @@ bindsym $mod+l exec "bash ~/.bin/lock"
 # lock and suspend
 bindsym $mod+Shift+l exec "bash ~/.bin/lock --suspend"
 
+# toggle window borders
+bindsym $mod+b border toggle
+
 # automatically lock after 10 minutes of inactivity
 exec --no-startup-id /usr/bin/xautolock -time 10 -detectsleep -locker "bash ~/.bin/lock"
 
