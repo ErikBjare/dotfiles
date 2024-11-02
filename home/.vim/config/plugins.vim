@@ -29,6 +29,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+    " My own plugins
+    Plug 'ErikBjare/gptme', {'rtp': 'scripts/vim'}
+
     " LSP
     Plug 'williamboman/mason.nvim', {'branch': 'main'}
     Plug 'williamboman/mason-lspconfig.nvim', {'branch': 'main'}
