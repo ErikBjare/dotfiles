@@ -36,15 +36,21 @@ if (uname | grep 'Darwin'); then
     fi
 
     GNU_UTILS="coreutils gnu-sed grep moreutils findutils"
-    BREW_PACKAGES="pyenv syncthing tmux neovim helix fish watch xz htop yt-dlp rustup rsync tree nmap pandoc ripgrep wget jq ncdu ruby graphviz gimp fzf websocat broot lynx"
+    CLI_PACKAGES="tmux fish watch xz htop yt-dlp rsync tree nmap pandoc ripgrep wget jq ncdu graphviz websocat lynx"
+    EDITOR_PACKAGES="neovim helix fzf broot"
+    LANG_PACKAGES="pyenv rustup ruby oven-sh/bun/bun"
+    APPS_PACKAGES="syncthing gimp"
     LIBS_PACKAGES="hdf5 c-blosc"
     GIT_PACKAGES="git git-delta git-annex rclone git-annex-remote-rclone git-lfs"
+    BREW_PACKAGES="$GNU_UTILS $CLI_PACKAGES $EDITOR_PACKAGES $LANG_PACKAGES $APPS_PACKAGES $LIBS_PACKAGES $GIT_PACKAGES"
+
     BREW_CASK_PACKAGES="alacritty discord font-fira-code standard-notes zerotier-one visual-studio-code logseq koekeishiya/formulae/yabai flutter"
     PIPX_PACKAGES="poetry powerline-status $PIPX_PACKAGES"
 
+
     ask "Want to install brew packages?"
     if [ $? -eq 0 ]; then
-        brew install $GNU_UTILS $BREW_PACKAGES $GIT_PACKAGES $LIBS_PACKAGES
+        brew install $BREW_PACKAGES
         brew install --cask $BREW_CASK_PACKAGES
     fi
 elif (lsb_release -a | grep 'Arch Linux'); then
