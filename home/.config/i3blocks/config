@@ -73,6 +73,15 @@ color=#666666
 #INTERFACE=eth0
 #interval=5
 
+# BTC Price
+[custom_btc_price]
+command=~/.config/i3blocks/custom_scripts/btc_price.sh
+interval=60
+
+[separator]
+full_text=‖
+color=#666666
+
 # ETH Price
 [custom_eth_price]
 command=~/.config/i3blocks/custom_scripts/eth_price.sh
