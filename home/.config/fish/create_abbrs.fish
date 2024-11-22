@@ -18,6 +18,9 @@ abbr --add gds "git diff --staged"
 abbr --add gpl "git pull"
 abbr --add gps "git push"
 
+abbr --add gr "git restore"
+abbr --add grs "git restore --staged"
+
 abbr --add pe "pipenv"
 
 abbr --add tmain "tmux attach -t main; or tmux new-session -t main"
