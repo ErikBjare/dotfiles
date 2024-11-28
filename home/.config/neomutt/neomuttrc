@@ -1,0 +1,51 @@
+# Local Maildir settings
+set folder = "~/.local/share/mail/gmail"
+set spoolfile = "+INBOX"
+set postponed = "+[Gmail].Drafts"
+set record = "+[Gmail].Sent Mail"
+set trash = "+[Gmail].Trash"
+
+# SMTP settings for sending mail
+set smtp_url = "smtps://erik.bjareholt@gmail.com@smtp.gmail.com:465"
+set smtp_pass = "`pass Email/gmail-app`"
+
+# Basic settings
+set mail_check = 60
+set timeout = 10
+set sort = 'threads'
+set sort_aux = 'reverse-last-date-received'
+set date_format = "%Y-%m-%d %H:%M"
+set index_format = "%2C | %Z [%d] %-30.30F (%-4.4c) %s"
+
+# Sidebar settings
+set sidebar_visible = yes
+set sidebar_width = 30
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+mailboxes "=INBOX" "=Bob" "=1. Work"
+#mailboxes "=[Gmail]/Starred" "=[Gmail]/Bin" "=[Gmail]/Chats" "=[Gmail]/Drafts"  "=[Gmail]/Sent\ Mail" "=[Gmail]/Spam"
+
+# Key bindings
+bind index,pager \CP sidebar-prev
+bind index,pager \CN sidebar-next
+bind index,pager \CO sidebar-open
+bind index,pager \CB sidebar-toggle-visible
+
+# Colors
+color normal        default             default
+color indicator     brightwhite         blue
+color tree         default             default
+color status       brightgreen         default
+color error        brightred           default
+color message      default             default
+color attachment   default             default
+color hdrdefault   cyan                default
+color markers      brightred           default
+color quoted       green               default
+color signature    cyan                default
+color tilde        blue                default
+color search       brightmagenta       default
+
+# Cache
+set header_cache = "~/.cache/neomutt/headers"
+set message_cachedir = "~/.cache/neomutt/bodies"
