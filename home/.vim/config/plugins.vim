@@ -30,7 +30,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
     " My own plugins
-    Plug 'ErikBjare/gptme', {'rtp': 'scripts/vim'}
+    Plug 'ErikBjare/gptme.vim'
 
     " LSP
     Plug 'williamboman/mason.nvim', {'branch': 'main'}
