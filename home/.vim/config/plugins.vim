@@ -1,15 +1,17 @@
 " Plugin Configuration
 "
 " Summary:
-"  - Pathogen and vim-plug are used for plugin management
-"  - Various plugins are configured here, including:
-"    - LSP support
-"    - Linting and formatting (ALE)
-"    - Navigation (NERDTree, fzf)
-"    - Git integration (fugitive, signify)
-"    - Language-specific plugins
+"  - vim-plug is used for plugin management
+"  - Plugins are organized by category
+"  - Each section contains related configuration
+"  - LSP support
+"  - Linting and formatting (ALE)
+"  - Navigation (NERDTree, fzf)
+"  - Git integration (fugitive, signify)
+"  - Language-specific plugins
 
 " Pathogen
+" Note: Consider removing Pathogen as vim-plug handles all plugin needs
 let g:pathogen_disabled = []
 if has('nvim')
     call add(g:pathogen_disabled, 'vim-geeknote')
