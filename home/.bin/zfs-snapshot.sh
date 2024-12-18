@@ -20,9 +20,23 @@ set -e
 
 # Check if we have permission to destroy snapshots
 can_destroy=false
-if zfs allow | grep -q "destroy"; then
+if zfs allow zroot | grep -q "destroy"; then
     can_destroy=true
 fi
+
+# Space-separated list of datasets to skip (supports exact matches and patterns)
+SKIP_DATASETS="zroot/opt/SteamLibrary"
+
+# Function to check if a dataset should be skipped
+should_skip_dataset() {
+    local dataset=$1
+    for skip_pattern in $SKIP_DATASETS; do
+        if [[ "$dataset" == "$skip_pattern" ]]; then
+            return 0  # Should skip
+        fi
+    done
+    return 1  # Should not skip
+}
 
 # Function to create a recursive snapshot
 create_snapshot() {
@@ -32,6 +46,10 @@ create_snapshot() {
     local snapshot_created=false
 
     for dataset in $datasets; do
+        if should_skip_dataset "$dataset"; then
+            echo "Skipping dataset: $dataset"
+            continue
+        fi
         if ! zfs list -H -t snapshot -o name | grep -q "${dataset}@${snapshot_name}"; then
             zfs snapshot "${dataset}@${snapshot_name}"
             echo "Created snapshot: ${dataset}@${snapshot_name}"
