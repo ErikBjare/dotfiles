@@ -11,7 +11,10 @@
 # - Linux: Uses xprintidle for idle detection and notify-send for notifications
 # - macOS: Uses ioreg for idle detection and osascript for notifications
 #
+
+import argparse
 import logging
+import platform
 import subprocess
 import time
 from datetime import datetime
@@ -31,7 +34,9 @@ logger = logging.getLogger(__name__)
 
 class RoomLightMonitor:
     def __init__(self, verbose=False):
-        self.image_dir = Path("room_images")
+        # get cache dir
+        cache_dir = Path.home() / ".cache" / "room_light_monitor"
+        self.image_dir = cache_dir / "images"
         self.image_dir.mkdir(exist_ok=True)
         self.verbose = verbose
         self.cap = None
@@ -58,7 +63,6 @@ class RoomLightMonitor:
 
     def get_idle_time(self):
         """Get system idle time in milliseconds"""
-        import platform
 
         system = platform.system()
         try:
@@ -157,7 +161,6 @@ class RoomLightMonitor:
 
     def send_notification(self, summary, body):
         """Send desktop notification"""
-        import platform
 
         system = platform.system()
         try:
@@ -224,8 +227,6 @@ class RoomLightMonitor:
 
 
 if __name__ == "__main__":
-    import argparse
-
     parser = argparse.ArgumentParser(description="Monitor room light levels")
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="Enable verbose output"
