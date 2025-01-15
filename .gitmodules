@@ -16,3 +16,6 @@
 [submodule "home/.config/i3blocks-contrib"]
 	path = home/.config/i3blocks-contrib
 	url = git@github.com:vivien/i3blocks-contrib.git
+[submodule "home/.tmux/plugins/tmux-continuum"]
+	path = home/.tmux/plugins/tmux-continuum
+	url = https://github.com/tmux-plugins/tmux-continuum
