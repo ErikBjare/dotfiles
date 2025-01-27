@@ -72,3 +72,5 @@
 	clean = poetry run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --stdin --to=notebook --stdout
 	smudge = poetry run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --stdin --to=notebook --stdout
 	required = true
+[annex]
+	adviceNoSshCaching = false
