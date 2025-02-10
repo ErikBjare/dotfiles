@@ -50,12 +50,15 @@ begin
     path_prepend /opt/homebrew/opt/python@3.10/bin
 
     # Setting PATH for Python 3.9
-    # The original version is saved in /Users/erb/.config/fish/config.fish.pysave
     #set -x PATH "/Library/Frameworks/Python.framework/Versions/3.9/bin" "$PATH"
+
+    # Setting PATH for Python 3.12
+    path_prepend "/Library/Frameworks/Python.framework/Versions/3.12/bin"
 
     # I need 16 as my system node on macOS (Copilot)
     #path_prepend /opt/homebrew/opt/node@16/bin
-    path_prepend /opt/homebrew/opt/node@18/bin
+    #path_prepend /opt/homebrew/opt/node@18/bin
+    path_prepend /opt/homebrew/opt/node@22/bin
 
     path_prepend ~/.bin/git-subrepo/lib
     path_prepend ~/.local/bin
