@@ -73,12 +73,17 @@ command! -nargs=0 Sw w !sudo tee % > /dev/null
 " ctrl+r in visual mode to replace
 vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
 
-" Unite mappings
-nnoremap <Leader>b :Unite buffer<CR>
+" Unite mappings (legacy)
 nnoremap <Leader>t :Unite tab<CR>
-nnoremap <Leader>f :Unite file<CR>
-nnoremap <Leader>ff :Unite -start-insert file_rec<CR>
 nnoremap <Leader>cc :Unite grammarous
+
+" fzf mappings
+nnoremap <C-p> :Files<CR>
+nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>ff :GFiles<CR>
+nnoremap <Leader>rg :Rg<CR>
+nnoremap <Leader>h :History<CR>
 
 " Better incsearch with incsearch.vim
 map /  <Plug>(incsearch-forward)

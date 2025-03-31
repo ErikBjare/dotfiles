@@ -5,6 +5,8 @@ npm-debug.log
 .mypy_cache
 db
 .DS_Store
+.cache
+home/.kube/cache
 
 # Vim stuff
 home/.vim/swap

@@ -23,7 +23,7 @@ function ask() {
 }
 
 # platform-independent
-PIPX_PACKAGES="autoimport isort reorder-python-imports"
+PIPX_PACKAGES="autoimport isort reorder-python-imports uv pre-commit"
 
 # if macOS
 if (uname | grep 'Darwin'); then
@@ -36,7 +36,7 @@ if (uname | grep 'Darwin'); then
     fi
 
     GNU_UTILS="coreutils gnu-sed grep moreutils findutils"
-    CLI_PACKAGES="tmux fish watch xz htop yt-dlp rsync tree nmap pandoc ripgrep wget jq ncdu graphviz websocat lynx"
+    CLI_PACKAGES="tmux fish watch xz htop yt-dlp rsync tree nmap pandoc ripgrep wget jq ncdu graphviz websocat lynx fd"
     EDITOR_PACKAGES="neovim helix fzf broot"
     LANG_PACKAGES="pyenv rustup ruby oven-sh/bun/bun"
     APPS_PACKAGES="syncthing gimp"
@@ -107,7 +107,7 @@ else
     VCS="mercurial git"
     TOOLS="redshift redshift-gtk fzf"
     MATH="octave"
-    PYTHON="python-dev python3-dev python3-pip ipython3 poetry"
+    PYTHON="python-dev python3-dev python3-pip ipython3"
     GPG="gnupg-curl"
 
     ALL="$TERMINAL $BROWSERS $EDITORS $VCS $MATH $PYTHON $GPG"

@@ -1,13 +1,16 @@
 [Unit]
-Description=tmux: A terminal multiplixer
+Description=tmux default session (detached)
 Documentation=man:tmux(1)
-Wants=
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/tmux new-session -s "Main" -d -c %h
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/tmux new-session -d
+ExecStop=%h/.tmux/plugins/tmux-resurrect/scripts/save.sh
 ExecStop=/usr/bin/tmux kill-server
-Environment="DISPLAY=:0"
+KillMode=control-group
+
+RestartSec=2
 
 [Install]
 WantedBy=default.target

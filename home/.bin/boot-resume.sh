@@ -21,3 +21,4 @@ start standard-notes
 start roam-research
 start webcord
 start pavucontrol
+start spotify

@@ -51,6 +51,7 @@ call plug#begin('~/.vim/plugged')
 
     " Fuzzy finding
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
 
     " Linting, fixing, and completion
     Plug 'dense-analysis/ale'
@@ -171,3 +172,11 @@ let g:NERDDefaultAlign = 'left'
 
 " Incsearch
 let g:incsearch#auto_nohlsearch = 1
+
+" fzf configuration
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }

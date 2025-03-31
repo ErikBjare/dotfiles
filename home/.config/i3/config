@@ -204,6 +204,8 @@ assign [class="(?i)steam"] $ws8
 # AUTOSTART SECTION
 ####################
 
+exec --no-startup-id "bash ~/.bin/boot-resume.sh"
+
 # notification daemon
 exec --no-startup-id dunst
 

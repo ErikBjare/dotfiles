@@ -37,7 +37,8 @@ separator=false
 # Supported players are: spotify, vlc, audacious, xmms2, mplayer, and others.
 # Set to %any to automatically pick (Requires playerctl >=2.1.1)
 [mediaplayer]
-instance=vlc,%any,spotify  # This picks any player, with vlc as first, and spotify as last choice
+# This picks any player, with vlc as first, and spotify as last choice
+instance=vlc,%any,spotify
 interval=5
 signal=10
 
@@ -73,18 +74,25 @@ color=#666666
 #INTERFACE=eth0
 #interval=5
 
-# BTC Price
-[custom_btc_price]
-command=~/.config/i3blocks/custom_scripts/btc_price.sh
+
+[price_gold]
+command=~/.config/i3blocks/custom_scripts/price.sh gold
 interval=60
 
 [separator]
 full_text=‖
 color=#666666
 
-# ETH Price
-[custom_eth_price]
-command=~/.config/i3blocks/custom_scripts/eth_price.sh
+[price_btc]
+command=~/.config/i3blocks/custom_scripts/price.sh btc
+interval=60
+
+[separator]
+full_text=‖
+color=#666666
+
+[price_eth]
+command=~/.config/i3blocks/custom_scripts/price.sh eth
 interval=60
 
 [separator]

@@ -35,9 +35,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- Code actions
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, { buffer = ev.buf, desc = 'Rename' })
     vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, { buffer = ev.buf, desc = 'Code action' })
-    vim.keymap.set('n', '<space>f', function()
-      vim.lsp.buf.format { async = true }
-    end, { buffer = ev.buf, desc = 'Format' })
+
+    -- Disabled since we use ALE's format-on-save
+    -- vim.keymap.set('n', '<space>f', function()
+    --   vim.lsp.buf.format { async = true }
+    -- end, { buffer = ev.buf, desc = 'Format' })
 
     -- Enable completion triggered by <c-x><c-o>
     -- NOTE: we use mini.completion for this

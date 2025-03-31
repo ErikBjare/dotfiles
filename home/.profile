@@ -111,3 +111,6 @@ echo ".profile ran successfully" >> $logfile
 
 #export NVS_HOME="$HOME/.nvs"
 #[ -s "$NVS_HOME/nvs.sh" ] && . "$NVS_HOME/nvs.sh"
+
+# Kubernetes config paths
+export KUBECONFIG=~/.kube/config:~/.kube/configs/k3s.yaml:~/.kube/configs/k3s-tunnel.yaml:~/.kube/configs/digitalocean.yaml

@@ -40,6 +40,7 @@ begin
 
     # gems
     path_prepend ~/.local/share/gem/ruby/3.0.0/bin       # linux
+    path_prepend ~/.local/share/gem/ruby/3.3.0/bin       # linux
     path_prepend /opt/homebrew/lib/ruby/gems/3.2.0/bin/  # macos
 
     # Setting brew JDK on macOS
@@ -156,3 +157,13 @@ if status is-interactive
 end
 # Run venv check on shell start
 check_and_activate_venv
+
+# fzf configuration
+set -gx FZF_DEFAULT_OPTS '--height 40% --layout=reverse --border --preview "bat --style=numbers --color=always --line-range :500 {}"'
+
+# Enhanced fzf key bindings
+fzf_configure_bindings \
+    --directory=\cf \
+    --git_status=\cs \
+    --history=\cr \
+    --git_log=\cg
