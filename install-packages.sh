@@ -60,7 +60,7 @@ elif (lsb_release -a | grep 'Arch Linux'); then
     BROWSERS="firefox okular lynx"
     EDITORS="vim neovim"
     VCS="git"  # since this script is in git, we probably already have it, but still
-    TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs tokei nmap fzf jq bc wireless_tools"
+    TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs tokei nmap fzf jq bc wireless_tools fd"
     MATH="octave"
     PYTHON="python ipython poetry pyenv"
     RUST="rustup"

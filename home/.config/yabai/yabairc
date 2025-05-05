@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+#
 # My yabai config
 #
 # This is a shell script that is run by yabai when it starts up.
@@ -6,11 +8,14 @@
 #  - https://d12frosted.io/posts/2022-04-23-yabai-spaces.html
 
 # load scripting additions
-# NOTE: requires disabling System Integrity Protection (SIP)
-#sudo yabai --load-sa
-#yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
-# bsp or float (default: float)
+# Disable animations
+yabai -m config window_animation_duration 0.0
+yabai -m config window_animation_frame_rate 120
+
+# Use BSP layout by default
 yabai -m config layout bsp
 
 # Override default layout for space 2 only
@@ -22,31 +27,53 @@ yabai -m config layout bsp
 # New window spawns to the right if vertical split, or bottom if horizontal split
 yabai -m config window_placement second_child
 
-# Move apps to specific spaces
-# If ^ is present as in `space=^1`, follow focus.
-# Note: you can show all spaces with `yabai -m query --spaces`
-# main terminal
-yabai -m rule --add app="^Alacritty$" space=^1
-# browsers
-yabai -m rule --add app="^Safari$" space=^2
-yabai -m rule --add app="^FireFox$" space=^2
-# dev
-yabai -m rule --add app="^Code$" space=^3
-yabai -m rule --add app="^Linear$" space=^3
-# notes
-yabai -m rule --add app="^Standard Notes$" space=^4
-yabai -m rule --add app="^Roam Research$" space=^4
-yabai -m rule --add app="^Limitless$" space=^4
-# music
-yabai -m rule --add app="^Music$" space=^5
-yabai -m rule --add app="^Spotify$" space=^5
-# chat
-yabai -m rule --add app="^Discord$" space=^6
-# video
-yabai -m rule --add app="^VLC$" space=^7
-# games
-yabai -m rule --add app="^Steam$" space=^8
-# space 9 left for misc
-# system
-yabai -m rule --add app="^System Preferences$" space=^10
-yabai -m rule --add app="^Activity Monitor$" space=^10
+# Clean up extra spaces (using actual index)
+for idx in $(yabai -m query --spaces | jq '.[].index | select(. > 10)' | sort -nr); do
+  yabai -m space --destroy "$idx"
+done
+
+# Label spaces
+yabai -m space 1 --label "1 👨‍💻"  # Terminal
+yabai -m space 2 --label "2 🌍"   # Browsers
+yabai -m space 3 --label "3 🛠️"   # Dev
+yabai -m space 4 --label "4 📝"   # Notes
+yabai -m space 5 --label "5 🎵"   # Music
+yabai -m space 6 --label "6 💬"   # Chat
+yabai -m space 7 --label "7 📺"   # Video
+yabai -m space 8 --label "8 🌈"   # Games
+yabai -m space 9 --label "9 📔"   # Misc
+yabai -m space 10 --label "⚙️"    # System
+
+# Move apps to specific spaces (without focus to avoid flickering)
+# Terminal
+yabai -m rule --add app="^Alacritty$" space=1
+
+# Browsers
+yabai -m rule --add app="^Safari$" space=2
+yabai -m rule --add app="^Firefox$" space=2
+
+# Dev
+yabai -m rule --add app="^Code$" space=3
+yabai -m rule --add app="^Linear$" space=3
+
+# Notes
+yabai -m rule --add app="^Standard Notes$" space=4
+yabai -m rule --add app="^Roam Research$" space=4
+yabai -m rule --add app="^Limitless$" space=4
+
+# Music
+yabai -m rule --add app="^Music$" space=5
+yabai -m rule --add app="^Spotify$" space=5
+
+# Chat
+yabai -m rule --add app="^Discord$" space=6
+
+# Video
+yabai -m rule --add app="^VLC$" space=7
+
+# Games
+yabai -m rule --add app="^Steam$" space=8
+
+# System
+yabai -m rule --add app="^System Settings$" space=10
+yabai -m rule --add app="^Activity Monitor$" space=10

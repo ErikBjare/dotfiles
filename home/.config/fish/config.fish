@@ -3,6 +3,9 @@
 # Set the default editor
 set -x EDITOR nvim
 
+# join .kube/config and all configs in .kube/config
+set -x KUBECONFIG ~/.kube/config:(find ~/.kube/configs -type f -name "*.yaml" | string join ":")
+
 # Bind virtual Home and End keys with Cmd+Shift+Left and Cmd+Shift+Right
 bind \e\[1\;4D beginning-of-line
 bind \e\[1\;4C end-of-line

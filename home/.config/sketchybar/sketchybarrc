@@ -1,0 +1,94 @@
+#!/bin/bash
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+##### Bar Appearance #####
+sketchybar --bar \
+  position=top \
+  height=38 \
+  blur_radius=0 \
+  color=0xff000000 \
+  padding_left=0 \
+  padding_right=0 \
+  border_width=0 \
+  corner_radius=0 \
+  y_offset=0
+
+##### Changing Defaults #####
+default=(
+  background.height=22
+  icon.y_offset=0
+  label.y_offset=0
+  background.color=0xff111111
+  background.border_color=0xff222222
+  background.border_width=1
+  background.corner_radius=0
+  padding_left=2
+  padding_right=2
+  icon.font="FiraCode Nerd Font Mono:Bold:9.0"
+  icon.color=0xffffffff
+  icon.padding_left=4
+  icon.padding_right=4
+  label.font="FiraCode Nerd Font Mono:Regular:9.0"
+  label.color=0xffffffff
+  label.padding_left=4
+  label.padding_right=4
+)
+sketchybar --default "${default[@]}"
+
+##### Adding Mission Control Space Indicators #####
+SPACE_ICONS=("1 👨‍💻" "2 🌍" "3 🛠️" "4 📝" "5 🎵" "6 💬" "7 📺" "8 🌈" "9 📔" "10 ⚙️")
+for i in "${!SPACE_ICONS[@]}"
+do
+  sid="$(($i+1))"
+  space=(
+    space="$sid"
+    icon="${SPACE_ICONS[i]}"
+    label.drawing=off
+    padding_left=1
+    padding_right=1
+    script="$PLUGIN_DIR/space.sh"
+    click_script="yabai -m space --focus $sid"
+  )
+  sketchybar --add space space."$sid" left \
+             --set space."$sid" "${space[@]}" \
+             --subscribe space."$sid" space_change window_focus display_change
+done
+
+##### Adding Left Items #####
+sketchybar --add item front_app left \
+           --set front_app \
+             icon.drawing=off \
+             update_freq=1 \
+             script="$PLUGIN_DIR/front_app.sh" \
+             background.border_width=0 \
+           --subscribe front_app \
+             front_app_switched \
+             window_focus \
+             window_title_changed
+
+##### Adding Right Items #####
+# Add items from right to left (clock rightmost)
+sketchybar --add item clock right \
+           --set clock \
+             update_freq=1 \
+             icon= \
+             script="$PLUGIN_DIR/clock.sh" \
+           --subscribe clock system_woke \
+           \
+           --add item volume right \
+           --set volume \
+             script="$PLUGIN_DIR/volume.sh" \
+           --subscribe volume \
+             volume_change \
+           \
+           --add item battery right \
+           --set battery \
+             update_freq=120 \
+             script="$PLUGIN_DIR/battery.sh" \
+           --subscribe battery \
+             system_woke \
+             power_source_change
+
+##### Force all scripts to run the first time #####
+sketchybar --update
