@@ -5,31 +5,31 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 ##### Bar Appearance #####
 sketchybar --bar \
   position=top \
-  height=38 \
+  height=24 \
   blur_radius=0 \
-  color=0xff000000 \
-  padding_left=0 \
-  padding_right=0 \
+  color=0x00000000 \
+  padding_left=8 \
+  padding_right=8 \
   border_width=0 \
   corner_radius=0 \
-  y_offset=0
+  y_offset=2
 
 ##### Changing Defaults #####
 default=(
-  background.height=22
-  icon.y_offset=0
-  label.y_offset=0
-  background.color=0xff111111
-  background.border_color=0xff222222
+  background.height=24
+  icon.y_offset=1
+  label.y_offset=1
+  background.color=0xff222222
+  background.border_color=0xff333333
   background.border_width=1
-  background.corner_radius=0
-  padding_left=2
-  padding_right=2
-  icon.font="FiraCode Nerd Font Mono:Bold:9.0"
+  background.corner_radius=3
+  padding_left=1
+  padding_right=1
+  icon.font="FiraCode Nerd Font Mono:Retina:12.0"
   icon.color=0xffffffff
-  icon.padding_left=4
-  icon.padding_right=4
-  label.font="FiraCode Nerd Font Mono:Regular:9.0"
+  icon.padding_left=5
+  icon.padding_right=5
+  label.font="FiraCode Nerd Font Mono:Retina:12.0"
   label.color=0xffffffff
   label.padding_left=4
   label.padding_right=4
@@ -37,7 +37,7 @@ default=(
 sketchybar --default "${default[@]}"
 
 ##### Adding Mission Control Space Indicators #####
-SPACE_ICONS=("1 👨‍💻" "2 🌍" "3 🛠️" "4 📝" "5 🎵" "6 💬" "7 📺" "8 🌈" "9 📔" "10 ⚙️")
+SPACE_ICONS=("1 👨‍💻" "2 🌍" "3 🛠️" "4 📝" "5 🎵" "6 💬" "7 📺" "8 🌈" "9 📔" "⚙️")
 for i in "${!SPACE_ICONS[@]}"
 do
   sid="$(($i+1))"
@@ -52,27 +52,28 @@ do
   )
   sketchybar --add space space."$sid" left \
              --set space."$sid" "${space[@]}" \
-             --subscribe space."$sid" space_change window_focus display_change
+             --subscribe space."$sid" space_change window_focus display_change window_created window_destroyed active_space_change
 done
 
 ##### Adding Left Items #####
-sketchybar --add item front_app left \
-           --set front_app \
-             icon.drawing=off \
-             update_freq=1 \
-             script="$PLUGIN_DIR/front_app.sh" \
-             background.border_width=0 \
-           --subscribe front_app \
-             front_app_switched \
-             window_focus \
-             window_title_changed
+#sketchybar --add item front_app left \
+#           --set front_app \
+#             icon.drawing=off \
+#             update_freq=1 \
+#             script="$PLUGIN_DIR/front_app.sh" \
+#             background.color=0x00000000 \
+#             background.border_width=0 \
+#           --subscribe front_app \
+#             front_app_switched \
+#             window_focus \
+#             window_title_changed
 
 ##### Adding Right Items #####
 # Add items from right to left (clock rightmost)
 sketchybar --add item clock right \
            --set clock \
              update_freq=1 \
-             icon= \
+             icon.drawing=off \
              script="$PLUGIN_DIR/clock.sh" \
            --subscribe clock system_woke \
            \
