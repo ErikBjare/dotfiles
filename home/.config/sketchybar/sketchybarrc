@@ -12,14 +12,14 @@ sketchybar --bar \
   padding_right=8 \
   border_width=0 \
   corner_radius=0 \
-  y_offset=2
+  y_offset=8
 
 ##### Changing Defaults #####
 default=(
   background.height=24
   icon.y_offset=1
   label.y_offset=1
-  background.color=0xff222222
+  background.color=0x88222222
   background.border_color=0xff333333
   background.border_width=1
   background.corner_radius=3
@@ -31,8 +31,8 @@ default=(
   icon.padding_right=5
   label.font="FiraCode Nerd Font Mono:Retina:12.0"
   label.color=0xffffffff
-  label.padding_left=4
-  label.padding_right=4
+  label.padding_left=5
+  label.padding_right=5
 )
 sketchybar --default "${default[@]}"
 

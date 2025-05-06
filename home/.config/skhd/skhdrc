@@ -27,8 +27,9 @@ cmd + shift - 0 : yabai -m window --space 10
 
 # Window management
 cmd - return : /Applications/Alacritty.app/Contents/MacOS/alacritty
-cmd + shift - w : yabai -m window --close  # Like browser tab close, but with shift
-cmd - f : yabai -m window --toggle zoom-fullscreen
+# disabled since it gets confusing between linux and macOS
+# cmd - w : yabai -m window --close  # Like browser tab close, but with shift
+ctrl - f : yabai -m window --toggle zoom-fullscreen  # Using control to avoid conflict with other apps
 cmd + shift - space : yabai -m window --toggle float  # Using shift+space to avoid Spotlight conflict
 
 # Focus window

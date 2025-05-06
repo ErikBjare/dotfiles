@@ -11,9 +11,13 @@
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
-# Disable animations
+# Disable animations and shadows
 yabai -m config window_animation_duration 0.0
 yabai -m config window_animation_frame_rate 120
+yabai -m config window_shadow off
+
+# No gaps between windows
+yabai -m config window_gap 0
 
 # Use BSP layout by default
 yabai -m config layout bsp
