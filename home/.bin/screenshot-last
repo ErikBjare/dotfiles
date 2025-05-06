@@ -1,19 +1,17 @@
 #!/bin/bash
 
-HOSTNAME=$(hostnamectl --static)
-FOLDER="$HOME/annex/Logs/Screenshots/$HOSTNAME"
-
-if [ ! -d "$FOLDER" ]; then
-    echo "Screenshot directory does not exist: $FOLDER"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS: Check all possible screenshot locations
+    hostname=$(scutil --get LocalHostName)
+    ls -t ~/Desktop/Screenshot*.png \
+        ~/Pictures/Screenshots/*.png \
+        ~/annex/Logs/Screenshots/"$hostname"/*.png \
+        2>/dev/null | head -n1
+else
+    # Linux: Check annex folder
+    hostname=$(hostnamectl --static)
+    find "$HOME/annex/Logs/Screenshots/$hostname" -type f -name "*.png" -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -f2- -d" "
+fi | grep . || {
+    echo "No screenshots found" >&2
     exit 1
-fi
-
-# Find the most recent file in the screenshots directory
-LATEST=$(find "$FOLDER" -type f -name "*.png" -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" ")
-
-if [ -z "$LATEST" ]; then
-    echo "No screenshots found in $FOLDER"
-    exit 1
-fi
-
-echo "$LATEST"
+}
