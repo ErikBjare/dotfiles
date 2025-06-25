@@ -15,6 +15,8 @@ abbr --add gl "git log --all --graph --decorate --pretty"
 abbr --add gd "git diff"
 abbr --add gds "git diff --staged"
 
+abbr --add ggf "git grep --files-with-matches"
+
 abbr --add gpl "git pull"
 abbr --add gps "git push"
 

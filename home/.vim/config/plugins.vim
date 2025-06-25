@@ -109,6 +109,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-tree/nvim-web-devicons'
 call plug#end()
 
+" vim-tmux-navigator
+let g:tmux_navigator_no_mappings = 1
+
 " Copilot
 let g:copilot_filetypes = {
 \    'markdown': v:true,

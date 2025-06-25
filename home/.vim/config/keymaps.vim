@@ -51,15 +51,25 @@ noremap <Leader>wc <C-W>c
 noremap <Leader>y "+y
 noremap <Leader>p "+p
 
-" Window switching
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-Up> <C-W><C-K>
-nnoremap <C-Down> <C-W><C-J>
-nnoremap <C-Right> <C-W><C-L>
-nnoremap <C-Left> <C-W><C-H>
+" Window switching with vim-tmux-navigator
+nnoremap <silent> <C-J> :TmuxNavigateDown<CR>
+nnoremap <silent> <C-K> :TmuxNavigateUp<CR>
+nnoremap <silent> <C-L> :TmuxNavigateRight<CR>
+nnoremap <silent> <C-H> :TmuxNavigateLeft<CR>
+nnoremap <silent> <C-Up> :TmuxNavigateUp<CR>
+nnoremap <silent> <C-Down> :TmuxNavigateDown<CR>
+nnoremap <silent> <C-Right> :TmuxNavigateRight<CR>
+nnoremap <silent> <C-Left> :TmuxNavigateLeft<CR>
+
+" Terminal mode mappings for vim-tmux-navigator
+tnoremap <silent> <C-J> <C-\><C-N>:TmuxNavigateDown<CR>
+tnoremap <silent> <C-K> <C-\><C-N>:TmuxNavigateUp<CR>
+tnoremap <silent> <C-L> <C-\><C-N>:TmuxNavigateRight<CR>
+tnoremap <silent> <C-H> <C-\><C-N>:TmuxNavigateLeft<CR>
+tnoremap <silent> <C-Up> <C-\><C-N>:TmuxNavigateUp<CR>
+tnoremap <silent> <C-Down> <C-\><C-N>:TmuxNavigateDown<CR>
+tnoremap <silent> <C-Right> <C-\><C-N>:TmuxNavigateRight<CR>
+tnoremap <silent> <C-Left> <C-\><C-N>:TmuxNavigateLeft<CR>
 
 " Move correctly in wrapped mode
 noremap k gk
