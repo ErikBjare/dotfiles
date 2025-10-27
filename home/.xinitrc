@@ -13,5 +13,13 @@ fi
 ~/.profile
 ~/.xprofile
 
-#exec startxfce4
-exec i3 -V # >> ~/.cache/i3-$(date +'%F-%k-%M-%S').log 2>&1
+# Choose WM/DE based on environment variable
+# Usage: WM=plasma startx  or  WM=i3 startx
+case "${WM:-i3}" in
+    plasma)
+        exec startplasma-x11
+        ;;
+    i3)
+        exec i3 -V # >> ~/.cache/i3-$(date +'%F-%k-%M-%S').log 2>&1
+        ;;
+esac

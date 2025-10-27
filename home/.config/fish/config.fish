@@ -44,6 +44,7 @@ begin
     # gems
     path_prepend ~/.local/share/gem/ruby/3.0.0/bin       # linux
     path_prepend ~/.local/share/gem/ruby/3.3.0/bin       # linux
+    path_prepend ~/.local/share/gem/ruby/3.4.0/bin
     path_prepend /opt/homebrew/lib/ruby/gems/3.2.0/bin/  # macos
 
     # Setting brew JDK on macOS
