@@ -24,14 +24,15 @@ if zfs allow zroot | grep -q "destroy"; then
     can_destroy=true
 fi
 
-# Space-separated list of datasets to skip (supports exact matches and patterns)
-SKIP_DATASETS="zroot/opt/SteamLibrary"
+# Space-separated list of datasets to skip (supports exact matches and glob patterns like *)
+SKIP_DATASETS="zroot/opt/SteamLibrary zroot/opt/steam zroot/var/lib/docker zroot/var/lib/libvirt zroot/var/log zroot/home/erb/*annex"
 
 # Function to check if a dataset should be skipped
 should_skip_dataset() {
     local dataset=$1
     for skip_pattern in $SKIP_DATASETS; do
-        if [[ "$dataset" == "$skip_pattern" ]]; then
+        # Unquote pattern to enable glob matching (*, ?, etc.)
+        if [[ "$dataset" == $skip_pattern ]]; then
             return 0  # Should skip
         fi
     done
