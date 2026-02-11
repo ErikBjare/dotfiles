@@ -1,0 +1,134 @@
+[user]
+name = "Erik"
+
+about = """
+I am Erik Bjäreholt, a curious human programmer.
+
+I develop gptme, Bob, ActivityWatch, and other open source software.
+
+I have the following projects:
+ - gptme (powerful CLI, library, server, and webui for agents, providing LLMs with tools and context and enabling autonomous/persistent/self-modifying gptme agents)
+ - gptme-contrib (collection of gptme-related scripts and tools, mainly useful for gptme-agents)
+ - gptme-agent-template (template for creating gptme agents, like Bob)
+ - gptme-cloud (frontend wrapping gptme-webui with k8s infra managing user instances with gptme-server for the gptme.ai managed service, built with Supabase. Previously known as "gptme-landing" and "gptme-infra", now a monorepo)
+ - ActivityWatch (cross-platform time tracking software, popular with >500k downloads)
+
+gptme agents:
+ - bob (builder agent, the most sophisticated gptme-agent yet)
+ - alice (personal, more private, more empathetic agent)
+ - erbot (conservative digital twin of Erik Bjäreholt)
+
+They all live in the `~/Programming` directory.
+
+I have the current machines available as SSH aliases:
+ - erb-main3  (main desktop at Hasselstugan)
+ - erb-main2  (main desktop in Lund)
+ - erb-m2   (MacBook Air M2 16GB)
+ - erb-hetzner-ax41  (Proxmox server at Hetzner)
+ - server3  (Proxmox server at Hasselstugan, NAS shared with Johan)
+    - bob  (Bob's personal LXC container, running on server3)
+    - gptme-k3s-dev  (LXC container with k3s cluster for gptme development, running on server3)
+
+They should be used like: `ssh <host> <command>`
+"""
+
+response_preference = """
+Don't explain basic concepts.
+
+Programming preferences:
+ - KISS (Keep It Simple, Stupid)
+ - DRY (Don't Repeat Yourself)
+ - YAGNI (You Aren't Gonna Need It)
+ - Use Conventional Commits when writing commit messages, such as: `feat:`, `fix:`, `docs:`, `ci:`, `chore:`, `style:`, `refactor:`, `perf:`, `test:`
+   - Make sure to only use "feat:" for actual features, not for docs.
+
+Things LLMs often get wrong, and what to do about it:
+- too deeply nested code (should refactor into smaller functions without being told to)
+- long `try/catch` blocks (makes error handling a mess, patches difficult)
+- too much mocking in tests, better off not mocking at all
+- don't ever use `git commit -a` or `git add -A` or `git add .` to commit all unstaged files, use `git add` selectively instead
+- when resolving git conflicts, use the save tool instead of patch (since the patch tool format conflicts with the git conflict format)
+
+When committing code:
+- Run `git status` to see what files have changed
+- Ensure we are on a new branch for our changes if they are non-trivial or need review (e.g., `git checkout -b dev/example-feature`)
+- Stage only the files that are relevant to the commit
+- Use `git commit -m 'Message'` to commit the changes, with a message that follows Conventional Commits
+  - Only use `feat:` only for new features
+  - Use `docs:` if only text/markdown/rst files edited
+- Use `git push` to push the changes to the remote branch
+- If on a branch, create a GitHub PR with `gh pr create`
+  - Use single quotes in commands like `gh pr create --title 'Title' --body 'Body' ...` to allow for special characters in commit messages
+
+Extra tools:
+- `~/Programming/gptme-bob/scripts/output_files.py ~/Programming/roam-backup/markdown/**2025.md --sort created --reverse --limit 10000`
+  - Output my latest daily notes in Roam Research (up to a character limit)
+
+Extra information:
+- MCP means Model Context Protocol, a protocol for applications to provide tools and resources/context to LLMs.
+
+Post-modification validation:
+- After modifying gptme code/tools, validate with simple subprocess test before suggesting restart
+
+Continuous Improvement Mindset:
+- Notice when I repeatedly ask for the same context or explanations
+- Recognize patterns where workflow could be more efficient
+- Identify gaps in my knowledge of your projects, preferences, or environment
+- When friction emerges, investigate whether it stems from insufficient configuration, missing context, or suboptimal patterns
+- Proactively suggest improvements to reduce future friction: config changes, better context files, workflow optimizations
+- Treat every inefficiency as a learning opportunity to enhance future interactions
+- Focus on systemic improvements rather than one-off solutions
+
+Using git worktrees:
+- Create worktrees in /tmp/worktrees/<project>/<branch>
+"""
+
+[prompt]
+files = []
+
+[lessons]
+dirs = [
+    "~/Programming/gptme/docs/lessons",
+    "~/Programming/gptme-bob/lessons",
+    "~/Programming/gptme-bob/gptme-contrib/lessons"
+]
+
+[env]
+MODEL = "openrouter/anthropic/claude-opus-4.5"
+#MODEL = "anthropic/claude-opus-4-5"
+#MODEL = "anthropic/claude-sonnet-4-5"
+
+GPTME_CHAT_HISTORY = "true"
+GPTME_CONTEXT_TREE = "true"
+GPTME_BREAK_ON_TOOLUSE = "true"
+GPTME_DING = "true"
+GPTME_TOOL_SOUNDS = "true"
+
+#GPTME_CHECK = "true"
+#GPTME_AUTOCOMMIT = "true"
+#GPTME_PATCH_RECOVERY = "true"
+#GPTME_VOICE_FINISH = "true"
+
+#LLM_PROXY_URL = "http://127.0.0.1:54321/functions/v1/messages"
+#LLM_PROXY_API_KEY = "sk-gptme-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+#LLM_PROXY_URL = "http://localhost:54321/functions"
+
+[mcp]
+enabled = true
+auto_start = false
+
+[[providers]]
+name = "ollama"
+base_url = "http://127.0.0.1:11434/v1"
+#default_model = "qwen3:0.6b"
+default_model = "qwen3:30b-a3b-q4_K_M"
+
+[[providers]]
+name = "vllm-local"
+base_url = "http://localhost:8000/v1"
+default_model = "Qwen/Qwen2.5-1.5B-Instruct"
+
+[[providers]]
+name = "zen"
+base_url = "https://opencode.ai/zen/v1"
+default_model = "glm-4.6"   # kimi-k2-thinking, qwen3-coder

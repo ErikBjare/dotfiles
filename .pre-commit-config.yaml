@@ -1,0 +1,32 @@
+exclude: '^home/\.(vim/plugged|tmux/plugins|emacs\.d)/'
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+        exclude: 'home/\.config/i3/.*\.json$'  # i3 uses JSONC (JSON with comments)
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-executables-have-shebangs
+        exclude: '\.(xbm|xpm)$'
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+      - id: detect-private-key
+
+  - repo: local
+    hooks:
+      - id: gitleaks
+        name: gitleaks
+        entry: gitleaks git --pre-commit --redact --staged
+        language: system
+        pass_filenames: false
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        args: ["-S", "warning", "-e", "SC1090,SC1091"]  # only warnings+errors, ignore source warnings
