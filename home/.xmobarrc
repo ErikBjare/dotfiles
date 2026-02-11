@@ -3,7 +3,7 @@ Config { font = "xft:Monospace:pixelsize=11:antialias=true:hinting=true"
        , fgColor = "grey"
        , position = Top
        , lowerOnStart = True
-       , commands = [ 
+       , commands = [
                 Run StdinReader
               , Run Network "enp3s0" ["-L","0","-H","32","--normal","green","--high","red"] 10
               , Run Network "wlp2s0" ["-L","0","-H","32","--normal","green","--high","red"] 10
@@ -15,5 +15,5 @@ Config { font = "xft:Monospace:pixelsize=11:antialias=true:hinting=true"
               , Run Date "%a %b %_d %H:%M" "date" 10 ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ <fc=#00eebb>%cpu%</fc> | <fc=#00bbbb>%memory%</fc> | <fc=#11bbdd>%swap%</fc> | <fc=#33aaff>%enp3s0%</fc> | <action=xclock><fc=#88eeff>%date%</fc></action>" 
+       , template = "%StdinReader% }{ <fc=#00eebb>%cpu%</fc> | <fc=#00bbbb>%memory%</fc> | <fc=#11bbdd>%swap%</fc> | <fc=#33aaff>%enp3s0%</fc> | <action=xclock><fc=#88eeff>%date%</fc></action>"
        }

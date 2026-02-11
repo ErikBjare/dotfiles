@@ -7,7 +7,7 @@ if [ -n "$temp" ]; then
     temp=${temp%.*}  # Remove decimal part
     echo "🌡️ ${temp}°C"
     echo "🌡️ ${temp}°C"
-    
+
     # Color based on temperature
     if [ $temp -gt 80 ]; then
         echo "#FF0000"

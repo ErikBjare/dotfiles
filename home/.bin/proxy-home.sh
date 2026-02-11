@@ -21,4 +21,3 @@ ssh -p $SSH_PORT -D $PROXY_PORT $USER_AND_HOST
 
 # Use this command to verify that the proxy is running.
 #   netstat -tlnp | grep $PROXY_PORT
-

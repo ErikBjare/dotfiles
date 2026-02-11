@@ -12,5 +12,3 @@ while true; do
     echo "$TIME,$PING"
     sleep 1
 done;
-
-

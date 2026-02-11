@@ -62,4 +62,3 @@ else
     update_space "$SPACE_ID" "$NAME"
   fi
 fi
-

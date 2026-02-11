@@ -19,4 +19,3 @@ for fgbg in 38 48 ; do #Foreground/Background
 done
 
 exit 0
-

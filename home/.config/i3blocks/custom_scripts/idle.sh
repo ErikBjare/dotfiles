@@ -6,7 +6,7 @@ idletime_seconds=$((idletime / 1000))
 format_idle_time() {
     local seconds=$1
     local result=""
-    
+
     if ((seconds >= 86400)); then
         result+="$((seconds / 86400))d "
         seconds=$((seconds % 86400))
@@ -20,7 +20,7 @@ format_idle_time() {
         seconds=$((seconds % 60))
     fi
     result+="${seconds}s"
-    
+
     echo "$result"
 }
 

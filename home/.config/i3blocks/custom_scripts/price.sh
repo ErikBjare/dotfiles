@@ -14,7 +14,7 @@ get_crypto_price() {
     local id="$1"
     local symbol="$2"
     local cache_file="$CACHE_DIR/${id}_price.json"
-    
+
     # Check cache
     if [ -f "$cache_file" ]; then
         if [ $(($(date +%s) - $(stat -c %Y "$cache_file"))) -lt $CACHE_TIME ]; then
@@ -24,7 +24,7 @@ get_crypto_price() {
             fi
         fi
     fi
-    
+
     # Fetch new data
     response=$(curl -s "https://api.coingecko.com/api/v3/simple/price?ids=$id&vs_currencies=usd")
     if [ $? -eq 0 ] && [ -n "$response" ]; then
@@ -41,7 +41,7 @@ get_crypto_price() {
 get_stock_price() {
     local symbol="$1"
     local cache_file="$CACHE_DIR/${symbol}_price.json"
-    
+
     # Check cache
     if [ -f "$cache_file" ]; then
         if [ $(($(date +%s) - $(stat -c %Y "$cache_file"))) -lt $CACHE_TIME ]; then
@@ -51,7 +51,7 @@ get_stock_price() {
             fi
         fi
     fi
-    
+
     # Using Alpha Vantage API
     ALPHAVANTAGE_API_KEY="demo" # Replace with your API key
     response=$(curl -s "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=$symbol&apikey=$ALPHAVANTAGE_API_KEY")
@@ -69,7 +69,8 @@ format_output() {
     local symbol="$1"
     local price="$2"
     if [ -n "$price" ] && [ "$price" != "null" ]; then
-        local rounded_price=$(printf "%.0f" "$price")
+        local rounded_price
+        rounded_price=$(printf "%.0f" "$price")
         echo "$symbol \$$rounded_price"
         echo "$symbol \$$rounded_price"
         echo "#00FF00"
