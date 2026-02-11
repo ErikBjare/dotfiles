@@ -1,3 +1,4 @@
+#!/bin/bash
 # start apps commonly started on boot
 
 

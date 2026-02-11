@@ -28,7 +28,7 @@ if [[ -n $makefile_dir ]]; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         cd $makefile_dir
-        make $@
+        make "$@"
         cd $original_dir
     fi
 else

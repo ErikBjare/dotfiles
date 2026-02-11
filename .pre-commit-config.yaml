@@ -29,4 +29,9 @@ repos:
     rev: v0.11.0.1
     hooks:
       - id: shellcheck
-        args: ["-S", "warning", "-e", "SC1090,SC1091"]  # only warnings+errors, ignore source warnings
+        args: ["-S", "error", "-e", "SC1071,SC1087,SC1090,SC1091,SC2148"]
+        # -S error: only errors, not warnings/info
+        # SC1071: zsh not supported by shellcheck
+        # SC1087: zsh array syntax
+        # SC1090/SC1091: can't follow sourced files
+        # SC2148: missing shebang (sourced dotfiles don't need one)
