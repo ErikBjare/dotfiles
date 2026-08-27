@@ -25,7 +25,7 @@ function fish_title
         echo "$dir @ "(hostname -s)
     else if set -q TMUX
         # Local tmux pane: emit just the running command — tmux adds the path.
-        # Empty at an idle prompt (the title format drops its "· " separator).
+        # Empty at an idle prompt (the title format drops its "- " separator).
         # TUIs that set their own OSC title (claude, gptme) override this while
         # they run; fish re-emits at the next prompt, clearing it.
         if test (count $argv) -gt 0
