@@ -4,7 +4,8 @@
 set -x EDITOR nvim
 
 # join .kube/config and all configs in .kube/config
-set -x KUBECONFIG ~/.kube/config:(find ~/.kube/configs -type f -name "*.yaml" | string join ":")
+set -x KUBECONFIG ~/.kube/config
+test -d ~/.kube/configs; and set -x KUBECONFIG "$KUBECONFIG:"(find ~/.kube/configs -type f -name "*.yaml" | string join ":")
 
 # Bind virtual Home and End keys with Cmd+Shift+Left and Cmd+Shift+Right
 bind \e\[1\;4D beginning-of-line
@@ -166,8 +167,10 @@ check_and_activate_venv
 set -gx FZF_DEFAULT_OPTS '--height 40% --layout=reverse --border --preview "bat --style=numbers --color=always --line-range :500 {}"'
 
 # Enhanced fzf key bindings
-fzf_configure_bindings \
-    --directory=\cf \
-    --git_status=\cs \
-    --history=\cr \
-    --git_log=\cg
+if functions -q fzf_configure_bindings
+    fzf_configure_bindings \
+        --directory=\cf \
+        --git_status=\cs \
+        --history=\cr \
+        --git_log=\cg
+end
