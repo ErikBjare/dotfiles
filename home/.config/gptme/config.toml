@@ -85,7 +85,9 @@ Using git worktrees:
 """
 
 [prompt]
-files = ["~/.config/agents/AGENTS.md"]
+# public tier + private tier (erbot); gptme silently skips missing files,
+# so this is safe on machines without an erbot clone
+files = ["~/.config/agents/AGENTS.md", "~/Programming/erbot/AGENTS.md"]
 
 [lessons]
 dirs = [
