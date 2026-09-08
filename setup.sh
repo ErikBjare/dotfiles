@@ -100,9 +100,37 @@ fortunes() {
     echo_green "Generated fortune .dat files!"
 }
 
+macos () {
+    # macOS-only files that live OUTSIDE the ./home sweep (e.g. ~/Library/...).
+    # Symlinks individual FILES from ./macos into ~, never whole directories —
+    # we must not symlink/move something like ~/Library itself.
+    if [ "$(uname)" != "Darwin" ]; then
+        echo_yellow "Skipping macos section (not on macOS)"
+        return
+    fi
+    backup=$REPO_DIR/backup
+    mkdir -p "$backup"
+    cd "$REPO_DIR/macos"
+    for file in $(find . -type f); do
+        target=~/"${file:2}"
+        mkdir -p "$(dirname "$target")"
+        if [ -e "$target" ] && [ ! -h "$target" ]; then
+            echo_red "Collision: Moving existing $target to $backup"
+            mv "$target" "$backup"
+        fi
+        if [ ! -h "$target" ]; then
+            echo_green "Creating symlink to ${file:2}"
+            ln -si "$REPO_DIR/macos/${file:2}" "$target"
+        else
+            echo_yellow "Symlink already existed at $target"
+        fi
+    done
+    cd $REPO_DIR
+}
+
 echo_bold "Welcome to my dotfiles setup script!"
 
-SECTIONS=(submodules symlinks fortunes)
+SECTIONS=(submodules symlinks fortunes macos)
 
 for section in "${SECTIONS[@]}"; do
     ask "Would you like to setup $section?"

@@ -1,7 +1,9 @@
 /* PC-style Home/End for macOS Cocoa text fields.
    By default macOS scrolls the view without moving the cursor; this restores
    Linux/Windows cursor behavior. Applies per-app at launch (restart apps).
-   Copy tracked in dotfiles: home/Library/KeyBindings/DefaultKeyBinding.dict */
+   Tracked in dotfiles at macos/Library/KeyBindings/, deployed by the
+   macOS-only "macos" section of setup.sh as a file-level symlink
+   (~/Library itself must never be symlinked into the repo). */
 {
     "\UF729"   = moveToBeginningOfLine:;                          /* Home */
     "\UF72B"   = moveToEndOfLine:;                                /* End */
