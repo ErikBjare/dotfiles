@@ -21,6 +21,10 @@ update_space() {
     FOCUSED=$(echo "$SPACE_INFO" | jq -r '.["has-focus"]')
     # echo "Space $space_id focus: $FOCUSED (event: $SENDER)" >> /tmp/sketchybar.log
     WINDOWS=$(echo "$SPACE_INFO" | jq -r '.windows | map(select(. != 2385)) | length')
+    # Icon = the LABEL of whatever space currently sits at this index (moving
+    # spaces between displays renumbers indices, so static icons go stale)
+    LABEL=$(echo "$SPACE_INFO" | jq -r '.label')
+    ICON="${LABEL:-$space_id}"
 
     if [ "$WINDOWS" -eq 0 ] && [ "$FOCUSED" != "true" ]; then
       # Hide empty unfocused spaces
@@ -32,12 +36,14 @@ update_space() {
       if [ "$FOCUSED" = "true" ]; then
         # Active workspace - light blue theme
         sketchybar --set $target \
+          icon="$ICON" \
           icon.color=$ACTIVE_COLOR_FG \
           background.color=$ACTIVE_COLOR_BG \
           background.border_color=$ACTIVE_COLOR_BORDER
       else
         # Inactive workspace with windows
         sketchybar --set $target \
+          icon="$ICON" \
           icon.color=$INACTIVE_COLOR_FG \
           background.color=$INACTIVE_COLOR_BG \
           background.border_color=$INACTIVE_COLOR_BORDER

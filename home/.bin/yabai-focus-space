@@ -1,0 +1,12 @@
+#!/bin/bash
+# Focus a yabai space by label, then give keyboard focus to a window on it.
+# yabai's space focus (especially across displays) switches the visible space
+# but doesn't reliably move keyboard focus to a window there.
+label="$1"
+yabai -m space --focus "$label" 2>/dev/null
+win=$(yabai -m query --windows --space "$label" 2>/dev/null | jq -r '
+  map(select(.["is-minimized"] == false and .subrole == "AXStandardWindow"))
+  | (map(select(.["has-focus"])) + .)
+  | .[0].id // empty')
+[ -n "$win" ] && yabai -m window --focus "$win" 2>/dev/null
+exit 0

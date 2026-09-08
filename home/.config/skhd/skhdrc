@@ -38,17 +38,19 @@
 # ============================================================================
 
 # Focus workspace by LABEL, not index: moving spaces between displays
-# renumbers mission-control indices, but labels stick to the space
-cmd - 1 : yabai -m space --focus "1 👨‍💻"
-cmd - 2 : yabai -m space --focus "2 🌍"
-cmd - 3 : yabai -m space --focus "3 🛠️"
-cmd - 4 : yabai -m space --focus "4 📝"
-cmd - 5 : yabai -m space --focus "5 🎵"
-cmd - 6 : yabai -m space --focus "6 💬"
-cmd - 7 : yabai -m space --focus "7 📺"
-cmd - 8 : yabai -m space --focus "8 🌈"
-cmd - 9 : yabai -m space --focus "9 📔"
-cmd - 0 : yabai -m space --focus "⚙️"
+# renumbers mission-control indices, but labels stick to the space.
+# Helper also focuses a window on the space (space focus alone leaves
+# keyboard focus behind, esp. across displays).
+cmd - 1 : ~/.bin/yabai-focus-space "1 👨‍💻"
+cmd - 2 : ~/.bin/yabai-focus-space "2 🌍"
+cmd - 3 : ~/.bin/yabai-focus-space "3 🛠️"
+cmd - 4 : ~/.bin/yabai-focus-space "4 📝"
+cmd - 5 : ~/.bin/yabai-focus-space "5 🎵"
+cmd - 6 : ~/.bin/yabai-focus-space "6 💬"
+cmd - 7 : ~/.bin/yabai-focus-space "7 📺"
+cmd - 8 : ~/.bin/yabai-focus-space "8 🌈"
+cmd - 9 : ~/.bin/yabai-focus-space "9 📔"
+cmd - 0 : ~/.bin/yabai-focus-space "⚙️"
 
 # Move window to workspace (by label, same reason)
 cmd + shift - 1 : yabai -m window --space "1 👨‍💻"
