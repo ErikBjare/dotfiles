@@ -24,6 +24,15 @@ repos:
         entry: gitleaks git --pre-commit --redact --staged
         language: system
         pass_filenames: false
+      - id: block-holdback-files
+        name: Block hold-back files (private content, public repo)
+        # These tracked files carry local-only changes that must not be
+        # published (meeting codes, infra hosts). Blocks ANY commit that
+        # stages them — e.g. a stray `git add -u home/`. To intentionally
+        # commit after sanitizing: SKIP=block-holdback-files git commit ...
+        entry: bash -c 'echo "BLOCKED - hold-back file(s) staged (private content, see hook config)"; printf "  %s\n" "$@"; exit 1' --
+        language: system
+        files: ^home/(\.bin/aw-lovable-gspread-sync|\.ssh/config\.d/erbnet)$
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.11.0.1
