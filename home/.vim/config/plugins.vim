@@ -32,11 +32,13 @@ endif
 
 call plug#begin('~/.vim/plugged')
     " My own plugins
-    Plug 'ErikBjare/gptme.vim'
+    " Plug 'ErikBjare/gptme.vim'
+    Plug '~/Programming/gptme.vim'
 
     " LSP
-    Plug 'williamboman/mason.nvim', {'branch': 'main'}
-    Plug 'williamboman/mason-lspconfig.nvim', {'branch': 'main'}
+    " Pinned to v1.x due to https://github.com/LazyVim/LazyVim/issues/6039
+    Plug 'williamboman/mason.nvim', {'branch': 'v1.x'}
+    Plug 'williamboman/mason-lspconfig.nvim', {'branch': 'v1.x'}
     Plug 'neovim/nvim-lspconfig'
 
     " A little bit of everything

@@ -19,6 +19,11 @@
 "   - Split into seperate files: one base, one for keys, one for theme, one for syntax, one for plugins
 "   - Make pageup/pagedown move half page and center view
 
+" TODO: move to ~/.vim/config/basic.vim
+" For compact gutter
+set numberwidth=3
+set signcolumn=auto
+
 " Source configuration files
 source ~/.vim/config/basic.vim
 source ~/.vim/config/keymaps.vim
