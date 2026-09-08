@@ -1,5 +1,41 @@
 # Sample config available here:
 # https://github.com/koekeishiya/skhd/blob/master/examples/skhdrc
+#
+# ============================================================================
+# UNIFIED KEYBOARD SCHEME (shared with i3 on Arch — see ~/.config/i3/config)
+# ============================================================================
+# mod = the physical super key: cmd on macOS ≡ Super/Mod4 on Linux (same key).
+# Bindings are identical on both OSes. Rule: where a bare-mod combo would
+# shadow a macOS staple, the binding carries +alt — on BOTH systems, so muscle
+# memory transfers. i3 additionally keeps the old bare-mod combos as aliases
+# (Linux has no conflicts).
+#
+#   action                 binding               macOS conflict avoided
+#   terminal               mod+return            —
+#   focus window           mod+alt+arrows        cmd+arrows = line start/end
+#   move window            mod+alt+shift+arrows  cmd+shift+arrows = select to line end
+#   split h/v              mod+alt+h/v           cmd-h = hide, cmd-v = paste
+#   fullscreen             mod+alt+f             cmd-f = find
+#   close window           mod+alt+q             cmd-q = quit app
+#   layout bsp<->stack     mod+alt+space         cmd-space = Spotlight
+#   focus display          mod+alt+a/d           cmd-a = select all
+#   move space to display  mod+alt+shift+a/d     —
+#   balance windows        mod+alt+e             —
+#   float toggle           mod+shift+space       —
+#   resize mode            mod+e                 cmd-e = use selection for find (accepted)
+#   fullscreen screenshot  ctrl+print (f13)      —
+#   region screenshot      mod+print (f13)       —
+#   workspace N            mod+1..0              cmd-N = app tab switching (accepted)
+#   move to workspace N    mod+shift+1..0        cmd+shift-3/4/5 = SCREENSHOTS (accepted;
+#                                                remap in System Settings > Keyboard >
+#                                                Shortcuts > Screenshots if missed)
+#
+# Known divergences (macOS-only or Linux-only):
+#   i3 mod+r = rofi          macOS: use Spotlight/Raycast instead
+#   i3 mod+l = lock          macOS: ctrl+cmd-q (system default)
+#   ctrl-f zoom-fullscreen   macOS-only legacy alias for mod+alt+f
+#   cmd-p pop-out player     i3 uses mod+p (cmd-p would also shadow Print — accepted)
+# ============================================================================
 
 # Focus workspace (using yabai for better control)
 cmd - 1 : yabai -m space --focus 1
@@ -27,26 +63,54 @@ cmd + shift - 0 : yabai -m window --space 10
 
 # Window management
 cmd - return : /Applications/Alacritty.app/Contents/MacOS/alacritty
-# disabled since it gets confusing between linux and macOS
-# cmd - w : yabai -m window --close  # Like browser tab close, but with shift
-ctrl - f : yabai -m window --toggle zoom-fullscreen  # Using control to avoid conflict with other apps
+cmd + alt - q : yabai -m window --close  # i3: mod+q kill
+cmd + alt - f : yabai -m window --toggle zoom-fullscreen  # i3: mod+f
+ctrl - f : yabai -m window --toggle zoom-fullscreen  # legacy alias, kept for muscle memory
 cmd + shift - space : yabai -m window --toggle float  # Using shift+space to avoid Spotlight conflict
 
-# Focus window
-cmd - left  : yabai -m window --focus west
-cmd - down  : yabai -m window --focus south
-cmd - up    : yabai -m window --focus north
-cmd - right : yabai -m window --focus east
+# Focus window (cmd+alt to avoid shadowing macOS text navigation on cmd-arrows)
+# up/down fall back to cycling within a stack when in stack layout
+cmd + alt - left  : yabai -m window --focus west
+cmd + alt - down  : yabai -m window --focus south || yabai -m window --focus stack.next || yabai -m window --focus stack.first
+cmd + alt - up    : yabai -m window --focus north || yabai -m window --focus stack.prev || yabai -m window --focus stack.last
+cmd + alt - right : yabai -m window --focus east
 
-# Move window
-cmd + shift - left : yabai -m window --warp west
-cmd + shift - down : yabai -m window --warp south
-cmd + shift - up : yabai -m window --warp north
-cmd + shift - right : yabai -m window --warp east
+# Move window (cmd+alt+shift to avoid shadowing select-to-line-end on cmd+shift-arrows)
+cmd + alt + shift - left : yabai -m window --warp west
+cmd + alt + shift - down : yabai -m window --warp south
+cmd + alt + shift - up : yabai -m window --warp north
+cmd + alt + shift - right : yabai -m window --warp east
 
-# Split management (using different keys to avoid system shortcut conflicts)
-cmd - s : yabai -m window --insert south  # 's' for split
-cmd - d : yabai -m window --insert east   # 'd' for divide
+# Split management (i3: mod+h split h, mod+v split v)
+cmd + alt - h : yabai -m window --insert east   # next window opens beside
+cmd + alt - v : yabai -m window --insert south  # next window opens below
+
+# Toggle space layout bsp <-> stack (i3: mod+space layout toggle)
+cmd + alt - space : yabai -m space --layout "$(yabai -m query --spaces --space | jq -r 'if .type == "bsp" then "stack" else "bsp" end')"
+
+# Focus display (i3: mod+a/s/d for left/main/right)
+cmd + alt - a : yabai -m display --focus prev
+cmd + alt - d : yabai -m display --focus next
+
+# Move current space to display (i3: mod+shift+a/s/d)
+cmd + alt + shift - a : yabai -m space --display prev
+cmd + alt + shift - d : yabai -m space --display next
+
+# Balance window sizes on current space
+cmd + alt - e : yabai -m space --balance
+
+# Reload configs (i3: mod+shift+c reload, mod+shift+r restart)
+cmd + shift - c : pkill -USR1 skhd  # hot-reload this config (skhd isn't a brew service, so --reload can't find a pid-file)
+cmd + shift - r : yabai --restart-service
+
+# Screenshots (i3: Ctrl+Print fullscreen-to-folder, mod+Print region-to-clipboard)
+# PC keyboard "Print Screen" arrives as F13 on macOS, WITH the fn ("secondary
+# function") flag set on the event — so both variants are bound.
+# NOTE: first use prompts to grant skhd Screen Recording permission.
+ctrl - f13      : bash ~/.bin/screenshot.sh --fullscreen
+fn + ctrl - f13 : bash ~/.bin/screenshot.sh --fullscreen
+cmd - f13       : bash ~/.bin/screenshot.sh --region
+fn + cmd - f13  : bash ~/.bin/screenshot.sh --region
 
 # Pop-out player mode (like i3)
 cmd - p : yabai -m window --toggle zoom-fullscreen; \
@@ -55,7 +119,8 @@ cmd - p : yabai -m window --toggle zoom-fullscreen; \
          yabai -m window --toggle sticky
 
 # Resize mode (:: creates a new mode in skhd)
-:: resize @ : yabai -m config active_window_border_color 0xFFFF00FF
+# (yabai 6+ removed window borders, so no border-color feedback; use JankyBorders if you want a visual indicator)
+:: resize @
 cmd - e ; resize
 resize < escape ; default
 resize < return ; default
