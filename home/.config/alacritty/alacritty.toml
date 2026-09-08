@@ -45,8 +45,8 @@ foreground = "0xeaeaea"
 #x = 96.0
 #y = 96.0
 
-[env]
-TERM = "xterm-256color"
+#[env]
+#TERM = "xterm-256color"
 
 [font]
 size = 9
@@ -60,7 +60,13 @@ style = "Retina"
 style = "Bold"
 
 [font.italic]
+family = "Menlo"  # FiraCode doesn't have italics
+# family = "JetBrainsMono Nerd Font"
 style = "Italic"
+
+[font.bold_italic]
+family = "Menlo"
+style = "Bold Italic"
 
 [font.glyph_offset]
 x = 0
