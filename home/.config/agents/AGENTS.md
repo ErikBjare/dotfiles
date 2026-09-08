@@ -4,10 +4,12 @@ Shared across agent runtimes:
 - `~/.claude/CLAUDE.md` → an AGENTS.md like this one (Claude Code)
 - Other runtimes (Codex, gptme) pick up `AGENTS.md` from this location
 
-This is the short, public-safe version and the default on all machines. A
-fuller private version (memory indexes, machine/infra context) lives in a
-private repo; on machines that have it, runtime symlinks point there instead.
-Nothing sensitive belongs in this file.
+This is the short, public-safe version and the default on all machines.
+Nothing sensitive belongs in this file. A fuller private version (memory
+indexes, machine/infra context) is imported below on machines that have it;
+elsewhere the import resolves to nothing.
+
+@~/Programming/erbot/AGENTS.md
 
 Keep instructions here generic and runtime-agnostic. Project-specific
 instructions go in each repo's own `CLAUDE.md`/`AGENTS.md`.
