@@ -7,6 +7,10 @@
 	autocrlf = input
 	editor = nvim
 	pager = delta --dark --diff-so-fancy
+    # Use a short ConnectTimeout for SSH connections to quicker get notified of unreachable hosts
+    # This is especially useful when using git-annex with many remotes, as it avoids long delays when trying to connect to unreachable hosts.
+    # (typical with git-annex remotes that have gone offline).
+	sshCommand = ssh -o ConnectTimeout=2
 
 [init]
 	defaultBranch = master
@@ -18,7 +22,7 @@
 	submoduleSummary = true
 
 [commit]
-	gpgSign = true
+	gpgSign = false
 
 [pull]
 	ff = only
@@ -72,5 +76,17 @@
 	clean = poetry run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --stdin --to=notebook --stdout
 	smudge = poetry run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --stdin --to=notebook --stdout
 	required = true
+
 [annex]
 	adviceNoSshCaching = false
+
+[safe]
+	directory = /private/tmp
+[tag]
+	gpgSign = true
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential

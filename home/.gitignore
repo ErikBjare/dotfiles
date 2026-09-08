@@ -11,6 +11,9 @@
 .config/fish/fish_history
 .config/fish/fish_read_history
 
+# whole .kube dir: config/certs/configs hold live cluster credentials
+.kube
+
 # A lot of scripts and bins are stored in .bin, not all should
 # be commited and all should be carefully hand-picked.
 .bin
@@ -40,3 +43,6 @@
 .vimperator/info
 
 *.spl
+
+.claude
+.codex
