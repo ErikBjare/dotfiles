@@ -1,5 +1,6 @@
 [user]
 name = "Erik"
+avatar = "~/Cosmosync/me_v2-edited-lowres.jpg"
 
 about = """
 I am Erik Bjäreholt, a curious human programmer.
@@ -84,7 +85,7 @@ Using git worktrees:
 """
 
 [prompt]
-files = []
+files = ["~/.config/agents/AGENTS.md"]
 
 [lessons]
 dirs = [
@@ -93,8 +94,50 @@ dirs = [
     "~/Programming/gptme-bob/gptme-contrib/lessons"
 ]
 
+[plugins]
+paths = [
+#    # Add your local plugin paths here
+#    # Example: "../gptme-contrib/plugins/consortium"
+    "~/Programming/gptme-contrib/plugins"
+]
+enabled = [
+    # Enable plugins by name here
+    "gptme-consortium",
+    "gptme-tts",
+]
+
+
+[mcp]
+enabled = true
+auto_start = false
+
+[models]
+default = "openrouter/anthropic/claude-opus-4.8"
+favorites = ["openrouter/deepseek/deepseek-v4-flash", "openrouter/anthropic/claude-fable-5", "openrouter/anthropic/claude-haiku-4.5", "openai-subscription/gpt-5.4"]
+
+[[providers]]
+name = "ollama"
+base_url = "http://127.0.0.1:11434/v1"
+#default_model = "qwen3:0.6b"
+default_model = "qwen3:30b-a3b-q4_K_M"
+
+[[providers]]
+name = "vllm-local"
+base_url = "http://localhost:8000/v1"
+default_model = "Qwen/Qwen2.5-1.5B-Instruct"
+
+[[providers]]
+name = "zen"
+base_url = "https://opencode.ai/zen/v1"
+default_model = "glm-4.6"   # kimi-k2-thinking, qwen3-coder
+
+[[providers]]
+name = "lmstudio"
+base_url = "http://localhost:1234/v1"
+default_model = "qwen/qwen3.6-35b-a3b"  # q4_K_M
+
 [env]
-MODEL = "openrouter/anthropic/claude-opus-4.5"
+MODEL = "openrouter/anthropic/claude-opus-4.8"
 #MODEL = "anthropic/claude-opus-4-5"
 #MODEL = "anthropic/claude-sonnet-4-5"
 
@@ -112,23 +155,3 @@ GPTME_TOOL_SOUNDS = "true"
 #LLM_PROXY_URL = "http://127.0.0.1:54321/functions/v1/messages"
 #LLM_PROXY_API_KEY = "sk-gptme-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 #LLM_PROXY_URL = "http://localhost:54321/functions"
-
-[mcp]
-enabled = true
-auto_start = false
-
-[[providers]]
-name = "ollama"
-base_url = "http://127.0.0.1:11434/v1"
-#default_model = "qwen3:0.6b"
-default_model = "qwen3:30b-a3b-q4_K_M"
-
-[[providers]]
-name = "vllm-local"
-base_url = "http://localhost:8000/v1"
-default_model = "Qwen/Qwen2.5-1.5B-Instruct"
-
-[[providers]]
-name = "zen"
-base_url = "https://opencode.ai/zen/v1"
-default_model = "glm-4.6"   # kimi-k2-thinking, qwen3-coder
