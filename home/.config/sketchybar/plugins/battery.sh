@@ -23,4 +23,19 @@ else
   esac
 fi
 
-sketchybar --set $NAME icon="$ICON" label="${PERCENTAGE}%"
+# Set color based on battery percentage and charging status
+if [ "$CHARGING" = "true" ]; then
+  if [ "$PERCENTAGE" -eq 100 ]; then
+    COLOR="0xff00aa00"  # Green for fully charged and charging
+  else
+    COLOR="0xffffffff"  # White for charging
+  fi
+elif [ "$PERCENTAGE" -lt 5 ]; then
+  COLOR="0xffff0000"  # Red for critically low battery (<5%)
+elif [ "$PERCENTAGE" -lt 15 ]; then
+  COLOR="0xffffff00"  # Yellow for low battery (<15%)
+else
+  COLOR="0xffffffff"  # White for normal battery
+fi
+
+sketchybar --set $NAME icon="$ICON" label="${PERCENTAGE}%" icon.color="$COLOR" label.color="$COLOR"
