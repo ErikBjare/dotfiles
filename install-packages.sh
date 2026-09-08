@@ -36,7 +36,7 @@ if (uname | grep 'Darwin'); then
     fi
 
     GNU_UTILS="coreutils gnu-sed grep moreutils findutils"
-    CLI_PACKAGES="tmux fish watch xz htop yt-dlp rsync tree nmap pandoc ripgrep wget jq ncdu graphviz websocat lynx fd"
+    CLI_PACKAGES="tmux fish watch xz htop yt-dlp rsync tree nmap pandoc ripgrep wget jq ncdu graphviz websocat lynx fd unar"
     EDITOR_PACKAGES="neovim helix fzf broot"
     LANG_PACKAGES="pyenv rustup ruby oven-sh/bun/bun"
     APPS_PACKAGES="syncthing gimp"
@@ -60,7 +60,7 @@ elif (lsb_release -a | grep 'Arch Linux'); then
     BROWSERS="firefox okular lynx"
     EDITORS="vim neovim"
     VCS="git"  # since this script is in git, we probably already have it, but still
-    TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs tokei nmap fzf jq bc wireless_tools fd"
+    TOOLS="redshift zoxide git-delta github-cli dunst dex sshfs tokei nmap fzf jq bc wireless_tools fd unarchiver"
     MATH="octave"
     PYTHON="python ipython poetry pyenv"
     RUST="rustup"
@@ -105,7 +105,7 @@ else
     BROWSERS="firefox tor-browser"
     EDITORS="vim neovim"
     VCS="mercurial git"
-    TOOLS="redshift redshift-gtk fzf"
+    TOOLS="redshift redshift-gtk fzf unar"
     MATH="octave"
     PYTHON="python-dev python3-dev python3-pip ipython3"
     GPG="gnupg-curl"
