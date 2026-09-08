@@ -69,6 +69,7 @@ begin
     path_prepend ~/.bin/git-subrepo/lib
     path_prepend ~/.local/bin
     path_prepend ~/.cargo/bin
+    path_prepend ~/go/bin
     path_prepend ~/.bin
 
     # PATH APPENDS
@@ -78,6 +79,8 @@ begin
 
     path_prepend ~/.npm-packages/$NPM_PACKAGES/bin
     set MANPATH ~/.npm-packages/share/man $MANPATH
+
+    fish_add_path ~/.bun/bin
 end
 
 # Style
@@ -125,11 +128,11 @@ end
 #end
 
 # pyenv
-begin
-    if type -q pyenv
-        source (pyenv init - | psub)
-    end
-end
+#begin
+#    if type -q pyenv
+#        source (pyenv init - | psub)
+#    end
+#end
 
 # Set FREESURFER_HOME for easier surfin'
 if test -d /opt/freesurfer
@@ -154,14 +157,16 @@ begin
     end
 end
 
+# gptme stuff
+export GPTME_TELEMETRY_ENABLED=true
+export OTLP_ENDPOINT="http://192.168.1.211:4318"
+
 if status is-interactive
     source ~/.config/fish/create_abbrs.fish
 
     # if atuin is installed, load it
     type -q atuin > /dev/null; and atuin init fish --disable-up-arrow | source
 end
-# Run venv check on shell start
-check_and_activate_venv
 
 # fzf configuration
 set -gx FZF_DEFAULT_OPTS '--height 40% --layout=reverse --border --preview "bat --style=numbers --color=always --line-range :500 {}"'
@@ -174,3 +179,7 @@ if functions -q fzf_configure_bindings
         --history=\cr \
         --git_log=\cg
 end
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/erb/.cache/lm-studio/bin
+# End of LM Studio CLI section

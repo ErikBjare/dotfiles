@@ -35,3 +35,5 @@ abbr --add sctl "systemctl"
 abbr --add usctl "systemctl --user"
 
 abbr --add own "sudo chown (whoami)"
+
+abbr --add clauded "claude --dangerously-skip-permissions"

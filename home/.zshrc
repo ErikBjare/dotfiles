@@ -63,3 +63,7 @@ fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 eval "$(atuin init zsh)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/erb/.cache/lm-studio/bin"
+# End of LM Studio CLI section

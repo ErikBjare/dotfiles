@@ -72,6 +72,22 @@ xterm*|rxvt*)
     ;;
 esac
 
+# In SSH sessions, advertise "dir @ host" as the terminal title so the client's
+# tmux can name the window after the remote state (picked up as #{pane_title}).
+# The stock xterm-only block above never fires under tmux (TERM=tmux-256color).
+if [ -n "$SSH_TTY" ]; then
+    case "$TERM" in
+    xterm*|rxvt*|tmux*|screen*)
+        _ssh_title() {
+            local d="${PWD##*/}"
+            [ "$PWD" = "$HOME" ] && d='~'
+            printf '\033]2;%s @ %s\033\\' "$d" "${HOSTNAME%%.*}"
+        }
+        PROMPT_COMMAND="_ssh_title${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+        ;;
+    esac
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -100,3 +116,7 @@ fi
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 eval "$(atuin init bash)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/erb/.cache/lm-studio/bin"
+# End of LM Studio CLI section

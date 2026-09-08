@@ -114,3 +114,7 @@ echo ".profile ran successfully" >> $logfile
 
 # Kubernetes config paths
 export KUBECONFIG=~/.kube/config:~/.kube/configs/k3s.yaml:~/.kube/configs/k3s-tunnel.yaml:~/.kube/configs/digitalocean.yaml
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/erb/.cache/lm-studio/bin"
+# End of LM Studio CLI section
