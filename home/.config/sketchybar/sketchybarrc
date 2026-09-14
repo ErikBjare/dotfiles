@@ -37,6 +37,15 @@ default=(
 sketchybar --default "${default[@]}"
 
 ##### Adding Mission Control Space Indicators #####
+# These ten items are PURE DISPLAY. They carry no script and never run one;
+# plugins/space.sh repaints all of them via direct `--set`, driven by the
+# single `space_driver` item below. See that block and the bottom of this file
+# for why it is structured that way.
+#
+# GOTCHA: the icons set here are first-paint placeholders ONLY. space.sh
+# re-resolves each icon from the space LABEL by index on every redraw, because
+# moving a space between displays (or un/replugging a monitor) renumbers
+# mission-control indices and a baked-in icon would go stale.
 SPACE_ICONS=("1 👨‍💻" "2 🌍" "3 🛠️" "4 📝" "5 🎵" "6 💬" "7 📺" "8 🌈" "9 📔" "⚙️")
 for i in "${!SPACE_ICONS[@]}"
 do
@@ -47,13 +56,28 @@ do
     label.drawing=off
     padding_left=1
     padding_right=1
-    script="$PLUGIN_DIR/space.sh"
     click_script="yabai -m space --focus $sid"
   )
   sketchybar --add space space."$sid" left \
-             --set space."$sid" "${space[@]}" \
-             --subscribe space."$sid" space_change window_focus display_change window_created window_destroyed active_space_change
+             --set space."$sid" "${space[@]}"
 done
+
+# PERF: one invisible driver item owns the script and the event subscription,
+# and repaints the whole row in a single batched sketchybar call. Subscribing
+# all ten space items instead (the old setup) made every event redraw every
+# space twice: ~65 process spawns and ~550ms per space switch, which was felt
+# directly as space-switching lag on top of the macOS animation.
+#
+# GOTCHA: the driver MUST be a plain `--add item`, never one of the `space`
+# items. `space`-type items receive `space_change` SCOPED TO THEIR OWN SPACE.
+# Hanging this script off space.1 therefore appeared to work but only fired on
+# transitions involving space 1 -- switching 2 -> 6 left the bar stale showing
+# 2 as active. A regular item receives the events globally.
+#
+# `drawing=off` keeps it invisible; `updates=on` still lets its script run.
+sketchybar --add item space_driver left \
+           --set space_driver drawing=off updates=on script="$PLUGIN_DIR/space.sh" \
+           --subscribe space_driver space_change window_focus display_change window_created window_destroyed active_space_change
 
 ##### Adding Left Items #####
 #sketchybar --add item front_app left \
@@ -93,3 +117,25 @@ sketchybar --add item clock right \
 
 ##### Force all scripts to run the first time #####
 sketchybar --update
+
+##### Silence the ten space items (space_driver repaints them) #####
+# `space`-type items ship with a BUILT-IN DEFAULT SCRIPT,
+# `sketchybar -m --set $NAME icon.highlight=$SELECTED`, which runs even though
+# we never set `script=` on them. That is one wasted shell spawn per space on
+# every space_change, and worse, it latches `icon.highlight=on` on the selected
+# space -- which makes sketchybar draw that icon in icon.highlight_color
+# (black) and ignore icon.color, giving black-on-dark-blue text. `updates=off`
+# stops it running. space.sh also forces `icon.highlight=off` on every redraw
+# as a belt-and-braces self-heal.
+#
+# space_driver repaints these items with direct `--set`, which `updates=off`
+# does NOT affect, so they still update normally.
+#
+# GOTCHA 1: this pass MUST come after `sketchybar --update` above. That call
+#           resets every item's `updates` flag back to `on`, silently undoing
+#           this loop if it runs earlier.
+# GOTCHA 2: `updates=off` also does not stick when bundled into the same
+#           `--add`/`--set` that creates the item. It needs its own `--set`.
+for sid in 1 2 3 4 5 6 7 8 9 10; do
+  sketchybar --set space."$sid" updates=off
+done

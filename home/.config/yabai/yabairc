@@ -6,6 +6,35 @@
 #
 # Here are some good guides and example configs:
 #  - https://d12frosted.io/posts/2022-04-23-yabai-spaces.html
+#
+# ---------------------------------------------------------------------------
+# PERFORMANCE NOTES (space-switching feels slow? read this first)
+# ---------------------------------------------------------------------------
+# Investigated 2026-09-14. yabai itself was NOT the bottleneck: its IPC answers
+# in ~10-20ms and it sits near 0% CPU. Two things actually cost time.
+#
+# 1. sketchybar, not yabai. The space-indicator plugin used to spawn ~65
+#    processes and burn ~550ms on EVERY space switch. Fixed in
+#    ~/.config/sketchybar/{sketchybarrc,plugins/space.sh} -- see the gotcha
+#    blocks there. If switching ever feels heavy again, profile sketchybar
+#    before touching anything in this file.
+#
+# 2. The macOS animation, which is a system setting, not a yabai config:
+#      defaults write com.apple.dock expose-animation-duration -float 0.1
+#      killall Dock
+#    Set on erb-m2 2026-09-14 (it was unset). There is no `defaults` script in
+#    this repo, so this is NOT reproduced automatically on a fresh machine --
+#    re-run it by hand after a reinstall.
+#
+# Also already correct, and LOAD-BEARING for the label-based space handling
+# below -- do not "optimise" these away:
+#   - Reduce Motion: on (System Settings > Accessibility > Display)
+#   - defaults read com.apple.dock mru-spaces      -> 0  (no auto-rearrange)
+#   - defaults read com.apple.spaces spans-displays -> 0  (separate spaces)
+#
+# Things commonly suggested online that do NOT apply here: window shadows and
+# animations are already off (below), and yabai 6+ removed window borders
+# entirely, so there is no border rendering cost to disable.
 
 # load scripting additions
 sudo yabai --load-sa
@@ -43,7 +72,17 @@ yabai -m config layout bsp
 # New window spawns to the right if vertical split, or bottom if horizontal split
 yabai -m config window_placement second_child
 
-# Clean up extra spaces (using actual index)
+# Clean up extra spaces (using actual index).
+#
+# NOTE: this destroy/create pass only runs on yabai start/restart (cmd+shift-r),
+# never during normal use, so it costs nothing on the space-switch hot path.
+# It is the "canonicalize" step: relabel by index, drop strays, re-apply rules.
+#
+# CAVEAT (multi-display): macOS insists every display owns at least one space,
+# so on a two-display setup an empty 11th space reappears on the second display
+# and this loop will fight it. Harmless -- it stays unlabeled and the sketchybar
+# row only renders indices 1-10 -- but it is why `yabai -m query --spaces` can
+# report 11.
 for idx in $(yabai -m query --spaces | jq '.[].index | select(. > 10)' | sort -nr); do
   yabai -m space --destroy "$idx"
 done
