@@ -110,6 +110,13 @@ yabai -m space 10 --label "⚙️"    # System
 # Terminal - Disabled because we actually want to use the terminal in multiple spaces
 # yabai -m rule --add app="^Alacritty$" space=1
 
+# App launcher popup (~/.bin/app-launcher, bound to cmd+alt+r in skhdrc).
+# Keep it out of the tiling layout so it behaves like rofi rather than being
+# tiled as a real terminal. Matches on TITLE, which the launcher pins via
+# `window.dynamic_title=false` so fzf cannot rename the window out from under
+# this rule. Must stay ABOVE any broad Alacritty rule for the same reason.
+yabai -m rule --add app="^Alacritty$" title="^launcher$" manage=off
+
 # Browsers
 yabai -m rule --add app="^Safari$" space="2 🌍"
 yabai -m rule --add app="^Firefox$" space="2 🌍"

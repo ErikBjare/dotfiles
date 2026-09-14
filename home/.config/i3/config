@@ -82,6 +82,11 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
+# Primary binding is $mod+Mod1+r to match macOS, where bare mod+r collides with
+# "reload" (macOS collapses onto Cmd the two roles Linux splits between Ctrl and
+# Super). See the scheme table in ~/.config/skhd/skhdrc. Bare $mod+r is kept as
+# an alias — Linux has no conflict, so there is no need to retrain abruptly.
+bindsym $mod+Mod1+r exec rofi -show combi
 bindsym $mod+r exec rofi -show combi
 
 # change focus

@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# rofi/dmenu-style application launcher for macOS, built from tools we already
+# maintain (Alacritty + fzf) rather than a third-party launcher app.
+#
+# Bound to cmd+alt+r in ~/.config/skhd/skhdrc. The +alt is deliberate and
+# matches the unified keyboard scheme documented in that file's header: macOS
+# collapses the roles that Linux splits between Ctrl (application shortcuts)
+# and Super (window manager), so a bare cmd+r would shadow "reload" in every
+# browser. On i3 the same action is $mod+Mod1+r, with the old bare $mod+r kept
+# as an alias.
+#
+# Runs in two phases so it only needs to be one file:
+#   no args   -> spawn a floating Alacritty window running phase two
+#   --pick    -> the actual fzf picker, inside that window
+#
+# The window is kept out of the tiling layout by a `manage=off` rule in
+# ~/.config/yabai/yabairc that matches on the title set below. `dynamic_title`
+# is pinned off so fzf cannot rename the window out from under that rule.
+
+set -euo pipefail
+
+# skhd hands us a minimal environment, so do not rely on the login PATH.
+export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+ALACRITTY="/Applications/Alacritty.app/Contents/MacOS/alacritty"
+
+# ---------------------------------------------------------------------------
+# Phase one: pop the window
+# ---------------------------------------------------------------------------
+if [ "${1:-}" != "--pick" ]; then
+  exec "$ALACRITTY" \
+    --title "launcher" \
+    -o 'window.dynamic_title=false' \
+    -o 'window.dimensions.columns=72' \
+    -o 'window.dimensions.lines=18' \
+    -e "$SELF" --pick
+fi
+
+# ---------------------------------------------------------------------------
+# Phase two: pick and launch
+# ---------------------------------------------------------------------------
+APP_DIRS=(
+  /Applications
+  /Applications/Utilities
+  /System/Applications
+  /System/Applications/Utilities
+  "$HOME/Applications"
+)
+
+list_apps() {
+  local d
+  for d in "${APP_DIRS[@]}"; do
+    [ -d "$d" ] || continue
+    # -prune stops find descending INTO the .app bundles, which would
+    # otherwise walk tens of thousands of files on every launch.
+    find "$d" -maxdepth 2 -name '*.app' -prune -print 2>/dev/null
+  done | sed 's|.*/||; s|\.app$||' | grep -v '^\.' | sort -u
+}
+
+# fzf exits non-zero when the user presses escape; that is a normal cancel,
+# not an error, so do not let `set -e` turn it into one.
+sel="$(list_apps | fzf \
+  --prompt 'run > ' \
+  --layout reverse \
+  --height 100% \
+  --info inline \
+  --no-multi \
+  --cycle)" || exit 0
+
+[ -n "$sel" ] && open -a "$sel"

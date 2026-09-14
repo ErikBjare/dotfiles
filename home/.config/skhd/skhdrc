@@ -21,6 +21,7 @@
 #   focus display          mod+alt+a/d           cmd-a = select all
 #   move space to display  mod+alt+shift+a/d     —
 #   balance windows        mod+alt+e             —
+#   app launcher           mod+alt+r             cmd-r = reload (browsers, etc.)
 #   float toggle           mod+shift+space       —
 #   resize mode            mod+e                 cmd-e = use selection for find (accepted)
 #   fullscreen screenshot  ctrl+print (f13)      —
@@ -31,7 +32,8 @@
 #                                                Shortcuts > Screenshots if missed)
 #
 # Known divergences (macOS-only or Linux-only):
-#   i3 mod+r = rofi          macOS: use Spotlight/Raycast instead
+#   (rofi/launcher used to live here; it is now unified on mod+alt+r, see the
+#    table above and ~/.bin/app-launcher. i3 keeps bare mod+r as an alias.)
 #   i3 mod+l = lock          macOS: ctrl+cmd-q (system default)
 #   ctrl-f zoom-fullscreen   macOS-only legacy alias for mod+alt+f
 #   cmd-p pop-out player     i3 uses mod+p (cmd-p would also shadow Print — accepted)
@@ -66,6 +68,11 @@ cmd + shift - 0 : yabai -m window --space "⚙️"
 
 # Window management
 cmd - return : /Applications/Alacritty.app/Contents/MacOS/alacritty
+# App launcher (i3: mod+r rofi). +alt because bare cmd-r is "reload" in every
+# browser: macOS collapses onto Cmd the two roles Linux splits between Ctrl
+# (app shortcuts) and Super (WM), so mod+r and reload are the same chord here.
+# Floated by a `manage=off` rule in yabairc matching title="^launcher$".
+cmd + alt - r : ~/.bin/app-launcher
 cmd + alt - q : yabai -m window --close  # i3: mod+q kill
 cmd + alt - f : yabai -m window --toggle zoom-fullscreen  # i3: mod+f
 ctrl - f : yabai -m window --toggle zoom-fullscreen  # legacy alias, kept for muscle memory
