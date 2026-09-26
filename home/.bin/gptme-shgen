@@ -1,0 +1,147 @@
+#!/usr/bin/env python3
+"""
+gptme-shgen: natural language -> one shell command -> confirm -> run.
+
+    gptme-shgen list devices on network
+
+Asks an LLM (via `gptme-util llm generate`) for exactly one command for the
+current OS/shell, shows it in an editable prompt, and runs it on Enter.
+
+A child process can't touch the calling shell's state (cd, set/export, ...),
+so for true in-session execution use a shell wrapper that calls
+`gptme-shgen --print ...` and evals the result. For fish, one lives in
+~/.config/fish/functions/gptme-shgen.fish. Standalone, the command runs in a
+fresh `$shell -c`.
+
+Env:
+    GPTME_SHGEN_MODEL  model to use (default: openrouter/anthropic/claude-haiku-4.5)
+"""
+
+import argparse
+import os
+import platform
+import re
+import shutil
+import subprocess
+import sys
+
+DEFAULT_MODEL = "openrouter/anthropic/claude-haiku-4.5"
+
+SYSTEM = """\
+You translate a task description into exactly ONE shell command.
+
+Environment:
+- OS: {os}
+- Shell: {shell} (the command must be valid {shell} syntax)
+- Working directory: {cwd}
+
+Rules:
+- Reply with the command only. No prose, no explanation, no markdown, no code fences.
+- A single line. Chain with pipes or the shell's operators if needed.
+- Prefer tools preinstalled on this OS; only use others if the task requires them.
+- Do not use sudo unless the task cannot work without it.
+- If the task cannot be done safely in one command, reply with a single line
+  starting with '#' explaining why."""
+
+
+def detect_shell() -> str:
+    try:
+        comm = subprocess.run(
+            ["ps", "-o", "comm=", "-p", str(os.getppid())],
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        name = os.path.basename(comm).lstrip("-")
+        if name in ("fish", "zsh", "bash", "sh", "dash", "ksh", "nu", "xonsh"):
+            return name
+    except OSError:
+        pass
+    return os.path.basename(os.environ.get("SHELL", "sh"))
+
+
+def os_desc() -> str:
+    if sys.platform == "darwin":
+        return f"macOS {platform.mac_ver()[0]} ({platform.machine()})"
+    try:
+        with open("/etc/os-release") as f:
+            m = re.search(r'^PRETTY_NAME="?([^"\n]+)', f.read(), re.M)
+            if m:
+                return f"{m.group(1)} ({platform.machine()})"
+    except OSError:
+        pass
+    return f"{platform.system()} {platform.release()} ({platform.machine()})"
+
+
+def clean(out: str) -> str:
+    # drop reasoning blocks, code fences, blank lines
+    out = re.sub(r"<think(ing)?>.*?</think(ing)?>", "", out, flags=re.S)
+    out = out.split("</think>")[-1]
+    lines = [
+        ln for ln in out.strip().splitlines() if ln.strip() and not ln.startswith("```")
+    ]
+    return "\n".join(lines).strip()
+
+
+def generate(task: str, shell: str, model: str) -> str:
+    system = SYSTEM.format(os=os_desc(), shell=shell, cwd=os.getcwd())
+    if sys.stderr.isatty():
+        print(f"\033[2m… asking {model}\033[0m", end="\r", file=sys.stderr, flush=True)
+    p = subprocess.run(
+        ["gptme-util", "llm", "generate", "--no-stream", "-m", model,
+         "--temperature", "0", "--system", system, task],
+        capture_output=True,
+        text=True,
+    )
+    if sys.stderr.isatty():
+        print("\033[2K", end="\r", file=sys.stderr, flush=True)
+    if p.returncode != 0:
+        sys.exit(f"gptme-shgen: LLM call failed:\n{p.stderr.strip()}")
+    return clean(p.stdout)
+
+
+def confirm(cmd: str) -> str:
+    """Editable prompt prefilled with cmd. Enter runs, Ctrl-C/empty aborts."""
+    import readline
+
+    readline.set_startup_hook(lambda: readline.insert_text(cmd))
+    try:
+        return input("\033[1;33m$\033[0m ").strip()
+    except (KeyboardInterrupt, EOFError):
+        print(file=sys.stderr)
+        return ""
+    finally:
+        readline.set_startup_hook()
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(
+        description="Generate one shell command from a description, confirm, run."
+    )
+    ap.add_argument("task", nargs="+", help="what you want to do")
+    ap.add_argument("-m", "--model", default=os.environ.get("GPTME_SHGEN_MODEL", DEFAULT_MODEL))
+    ap.add_argument("-s", "--shell", help="target shell (default: calling shell)")
+    ap.add_argument("-y", "--yes", action="store_true", help="run without confirming")
+    ap.add_argument("-p", "--print", action="store_true", dest="print_only",
+                    help="print the command only (for shell wrappers)")
+    args = ap.parse_args()
+
+    shell = args.shell or detect_shell()
+    cmd = generate(" ".join(args.task), shell, args.model)
+    if not cmd:
+        sys.exit("gptme-shgen: empty response")
+
+    if args.print_only:
+        print(cmd)
+        return
+    if cmd.startswith("#"):
+        sys.exit(cmd)
+    if not args.yes:
+        cmd = confirm(cmd)
+        if not cmd:
+            sys.exit(130)
+    sh = shutil.which(shell) or os.environ.get("SHELL", "/bin/sh")
+    sys.exit(subprocess.run([sh, "-c", cmd]).returncode)
+
+
+if __name__ == "__main__":
+    main()
