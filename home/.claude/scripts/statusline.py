@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Claude Code status line (erb's personal config).
+"""Claude Code status line (erb's personal config), also used by gptme-tui.
 
 Line 1: model·effort │ dir ⎇ branch │ context % │ cost │ +/- lines │ duration
 Line 2: session name │ 👁 eye time · turns · steps ($/step) · tool-call summary │ prompt-cache state
@@ -7,6 +7,10 @@ Line 2: session name │ 👁 eye time · turns · steps ($/step) · tool-call s
 Reads the status JSON on stdin. Turn/step/tool counts come from tailing the transcript
 incrementally (offset cached per session), so renders stay cheap on long sessions.
 Debug: the last input is saved to /tmp/claude-statusline-input.json.
+
+gptme-tui (`[tui] statusline = "python3 ~/.claude/scripts/statusline.py"` in
+~/.config/gptme/config.toml) sends the same fields where they map, plus a "gptme" block
+with state, queue length and turn/step/tool counts, used instead of a transcript.
 
 Eye time = not-AFK time with this session's pane focused, from ActivityWatch. Claude Code
 sets the pane title to "<spinner> <session_name>", which tmux passes into the terminal
@@ -199,17 +203,18 @@ def tools_summary(counts: Counter) -> str:
         return ""
     groups = Counter()
     for name, n in counts.items():
-        if name in ("Edit", "Write", "MultiEdit", "NotebookEdit"):
+        # Claude Code tool names, then gptme's
+        if name in ("Edit", "Write", "MultiEdit", "NotebookEdit", "save", "append", "patch", "morph"):
             groups["edit"] += n
-        elif name == "Bash":
+        elif name in ("Bash", "shell", "tmux", "ipython"):
             groups["bash"] += n
-        elif name in ("Read", "Grep", "Glob"):
+        elif name in ("Read", "Grep", "Glob", "read"):
             groups["read"] += n
-        elif name in ("Agent", "Task", "Workflow"):
+        elif name in ("Agent", "Task", "Workflow", "subagent"):
             groups["agent"] += n
-        elif name.startswith("mcp__"):
+        elif name.startswith("mcp__") or name == "mcp":
             groups["mcp"] += n
-        elif name in ("WebFetch", "WebSearch"):
+        elif name in ("WebFetch", "WebSearch", "browser"):
             groups["web"] += n
     colors = {"edit": 214, "bash": 81, "read": 110, "agent": 177, "mcp": 179, "web": 75}
     parts = [c(colors[k], f"{k} {n}") for k, n in groups.most_common()]
@@ -283,11 +288,16 @@ def main() -> None:
         return
     raw = sys.stdin.read()
     try:
-        with open("/tmp/claude-statusline-input.json", "w") as f:
-            f.write(raw)
         data = json.loads(raw)
     except Exception:
         data = {}
+    gptme = data.get("gptme") if isinstance(data, dict) else None
+    try:
+        debug = "/tmp/gptme-statusline-input.json" if gptme else "/tmp/claude-statusline-input.json"
+        with open(debug, "w") as f:
+            f.write(raw)
+    except Exception:
+        pass
 
     model = data.get("model", {}).get("display_name", "?")
     effort = (data.get("effort") or {}).get("level")
@@ -332,12 +342,23 @@ def main() -> None:
         if cost.get("total_api_duration_ms"):
             dur += c(238, f" (api {duration(cost['total_api_duration_ms'])})")
         line1.append(dur)
+    if gptme:
+        # what the agent is doing (gptme-tui has no other activity indicator)
+        state = gptme.get("state", "")
+        if state and state != "idle":
+            line1.append(c(220, state, bold=True))
+        if gptme.get("queued"):
+            line1.append(c(DIM, f"⏳ {gptme['queued']} queued"))
 
     line2 = []
     if data.get("session_name"):
         line2.append(c(252, f"“{data['session_name']}”"))
-    if data.get("session_id") and data.get("transcript_path"):
-        turns, steps, counts = transcript_stats(data["session_id"], data["transcript_path"])
+    if gptme or (data.get("session_id") and data.get("transcript_path")):
+        if gptme:
+            turns, steps = gptme.get("turns", 0), gptme.get("steps", 0)
+            counts = Counter(gptme.get("tools") or {})
+        else:
+            turns, steps, counts = transcript_stats(data["session_id"], data["transcript_path"])
         stats = []
         if data.get("session_name") and cost.get("total_duration_ms"):
             secs = eye_time(data["session_id"], data["session_name"], cost["total_duration_ms"])
