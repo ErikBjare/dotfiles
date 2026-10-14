@@ -2,21 +2,31 @@
 """Claude Code status line (erb's personal config).
 
 Line 1: model·effort │ dir ⎇ branch │ context % │ cost │ +/- lines │ duration
-Line 2: session name │ turns · steps ($/step) · tool-call summary │ prompt-cache state
+Line 2: session name │ 👁 eye time · turns · steps ($/step) · tool-call summary │ prompt-cache state
 
 Reads the status JSON on stdin. Turn/step/tool counts come from tailing the transcript
 incrementally (offset cached per session), so renders stay cheap on long sessions.
 Debug: the last input is saved to /tmp/claude-statusline-input.json.
+
+Eye time = not-AFK time with this session's pane focused, from ActivityWatch. Claude Code
+sets the pane title to "<spinner> <session_name>", which tmux passes into the terminal
+window title as "[#S] <title> (<path>)" (see ~/.tmux/master.conf), so we match on that.
+The AW query takes ~0.4s over a multi-day session, so it is refreshed in a detached
+background process at most every EYE_TTL seconds and renders read the cached value.
 """
 
 import json
 import os
+import socket
 import subprocess
 import sys
 import time
+import urllib.request
 from collections import Counter
 
 CACHE_DIR = os.path.join(os.environ.get("TMPDIR", "/tmp"), "claude-statusline")
+AW_URL = os.environ.get("AW_URL", "http://localhost:5600")
+EYE_TTL = 60
 
 
 def c(code: int, s: str, bold: bool = False) -> str:
@@ -216,7 +226,61 @@ def cache_info(pc: dict) -> str:
     return c(111, "cache ❄ cold") + (c(DIM, f" ({tokens(recache)} to rewrite)") if recache else "")
 
 
+def aw_title_regex(name: str) -> str:
+    # AW's query parser rejects backslashes, so escape regex specials as [x] classes
+    out = "".join(f"[{ch}]" if ch in ".^$*+?{}()|[" else ("." if ch in "]\\" else ch) for ch in name)
+    return f" {out} [(]"
+
+
+def eye_time_query(session_name: str, start: float, out_path: str) -> None:
+    """Query AW for focused, not-AFK time on this session's window and write it to out_path."""
+    host = socket.gethostname()
+    period = "/".join(time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime(t)) for t in (start, time.time() + 60))
+    query = [
+        f'w = flood(query_bucket("aw-watcher-window_{host}"));',
+        f'a = filter_keyvals(flood(query_bucket("aw-watcher-afk_{host}")), "status", ["not-afk"]);',
+        f'w = filter_keyvals_regex(w, "title", {json.dumps(aw_title_regex(session_name))});',
+        "w = filter_period_intersect(w, a);",
+        "RETURN = sum_durations(w);",
+    ]
+    body = json.dumps({"timeperiods": [period], "query": query}).encode()
+    req = urllib.request.Request(f"{AW_URL}/api/0/query/", body, {"Content-Type": "application/json"})
+    try:
+        secs = json.load(urllib.request.urlopen(req, timeout=10))[0]
+    except Exception:
+        secs = None
+    with open(out_path, "w") as f:
+        json.dump({"name": session_name, "secs": secs, "at": time.time()}, f)
+
+
+def eye_time(session_id: str, session_name: str, duration_ms: float) -> float | None:
+    """Cached eye time; kicks off a background refresh when stale. Never blocks on AW."""
+    path = os.path.join(CACHE_DIR, f"{session_id}.eye.json")
+    cached = {}
+    try:
+        with open(path) as f:
+            cached = json.load(f)
+    except Exception:
+        pass
+    fresh = cached.get("name") == session_name and time.time() - cached.get("at", 0) < EYE_TTL
+    if not fresh:
+        # touch first so concurrent renders don't spawn duplicate refreshes
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        with open(path, "w") as f:
+            json.dump({**cached, "name": session_name, "at": time.time()}, f)
+        start = time.time() - duration_ms / 1000 - 60
+        subprocess.Popen(
+            [sys.executable, __file__, "--eye", session_name, str(start), path],
+            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+    return cached.get("secs") if cached.get("name") == session_name else None
+
+
 def main() -> None:
+    if len(sys.argv) == 5 and sys.argv[1] == "--eye":
+        eye_time_query(sys.argv[2], float(sys.argv[3]), sys.argv[4])
+        return
     raw = sys.stdin.read()
     try:
         with open("/tmp/claude-statusline-input.json", "w") as f:
@@ -274,7 +338,13 @@ def main() -> None:
         line2.append(c(252, f"“{data['session_name']}”"))
     if data.get("session_id") and data.get("transcript_path"):
         turns, steps, counts = transcript_stats(data["session_id"], data["transcript_path"])
-        stats = ([c(117, f"↻ {turns} turn{'s' if turns != 1 else ''}", bold=True)] if turns else [])
+        stats = []
+        if data.get("session_name") and cost.get("total_duration_ms"):
+            secs = eye_time(data["session_id"], data["session_name"], cost["total_duration_ms"])
+            if secs:
+                stats.append(c(219, f"👁 {duration(secs * 1000)}", bold=True))
+        if turns:
+            stats.append(c(117, f"↻ {turns} turn{'s' if turns != 1 else ''}", bold=True))
         if steps:
             st = c(153, f"⇢ {steps} steps")
             usd = (data.get("cost") or {}).get("total_cost_usd")
