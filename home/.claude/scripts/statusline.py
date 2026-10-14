@@ -2,9 +2,9 @@
 """Claude Code status line (erb's personal config).
 
 Line 1: model·effort │ dir ⎇ branch │ context % │ cost │ +/- lines │ duration
-Line 2: session name │ tool-call summary │ prompt-cache state
+Line 2: session name │ turns · tool-call summary │ prompt-cache state
 
-Reads the status JSON on stdin. Tool counts come from tailing the transcript
+Reads the status JSON on stdin. Turn/tool counts come from tailing the transcript
 incrementally (offset cached per session), so renders stay cheap on long sessions.
 Debug: the last input is saved to /tmp/claude-statusline-input.json.
 """
@@ -94,47 +94,86 @@ def git_info(cwd: str) -> str:
         return ""
 
 
-def tool_counts(session_id: str, transcript: str) -> Counter:
-    """Count tool_use blocks in the transcript, reading only new bytes since last render."""
+CACHE_VERSION = 3
+
+
+def is_prompt(entry: dict) -> int:
+    """+1 for a user prompt, -1 to retract a local slash command, else 0.
+
+    Local commands (/model, /config) log `<command-name>` then `<local-command-stdout>`;
+    skill commands (/journal) log `<command-name>` and no stdout, so they stay counted.
+    """
+    if entry.get("type") != "user" or entry.get("isMeta") or entry.get("isSidechain"):
+        return 0
+    if entry.get("isCompactSummary"):
+        return 0
+    content = (entry.get("message") or {}).get("content")
+    if isinstance(content, list):
+        if any(isinstance(b, dict) and b.get("type") == "tool_result" for b in content):
+            return 0
+        content = next((b.get("text", "") for b in content if isinstance(b, dict) and b.get("type") == "text"), "")
+    if not isinstance(content, str):
+        return 0
+    text = content.lstrip()
+    if text.startswith("<local-command-stdout>"):
+        return -1
+    if text.startswith((
+        "<local-command-caveat>", "<local-command-stderr>",  # local slash-command output
+        "<task-notification>",  # background agent/shell finished (not a human turn)
+        "<bash-input>", "<bash-stdout>", "<bash-stderr>",  # `!` shell passthrough
+        "[Request interrupted",
+    )):
+        return 0
+    return 1
+
+
+def transcript_stats(session_id: str, transcript: str) -> tuple[int, Counter]:
+    """Count user turns and tool_use blocks, reading only new bytes since last render."""
     os.makedirs(CACHE_DIR, exist_ok=True)
     cache_path = os.path.join(CACHE_DIR, f"{session_id}.json")
-    state = {"offset": 0, "counts": {}, "path": transcript}
+    state = {"v": CACHE_VERSION, "offset": 0, "counts": {}, "turns": 0, "path": transcript}
     try:
         with open(cache_path) as f:
             loaded = json.load(f)
-        if loaded.get("path") == transcript:
+        if loaded.get("path") == transcript and loaded.get("v") == CACHE_VERSION:
             state = loaded
     except Exception:
         pass
     counts = Counter(state["counts"])
+    turns = state["turns"]
     try:
         size = os.path.getsize(transcript)
         if size < state["offset"]:  # rewritten/truncated: rescan
-            state["offset"], counts = 0, Counter()
+            state["offset"], counts, turns = 0, Counter(), 0
         if size > state["offset"]:
             with open(transcript, "rb") as f:
                 f.seek(state["offset"])
                 chunk = f.read()
             end = chunk.rfind(b"\n") + 1  # only consume complete lines
             for line in chunk[:end].splitlines():
-                if b'"tool_use"' not in line:
+                is_user = b'"type":"user"' in line
+                if not is_user and b'"tool_use"' not in line:
                     continue
                 try:
-                    msg = json.loads(line).get("message", {})
+                    entry = json.loads(line)
                 except Exception:
                     continue
+                if is_user:
+                    turns = max(0, turns + is_prompt(entry))
+                    continue
+                msg = entry.get("message", {})
                 content = msg.get("content") if isinstance(msg, dict) else None
                 if isinstance(content, list):
                     for block in content:
                         if isinstance(block, dict) and block.get("type") == "tool_use":
                             counts[block.get("name", "?")] += 1
             state["offset"] += end
-            state["counts"] = dict(counts)
+            state["counts"], state["turns"] = dict(counts), turns
             with open(cache_path, "w") as f:
                 json.dump(state, f)
     except Exception:
         pass
-    return counts
+    return turns, counts
 
 
 def tools_summary(counts: Counter) -> str:
@@ -227,9 +266,13 @@ def main() -> None:
     if data.get("session_name"):
         line2.append(c(252, f"“{data['session_name']}”"))
     if data.get("session_id") and data.get("transcript_path"):
-        ts = tools_summary(tool_counts(data["session_id"], data["transcript_path"]))
+        turns, counts = transcript_stats(data["session_id"], data["transcript_path"])
+        stats = ([c(117, f"↻ {turns} turn{'s' if turns != 1 else ''}", bold=True)] if turns else [])
+        ts = tools_summary(counts)
         if ts:
-            line2.append(ts)
+            stats.append(ts)
+        if stats:
+            line2.append(c(DIM, " · ").join(stats))
     ci = cache_info(data.get("prompt_cache") or {})
     if ci:
         line2.append(ci)
