@@ -2,9 +2,9 @@
 """Claude Code status line (erb's personal config).
 
 Line 1: model·effort │ dir ⎇ branch │ context % │ cost │ +/- lines │ duration
-Line 2: session name │ turns · tool-call summary │ prompt-cache state
+Line 2: session name │ turns · steps ($/step) · tool-call summary │ prompt-cache state
 
-Reads the status JSON on stdin. Turn/tool counts come from tailing the transcript
+Reads the status JSON on stdin. Turn/step/tool counts come from tailing the transcript
 incrementally (offset cached per session), so renders stay cheap on long sessions.
 Debug: the last input is saved to /tmp/claude-statusline-input.json.
 """
@@ -94,7 +94,7 @@ def git_info(cwd: str) -> str:
         return ""
 
 
-CACHE_VERSION = 3
+CACHE_VERSION = 4
 
 
 def is_prompt(entry: dict) -> int:
@@ -127,11 +127,14 @@ def is_prompt(entry: dict) -> int:
     return 1
 
 
-def transcript_stats(session_id: str, transcript: str) -> tuple[int, Counter]:
-    """Count user turns and tool_use blocks, reading only new bytes since last render."""
+def transcript_stats(session_id: str, transcript: str) -> tuple[int, int, Counter]:
+    """Count user turns, steps (model API calls) and tool_use blocks, reading only new
+    bytes since last render. One assistant message is split over several lines (one per
+    content block) sharing a message id, so steps count distinct ids."""
     os.makedirs(CACHE_DIR, exist_ok=True)
     cache_path = os.path.join(CACHE_DIR, f"{session_id}.json")
-    state = {"v": CACHE_VERSION, "offset": 0, "counts": {}, "turns": 0, "path": transcript}
+    state = {"v": CACHE_VERSION, "offset": 0, "counts": {}, "turns": 0, "steps": 0,
+             "last_id": None, "path": transcript}
     try:
         with open(cache_path) as f:
             loaded = json.load(f)
@@ -140,11 +143,11 @@ def transcript_stats(session_id: str, transcript: str) -> tuple[int, Counter]:
     except Exception:
         pass
     counts = Counter(state["counts"])
-    turns = state["turns"]
+    turns, steps, last_id = state["turns"], state["steps"], state["last_id"]
     try:
         size = os.path.getsize(transcript)
         if size < state["offset"]:  # rewritten/truncated: rescan
-            state["offset"], counts, turns = 0, Counter(), 0
+            state["offset"], counts, turns, steps, last_id = 0, Counter(), 0, 0, None
         if size > state["offset"]:
             with open(transcript, "rb") as f:
                 f.seek(state["offset"])
@@ -152,7 +155,7 @@ def transcript_stats(session_id: str, transcript: str) -> tuple[int, Counter]:
             end = chunk.rfind(b"\n") + 1  # only consume complete lines
             for line in chunk[:end].splitlines():
                 is_user = b'"type":"user"' in line
-                if not is_user and b'"tool_use"' not in line:
+                if not is_user and b'"type":"assistant"' not in line:
                     continue
                 try:
                     entry = json.loads(line)
@@ -162,18 +165,22 @@ def transcript_stats(session_id: str, transcript: str) -> tuple[int, Counter]:
                     turns = max(0, turns + is_prompt(entry))
                     continue
                 msg = entry.get("message", {})
+                if entry.get("type") != "assistant" or entry.get("isSidechain") or not isinstance(msg, dict):
+                    continue
+                if msg.get("id") and msg["id"] != last_id:
+                    steps, last_id = steps + 1, msg["id"]
                 content = msg.get("content") if isinstance(msg, dict) else None
                 if isinstance(content, list):
                     for block in content:
                         if isinstance(block, dict) and block.get("type") == "tool_use":
                             counts[block.get("name", "?")] += 1
             state["offset"] += end
-            state["counts"], state["turns"] = dict(counts), turns
+            state.update(counts=dict(counts), turns=turns, steps=steps, last_id=last_id)
             with open(cache_path, "w") as f:
                 json.dump(state, f)
     except Exception:
         pass
-    return turns, counts
+    return turns, steps, counts
 
 
 def tools_summary(counts: Counter) -> str:
@@ -266,8 +273,14 @@ def main() -> None:
     if data.get("session_name"):
         line2.append(c(252, f"“{data['session_name']}”"))
     if data.get("session_id") and data.get("transcript_path"):
-        turns, counts = transcript_stats(data["session_id"], data["transcript_path"])
+        turns, steps, counts = transcript_stats(data["session_id"], data["transcript_path"])
         stats = ([c(117, f"↻ {turns} turn{'s' if turns != 1 else ''}", bold=True)] if turns else [])
+        if steps:
+            st = c(153, f"⇢ {steps} steps")
+            usd = (data.get("cost") or {}).get("total_cost_usd")
+            if usd:
+                st += c(DIM, f" ${usd / steps:.3f}/step" if usd / steps < 0.1 else f" ${usd / steps:.2f}/step")
+            stats.append(st)
         ts = tools_summary(counts)
         if ts:
             stats.append(ts)
