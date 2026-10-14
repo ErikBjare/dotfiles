@@ -1,0 +1,74 @@
+{
+  "cleanupPeriodDays": 1000000,
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "model": "opus",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/Programming/erbot/scripts/session-start.sh\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "erbot session context"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "gptme-util sound ding >/dev/null 2>&1 || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "gptme-util sound ding >/dev/null 2>&1 || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "python3 ~/.claude/scripts/statusline.py",
+    "padding": 0
+  },
+  "enabledPlugins": {
+    "cloudflare@cloudflare": true
+  },
+  "extraKnownMarketplaces": {
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
+      }
+    }
+  },
+  "effortLevel": "high",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "teammateMode": "tmux",
+  "defaultMode": "bypassPermissions"
+}
