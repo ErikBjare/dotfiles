@@ -37,14 +37,18 @@ jobs:
       if: matrix.name == 'Arch Linux'
       run: |
         pacman -Syu --noconfirm
-        pacman -S git --noconfirm
+        pacman -S git python --noconfirm
 
     - uses: actions/checkout@v3
 
     - name: Set up Python
+      if: matrix.name != 'Arch Linux'
       uses: actions/setup-python@v2
       with:
         python-version: '3.10'
+
+    - name: Test tmux agent status bridge
+      run: python3 -m unittest discover -s tests -v
 
     - name: Install packages
       run: |

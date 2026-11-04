@@ -20,7 +20,9 @@ jobs:
 
       - uses: pre-commit/action@v3.0.1
         env:
-          SKIP: gitleaks  # gitleaks local hook uses --staged, not suitable for CI
+          # These guards apply to a local staged index, not --all-files.
+          # Keep both enabled locally; the separate gitleaks job scans CI.
+          SKIP: gitleaks,block-holdback-files
 
   gitleaks:
     runs-on: ubuntu-latest
