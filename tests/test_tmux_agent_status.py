@@ -59,7 +59,40 @@ class InstallTests(unittest.TestCase):
             calls[1][:5], ("if-shell", "-F", "-t", "%2", "#{==:#{pane_pipe},0}")
         )
         self.assertIn("--watch %%2", calls[1][-1])
-        self.assertIn("#{socket_path}", calls[1][-1])
+        # Shell-escaped by tmux, never interpolated inside shell quotes.
+        self.assertIn(" #{q:socket_path}'", calls[1][-1])
+        self.assertNotIn('"#{socket_path}"', calls[1][-1])
+
+    def test_conf_hooks_shell_escape_socket(self):
+        conf = (PATH.parent / "agent-status.conf").read_text()
+        installs = [line for line in conf.splitlines() if "--install" in line]
+        self.assertEqual(len(installs), 4)
+        for line in installs:
+            self.assertIn("--install #{q:socket_path}", line)
+
+
+class ReporterTests(unittest.TestCase):
+    def run_reports(self, states):
+        calls = []
+        with patch.object(module, "tmux", lambda *args: calls.append(args)):
+            report = module.reporter("%3")
+            for state in states:
+                report(state)
+        return [c for c in calls if c[0] == "set-option"]
+
+    def test_repeat_report_reapplied_after_manual_clear(self):
+        # README: `tmux set-option -pu -t %PANE @agent-state` happens between
+        # these reports, outside the watcher; the repeat must not be dropped.
+        sets = self.run_reports(["working", "working"])
+        self.assertEqual(
+            sets, [("set-option", "-p", "-t", "%3", "@agent-state", "working")] * 2
+        )
+
+    def test_repeated_prompt_clears_are_collapsed(self):
+        sets = self.run_reports(["clear", "clear", "done", "clear", "clear"])
+        unset = ("set-option", "-pu", "-t", "%3", "@agent-state")
+        done = ("set-option", "-p", "-t", "%3", "@agent-state", "done")
+        self.assertEqual(sets, [unset, done, unset])
 
 
 if __name__ == "__main__":

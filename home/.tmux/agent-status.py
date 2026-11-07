@@ -74,20 +74,31 @@ def tmux(*args):
     )
 
 
-def watch(pane):
-    previous = None
+def reporter(pane):
+    # Every agent report is applied, even a repeat: the pane option can be
+    # unset externally (the README's manual clear), so our last write is not
+    # proof of tmux's current state. Only redundant clears are skipped, since
+    # shell prompt markers send one per prompt and an unset is idempotent.
+    # Start uncleared so the first prompt also drops any leftover state.
+    cleared = False
 
     def report(state):
-        nonlocal previous
-        if state == previous:
-            return
-        previous = state
+        nonlocal cleared
         if state == "clear":
+            if cleared:
+                return
+            cleared = True
             tmux("set-option", "-pu", "-t", pane, "@agent-state")
         else:
+            cleared = False
             tmux("set-option", "-p", "-t", pane, "@agent-state", state)
         tmux("refresh-client", "-S")
 
+    return report
+
+
+def watch(pane):
+    report = reporter(pane)
     parser = Parser(report)
     try:
         while data := os.read(0, 8192):
@@ -111,8 +122,10 @@ def install():
                 "-t",
                 pane,
                 "#{==:#{pane_pipe},0}",
+                # q: shell-escapes the path when pipe-pane expands it, so
+                # spaces or metacharacters stay one literal argument.
                 f"pipe-pane -t {pane} "
-                f'\'python3 "$HOME/.tmux/agent-status.py" --watch %{pane} "#{{socket_path}}"\'',
+                f'\'python3 "$HOME/.tmux/agent-status.py" --watch %{pane} #{{q:socket_path}}\'',
             )
 
 
