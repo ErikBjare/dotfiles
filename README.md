@@ -55,11 +55,26 @@ state change, not by reconstructing history. Existing logging pipes take
 precedence, so panes using another `pipe-pane` consumer are skipped. Normal chat
 exit clears status; shell OSC 133 prompt markers also clear it after crashes.
 Without those shell markers, a hard-killed agent can leave a stale badge; clear
-one with `tmux set-option -pu -t %PANE @agent-state`. Remote direct SSH output
+one with `tmux set-option -pu -t %PANE @agent-state`.
+
+Claude Code runs hooks without a controlling terminal, so it can't emit OSC 7501.
+Its hooks (`home/.claude/settings.json`) call
+`home/.claude/scripts/tmux-agent-status.sh STATE`, which sets the same pane
+option directly: idle on start, working on prompt and after each tool, blocked on
+permission prompts and AskUserQuestion, done on Stop, cleared on exit. Remote direct SSH output
 works if it carries reports; nested remote tmux consumes unknown OSC sequences
 and needs a bridge on that server (not enabled automatically).
 
 Test the parser with `python3 -m unittest discover -s tests`.
+
+## tmux session saves
+
+`home/.tmux/autosave.sh` runs tmux-resurrect's save every 15 minutes from a loop
+the tmux server starts (`run-shell -b` in `master.conf`, one loop per server via
+a pidfile). It replaces continuum's save trigger, a `#()` job in `status-right`
+that silently stops when status-right is reset while another tmux server runs,
+or while the status bar is hidden. Continuum still restores on start. Failed or
+stale saves show a tmux message.
 
 ## Thanks to...
  - [Johan Bjäreholt](https://github.com/johan-bjareholt/) for his [dotfiles](https://github.com/johan-bjareholt/linux-configs)
