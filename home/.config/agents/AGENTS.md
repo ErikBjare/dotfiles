@@ -18,7 +18,7 @@ instructions go in each repo's own `CLAUDE.md`/`AGENTS.md`.
 
 ## Git Workflow
 - **PR merge strategy**: Use `--squash` for typical PRs (single logical change, review fixups get folded in). Use `--rebase` when the branch has multiple distinct commits worth preserving individually. Never use `--merge`.
-- **Worktrees for new features**: Implement new features in clean git worktrees under `/tmp/worktrees/`. If there's a remote, submit PRs; if local-only, rebase onto the target branch directly.
+- **Worktrees for new features**: Implement new features in clean git worktrees under `~/worktrees/` (persistent and outside any synced folder; `/tmp` is wiped on reboot, and Syncthing-synced checkouts collect `.git` conflicts). If there's a remote, submit PRs; if local-only, rebase onto the target branch directly.
 - **Pre-commit**: Use `prek` (Rust-based pre-commit) instead of `pre-commit` for installing and running hooks. Config is still `.pre-commit-config.yaml`.
 - **No AI tooling attribution**: Never add `Co-Authored-By: Claude` or similar AI-tool attribution to commit messages, nor "Generated with ..." to PR descriptions.
 
