@@ -67,6 +67,25 @@ and needs a bridge on that server (not enabled automatically).
 
 Test the parser with `python3 -m unittest discover -s tests`.
 
+## tmux vertical tabs
+
+`home/.tmux/vtabs.py` (+ `vtabs.conf`) is a Herdr-inspired sidebar without the
+runtime: a narrow pane on the left of every window listing sessions and windows.
+Each window is labelled with the full title of its most urgent agent pane (a
+Claude Code session name, say), wrapped onto a second line instead of cut, and
+carries the rolled-up agent state from the badges above (`!` blocked, `x` error,
+`~` working, `+` done, `.` idle). Shell panes show their directory, since their
+titles are stale.
+
+`prefix+Tab` toggles it for the whole server; `set -g @vtabs-enabled on` before
+`vtabs.conf` is sourced shows it on start, `@vtabs-width` sets the columns (32).
+Click a window or session to switch; the sidebar never takes focus (pane
+navigation bounces off it). Closing a window's last real pane closes the window.
+Sidebars redraw on tmux hooks, poll once a second while visible and sleep while
+hidden; the only state is the `@vtabs-enabled` option. tmux-resurrect restores
+them as sidebars. One sidebar per window keeps pane widths stable when switching
+windows, at ~15 MB RSS per window for its Python process.
+
 ## tmux session saves
 
 `home/.tmux/autosave.sh` runs tmux-resurrect's save every 15 minutes from a loop
