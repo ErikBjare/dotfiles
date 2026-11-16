@@ -130,6 +130,9 @@ class LayoutTests(unittest.TestCase):
         ]
         rows = vtabs.build(panes, panes[0], 32, 20)
         self.assertEqual([r[1] for r in rows if r[1]], ["$0", "$0:@1", "$1", "$1:@1"])
+        # The sidebar takes its context from the session viewing it.
+        panes[0]["window_active"] = "0"
+        self.assertEqual(vtabs.own_record(panes, "%0")["session_id"], "$1")
         self.assertNotIn("(+", "".join(text(rows)))
 
     def test_title_alone_does_not_make_a_sidebar(self):
@@ -138,6 +141,18 @@ class LayoutTests(unittest.TestCase):
         self.assertTrue(vtabs.is_sidebar(pane(**{"@vtabs": "1"})))
         start = "exec python3 /h/.tmux/vtabs.py /s render"
         self.assertTrue(vtabs.is_sidebar(pane(pane_start_command=start)))
+        self.assertTrue(vtabs.is_sidebar(pane(pane_start_command=f'"{start}"')))
+        for cmd in ["nvim vtabs.py", '"sleep 600 # vtabs.py"', "less vtabs.py.orig"]:
+            self.assertFalse(vtabs.is_sidebar(pane(pane_start_command=cmd)), cmd)
+
+    def test_selected_window_stays_in_view_when_overflowing(self):
+        panes = [pane(window_id=f"@{i}", window_index=str(i), pane_id=f"%{10 + i}") for i in range(20)]
+        panes.append(pane(pane_id="%0", window_id="@15", sidebar=True))
+        rows = vtabs.build(panes, panes[-1], 32, 8)
+        self.assertEqual(len(rows), 8)
+        self.assertTrue(any(r[2] for r in rows))
+        self.assertEqual(text(rows)[0], " …")
+        self.assertEqual(text(rows)[-1], " …")
 
     def test_other_sessions_collapse_when_too_tall(self):
         panes = [pane(pane_id="%0", sidebar=True), pane(pane_id="%1")]

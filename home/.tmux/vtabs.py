@@ -29,6 +29,7 @@ SOCKET is the tmux socket path, or - to take it from $TMUX.
 """
 
 import fcntl
+import fnmatch
 import os
 import re
 import select
@@ -58,9 +59,14 @@ FIELDS = (
     "pane_start_command @agent-state @vtabs"
 ).split()
 # Any sidebar in the window, or zoomed (splitting would unzoom it).
+# The exact command ensure() starts a sidebar with; tmux 3.5 reports it
+# double-quoted. Anything looser would match e.g. "nvim vtabs.py", and
+# sidebars get killed on toggle off.
+START = "exec python3 *vtabs.py * render"
 HAS_SIDEBAR = (
-    "#{||:#{window_zoomed_flag},#{P:#{?#{||:#{@vtabs},"
-    "#{m:*vtabs.py*,#{pane_start_command}}},1,}}}"
+    "#{||:#{window_zoomed_flag},#{P:#{?#{||:#{@vtabs},#{||:"
+    f'#{{m:{START},#{{pane_start_command}}}},#{{m:"{START}",#{{pane_start_command}}}}'
+    "}},1,}}}"
 )
 SEP = "\t"  # tmux escapes control chars in output, but not tab; titles cannot hold one
 HOSTNAMES = {socket.gethostname(), socket.gethostname().split(".")[0]}
@@ -104,7 +110,10 @@ def snapshot():
 
 def is_sidebar(pane):
     # Never the title: any program can set it, and sidebars get killed.
-    return bool(pane["@vtabs"]) or "vtabs.py" in pane["pane_start_command"]
+    start = pane["pane_start_command"]
+    if len(start) > 1 and start[0] == start[-1] == '"':
+        start = start[1:-1]
+    return bool(pane["@vtabs"]) or fnmatch.fnmatchcase(start, START)
 
 
 def windows(panes, per_session=False):
@@ -267,12 +276,30 @@ def build(panes, me, cols, rows, focused=False):
     out = layout(False)
     if len(out) > budget:
         out = layout(True)
-    if len(out) > budget:
-        out = out[: budget - 1] + [([(" …", "38;5;242")], None, False)]
+    if len(out) > budget:  # scroll so the selected window stays in view
+        selected = next((i for i, row in enumerate(out) if row[2]), 0)
+        total = len(out)
+        start = max(0, min(selected - budget // 2, total - budget))
+        out = out[start : start + budget]
+        more = ([(" …", "38;5;242")], None, False)
+        if start > 0 and not out[0][2]:
+            out[0] = more
+        if start + budget < total and not out[-1][2]:
+            out[-1] = more
     if focused:
         hint = " ↑↓ switch  1-9 jump  ⏎ back"
         out.append(([(hint[:cols], "38;5;245")], None, False))
     return out
+
+
+def own_record(panes, pane_id):
+    """This pane's record; a linked window lists it once per session, so
+    prefer the session where it is being viewed."""
+    return max(
+        (p for p in panes if p["pane_id"] == pane_id),
+        key=lambda p: (p["window_active"] == "1", p["session_attached"] != "0"),
+        default=None,
+    )
 
 
 def window_order(panes):
@@ -431,7 +458,7 @@ class Sidebar:
             self.panes = snapshot()
         except (SystemExit, subprocess.TimeoutExpired):
             return False  # server gone
-        self.me = next((p for p in self.panes if p["pane_id"] == self.pane), None)
+        self.me = own_record(self.panes, self.pane)
         return self.me is not None
 
 
