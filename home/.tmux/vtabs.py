@@ -7,23 +7,31 @@ resize every TUI on each switch). Window labels use the full pane title
 (e.g. a Claude Code session name), wrapped onto a second line rather than cut,
 with the OSC 7501 agent state rolled up per window (see agent-status.py).
 
+A sidebar always highlights its own window, so a hidden sidebar is already
+correct the moment its window is shown: switching never waits on a redraw.
+Focus it (prefix+Tab, or move left into it) to navigate like choose-tree:
+up/down or j/k switch windows live, 1-9 jump, Enter/Esc/Right go back.
+Mouse clicks are read by the running sidebar, not a new process.
+
 No daemon and no state files: the server-wide @vtabs-enabled option is the
-only state. A sidebar redraws on tmux hooks (wait-for channel "vtabs"), polls
-once a second while visible, and sleeps while its window is hidden.
+only state. A sidebar wakes on its window's wait-for channel ("vtabs-@N",
+signalled by hooks), polls once a second while visible, and sleeps otherwise.
 
     vtabs.py SOCKET toggle            show/hide sidebars in every window
+    vtabs.py SOCKET focus             show sidebars if hidden, focus this one
     vtabs.py SOCKET ensure [@WINDOW]  add sidebars where missing, if enabled
-    vtabs.py SOCKET tidy              after a pane exits: no sidebar-only
-                                      windows, focus never left on a sidebar
+    vtabs.py SOCKET refresh           wake every sidebar (windows added/closed)
+    vtabs.py SOCKET tidy              close windows left with only a sidebar
     vtabs.py SOCKET fit               restore sidebar width after a resize
-    vtabs.py SOCKET click %PANE Y CLIENT
     vtabs.py SOCKET render            the sidebar program (runs in the pane)
 
 SOCKET is the tmux socket path, or - to take it from $TMUX.
 """
 
+import fcntl
 import os
 import re
+import select
 import shlex
 import signal
 import socket
@@ -33,7 +41,6 @@ import termios
 import textwrap
 
 SOCKET = ""
-CHANNEL = "vtabs"
 SHELLS = {"sh", "bash", "zsh", "fish", "dash", "ksh", "tcsh", "nu", "xonsh"}
 # Priority order and glyphs match the status-bar badge in agent-status.conf.
 BADGES = {
@@ -46,9 +53,9 @@ BADGES = {
 PRIORITY = {state: i for i, state in enumerate(BADGES)}
 FIELDS = (
     "session_id session_name session_attached window_id window_index "
-    "window_name window_active window_zoomed_flag window_bell_flag pane_id "
-    "pane_active pane_width pane_height pane_current_command "
-    "pane_current_path pane_title pane_start_command @agent-state @vtabs"
+    "window_active window_bell_flag pane_id pane_active pane_width "
+    "pane_height pane_current_command pane_current_path pane_title "
+    "pane_start_command @agent-state @vtabs"
 ).split()
 # Any sidebar in the window, or zoomed (splitting would unzoom it).
 HAS_SIDEBAR = (
@@ -65,11 +72,11 @@ def tmux(*args, check=False):
     )
     if check and result.returncode:
         raise SystemExit(result.stderr.strip() or f"tmux {args[0]} failed")
-    return result.stdout
+    return result
 
 
 def option(name):
-    return tmux("show-options", "-gqv", name).strip()
+    return tmux("show-options", "-gqv", name).stdout.strip()
 
 
 def enabled():
@@ -84,7 +91,7 @@ def width():
 def snapshot():
     """All panes, in tmux order (sessions by name, windows/panes by index)."""
     fmt = SEP.join("#{%s}" % f for f in FIELDS)
-    out = tmux("list-panes", "-a", "-F", fmt, check=True)
+    out = tmux("list-panes", "-a", "-F", fmt, check=True).stdout
     panes = []
     for line in out.splitlines():
         values = line.split(SEP)
@@ -150,11 +157,12 @@ def window_info(panes):
 # ---------------------------------------------------------------- layout
 
 
-def build(panes, me, cols, rows):
-    """Rows of the sidebar for pane `me`: [(segments, target, selected)].
+def build(panes, me, cols, rows, focused=False):
+    """Rows of the sidebar in pane `me`: [(segments, target, selected)].
 
     segments are (text, sgr) pairs; target is a session/window id or None.
-    All sessions are expanded; if that overflows, other sessions collapse.
+    The selected row is the sidebar's own window. All sessions are expanded;
+    if that overflows, other sessions collapse.
     """
     sessions = {}
     for wid, wpanes in windows(panes).items():
@@ -164,7 +172,6 @@ def build(panes, me, cols, rows):
             info.update(
                 id=wid,
                 index=first["window_index"],
-                active=first["window_active"] == "1",
                 bell=first["window_bell_flag"] == "1",
             )
             sessions.setdefault(first["session_id"], (first, []))[1].append(info)
@@ -176,9 +183,8 @@ def build(panes, me, cols, rows):
             folded = collapse and not current
             if out:
                 out.append(([], None, False))
-            name = first["session_name"]
             head = [("▸ " if folded else "▾ ", "38;5;245")]
-            head.append((name, "1" if current else "38;5;250"))
+            head.append((first["session_name"], "1" if current else "38;5;250"))
             if folded:
                 head.append((f"  {len(wins)}w", "38;5;242"))
             state = rollup(w["state"] for w in wins)
@@ -186,15 +192,24 @@ def build(panes, me, cols, rows):
             if not folded:
                 idx_w = max(len(w["index"]) for w in wins)
                 for win in wins:
-                    out.extend(window_rows(win, current, idx_w, cols))
+                    out.extend(window_rows(win, win["id"] == me["window_id"], idx_w, cols))
         return out
 
+    budget = rows - 1 if focused else rows
     out = layout(False)
-    if len(out) > rows:
+    if len(out) > budget:
         out = layout(True)
-    if len(out) > rows:
-        out = out[: rows - 1] + [([(" …", "38;5;242")], None, False)]
+    if len(out) > budget:
+        out = out[: budget - 1] + [([(" …", "38;5;242")], None, False)]
+    if focused:
+        hint = " ↑↓ switch  1-9 jump  ⏎ back"
+        out.append(([(hint[:cols], "38;5;245")], None, False))
     return out
+
+
+def window_order(panes):
+    """Window ids in display order (windows that have a real pane)."""
+    return [wid for wid, wp in windows(panes).items() if window_info(wp)]
 
 
 def badge_right(segments, state, cols):
@@ -215,8 +230,7 @@ def badge_right(segments, state, cols):
     return fitted
 
 
-def window_rows(win, current, idx_w, cols):
-    selected = current and win["active"]
+def window_rows(win, selected, idx_w, cols):
     idx_sgr = "38;5;203" if win["bell"] else "38;5;245"
     text_sgr = "1;38;5;255" if selected else "38;5;252"
     if selected:
@@ -242,11 +256,10 @@ def window_rows(win, current, idx_w, cols):
     return out
 
 
-def paint(rows, cols):
+def paint(rows, cols, focused):
     lines = []
-    for row in rows:
-        segs, _, selected = row
-        base = "48;5;25" if selected else "48;5;233"
+    for segs, _, selected in rows:
+        base = ("48;5;31" if focused else "48;5;25") if selected else "48;5;233"
         line = f"\x1b[0;{base}m"
         used = 0
         for text, sgr in segs:
@@ -260,9 +273,98 @@ def paint(rows, cols):
 
 # ---------------------------------------------------------------- render
 
+KEYS = re.compile(
+    rb"\x1b\[<(\d+);(\d+);(\d+)([Mm])"  # SGR mouse
+    rb"|\x1b\[[0-9;]*[A-Za-z~]|\x1bO[A-Za-z]"  # CSI/SS3 keys, focus in/out
+    rb"|[\s\S]"
+)
+UP = {b"\x1b[A", b"\x1bOA", b"k"}
+DOWN = {b"\x1b[B", b"\x1bOB", b"j"}
+BACK = {b"\r", b"\n", b"\x1b", b"q", b"\t", b"l", b"\x1b[C", b"\x1bOC"}
 
-class Redraw(Exception):
-    pass
+
+class Sidebar:
+    def __init__(self, pane):
+        self.pane = pane
+        self.panes = []
+        self.me = None
+
+    def window(self, wid):
+        return windows(self.panes).get(wid, [])
+
+    def go(self, wid, stay):
+        """Show window `wid`; keep focus in its sidebar if `stay`."""
+        target = self.window(wid)
+        side = next((p for p in target if p["sidebar"]), None)
+        real = [p for p in target if not p["sidebar"]]
+        args = ["switch-client", "-t", wid]
+        if stay and side:
+            args += [";", "select-pane", "-t", side["pane_id"]]
+        elif real and not any(p["pane_active"] == "1" for p in real):
+            args += [";", "select-pane", "-t", real[0]["pane_id"]]
+        tmux(*args)
+
+    def back(self):
+        """Return focus from the sidebar to the window's previous pane."""
+        if tmux("last-pane", "-t", self.pane).returncode:
+            real = [p for p in self.window(self.me["window_id"]) if not p["sidebar"]]
+            if real:
+                tmux("select-pane", "-t", real[0]["pane_id"])
+
+    def keys(self, data):
+        moves, action = 0, None
+        for m in KEYS.finditer(data):
+            key = m.group(0)
+            if m.group(1) is not None:  # mouse: left press only, no wheel/drag
+                if m.group(4) == b"M" and int(m.group(1)) == 0:
+                    action = ("click", int(m.group(3)) - 1)
+            elif key in UP:
+                moves -= 1
+            elif key in DOWN:
+                moves += 1
+            elif key in BACK:
+                action = ("back",)
+            elif key.isdigit():
+                action = ("jump", key.decode())
+        order = window_order(self.panes)
+        if moves and self.me["window_id"] in order:
+            i = order.index(self.me["window_id"])
+            self.go(order[(i + moves) % len(order)], stay=True)
+        elif action and action[0] == "back":
+            self.back()
+        elif action and action[0] == "jump":
+            index = "10" if action[1] == "0" else action[1]
+            for wid, wp in windows(self.panes).items():
+                first = wp[0]
+                if first["session_id"] == self.me["session_id"] and first["window_index"] == index:
+                    self.go(wid, stay=True)
+        elif action and action[0] == "click":
+            rows = build(self.panes, self.me, *self.size(), focused=self.focused())
+            if 0 <= action[1] < len(rows) and rows[action[1]][1]:
+                target = rows[action[1]][1]
+                self.back()  # the click focused this sidebar; undo that
+                if target.startswith("@"):
+                    if target != self.me["window_id"]:
+                        self.go(target, stay=False)
+                else:
+                    tmux("switch-client", "-t", target)
+
+    def size(self):
+        return int(self.me["pane_width"]), int(self.me["pane_height"])
+
+    def visible(self):
+        return self.me["window_active"] == "1" and self.me["session_attached"] != "0"
+
+    def focused(self):
+        return self.visible() and self.me["pane_active"] == "1"
+
+    def update(self):
+        try:
+            self.panes = snapshot()
+        except (SystemExit, subprocess.TimeoutExpired):
+            return False  # server gone
+        self.me = next((p for p in self.panes if p["pane_id"] == self.pane), None)
+        return self.me is not None
 
 
 def render():
@@ -270,72 +372,82 @@ def render():
     if not enabled() and not option("@vtabs-suspended"):
         tmux("kill-pane", "-t", pane)  # e.g. restored by resurrect after a toggle off
         return
-    tmux("set-option", "-p", "-t", pane, "@vtabs", "1")
-    tmux("set-option", "-p", "-t", pane, "window-style", "bg=colour233")
-    tmux("set-option", "-p", "-t", pane, "window-active-style", "bg=colour233")
+    tmux(
+        "set-option", "-p", "-t", pane, "@vtabs", "1", ";",
+        "set-option", "-p", "-t", pane, "window-style", "bg=colour233", ";",
+        "set-option", "-p", "-t", pane, "window-active-style", "bg=colour233",
+    )  # fmt: skip
     out = sys.stdout
-    # Title marks the pane for resurrect; hide cursor; no autowrap.
-    out.write("\x1b]2;vtabs\x1b\\\x1b[?25l\x1b[?7l\x1b[2J")
+    # Title marks the pane for resurrect; hide cursor; no autowrap; SGR mouse
+    # and focus reports so clicks and focus changes reach this process.
+    out.write("\x1b]2;vtabs\x1b\\\x1b[?25l\x1b[?7l\x1b[?1000h\x1b[?1006h\x1b[?1004h\x1b[2J")
     out.flush()
     try:
         attrs = termios.tcgetattr(0)
-        attrs[3] &= ~(termios.ECHO | termios.ICANON)
+        attrs[3] &= ~(termios.ECHO | termios.ICANON | termios.ISIG)
         termios.tcsetattr(0, termios.TCSANOW, attrs)
     except termios.error:
         pass
+    os.set_blocking(0, False)
+    wake_r, wake_w = os.pipe()
+    for fd in (wake_r, wake_w):
+        fcntl.fcntl(fd, fcntl.F_SETFL, os.O_NONBLOCK)
+    signal.signal(signal.SIGWINCH, lambda *_: None)
+    signal.set_wakeup_fd(wake_w)
 
-    waiting = False
-
-    def on_winch(*_):
-        if waiting:
-            raise Redraw
-
-    signal.signal(signal.SIGWINCH, on_winch)
-    last = None
-    while True:
-        try:
-            panes = snapshot()
-        except (SystemExit, subprocess.TimeoutExpired):
-            return  # server gone
-        me = next((p for p in panes if p["pane_id"] == pane), None)
-        if me is None:
-            return
-        visible = me["window_active"] == "1" and me["session_attached"] != "0"
-        if visible or last is None:
-            cols, rows = int(me["pane_width"]), int(me["pane_height"])
-            frame = paint(build(panes, me, cols, rows), cols)
+    bar = Sidebar(pane)
+    waiter, channel, last = None, None, None
+    try:
+        while bar.update():
+            chan = f"vtabs-{bar.me['window_id']}"
+            if waiter is None or waiter.poll() is not None or chan != channel:
+                if waiter and waiter.poll() is None:
+                    waiter.kill()
+                    waiter.wait()
+                channel = chan
+                waiter = subprocess.Popen(
+                    ["tmux", "-S", SOCKET, "wait-for", channel],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.DEVNULL,
+                )
+            focused = bar.focused()
+            frame = paint(build(bar.panes, bar.me, *bar.size(), focused), bar.size()[0], focused)
             if frame != last:
                 out.write(frame)
                 out.flush()
                 last = frame
-        try:
-            termios.tcflush(0, termios.TCIFLUSH)  # discard stray keystrokes
-        except termios.error:
-            pass
-        proc = subprocess.Popen(
-            ["tmux", "-S", SOCKET, "wait-for", CHANNEL],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        try:
-            waiting = True
-            proc.wait(timeout=1 if visible else 30)
-        except subprocess.TimeoutExpired:
-            pass
-        except Redraw:
-            last = ""  # size changed: force a repaint
-        finally:
-            waiting = False
-            if proc.poll() is None:
-                proc.kill()
-                proc.wait()
+            ready = select.select(
+                [0, waiter.stdout, wake_r], [], [], 1 if bar.visible() else None
+            )[0]
+            if 0 in ready:
+                try:
+                    data = os.read(0, 4096)
+                except BlockingIOError:
+                    data = b""
+                if data:
+                    bar.keys(data)
+            if waiter.stdout in ready:
+                waiter.stdout.read()
+                waiter.wait()
+            if wake_r in ready:
+                os.read(wake_r, 512)
+                last = None  # resized: repaint
+    finally:
+        if waiter and waiter.poll() is None:
+            waiter.kill()
 
 
 # ---------------------------------------------------------------- commands
 
 
-def signal_refresh():
-    tmux("wait-for", "-S", CHANNEL)
+def refresh():
+    """Wake every sidebar, e.g. after windows were added or closed."""
+    ids = {p["window_id"] for p in snapshot() if p["sidebar"]}
+    args = []
+    for wid in sorted(ids):
+        args += ["wait-for", "-S", f"vtabs-{wid}", ";"]
+    if args:
+        tmux(*args[:-1])
 
 
 def ensure(target=None):
@@ -353,7 +465,7 @@ def ensure(target=None):
         # reloads can run ensure concurrently. -f full height, -h left/right,
         # -b on the left, -d keep focus.
         tmux("if-shell", "-F", "-t", wid, HAS_SIDEBAR, "", split + f"{wid} {tmux_quote(cmd)}")
-    signal_refresh()
+    refresh()
 
 
 def tmux_quote(text):
@@ -363,29 +475,30 @@ def tmux_quote(text):
     return f'"{text}"'
 
 
-def disable():
-    for pane in snapshot():
-        if pane["sidebar"]:
-            tmux("kill-pane", "-t", pane["pane_id"])
-
-
 def toggle():
     if option("@vtabs-enabled") == "on":
         tmux("set-option", "-g", "@vtabs-enabled", "off")
-        disable()
+        for pane in snapshot():
+            if pane["sidebar"]:
+                tmux("kill-pane", "-t", pane["pane_id"])
     else:
         tmux("set-option", "-g", "@vtabs-enabled", "on")
         ensure()
 
 
+def focus():
+    """Show sidebars if hidden, then focus the current window's sidebar."""
+    if option("@vtabs-enabled") != "on":
+        tmux("set-option", "-g", "@vtabs-enabled", "on")
+        ensure()
+    tmux("select-pane", "-t", "{top-left}")
+
+
 def tidy():
     for wpanes in windows(snapshot()).values():
-        real = [p for p in wpanes if not p["sidebar"]]
-        if not real:
+        if not any(not p["sidebar"] for p in wpanes):
             tmux("kill-window", "-t", wpanes[0]["window_id"])
-        elif any(p["sidebar"] and p["pane_active"] == "1" for p in wpanes):
-            tmux("select-pane", "-t", real[0]["pane_id"])
-    signal_refresh()
+    refresh()
 
 
 def fit():
@@ -393,17 +506,6 @@ def fit():
     for pane in snapshot():
         if pane["sidebar"] and pane["pane_width"] != w:
             tmux("resize-pane", "-t", pane["pane_id"], "-x", w)
-
-
-def click(pane_id, y, client):
-    panes = snapshot()
-    me = next((p for p in panes if p["pane_id"] == pane_id), None)
-    if me is None or not y.isdigit():
-        return
-    rows = build(panes, me, int(me["pane_width"]), int(me["pane_height"]))
-    if int(y) < len(rows) and rows[int(y)][1]:
-        # switch-client to a window id selects that session and window.
-        tmux("switch-client", "-c", client, "-t", rows[int(y)][1])
 
 
 def main(argv):
@@ -415,10 +517,11 @@ def main(argv):
         SOCKET = os.environ.get("TMUX", "").split(",", 1)[0]
     commands = {
         "toggle": toggle,
+        "focus": focus,
         "ensure": ensure,
+        "refresh": refresh,
         "tidy": tidy,
         "fit": fit,
-        "click": click,
         "render": render,
     }
     if command not in commands:

@@ -77,14 +77,21 @@ carries the rolled-up agent state from the badges above (`!` blocked, `x` error,
 `~` working, `+` done, `.` idle). Shell panes show their directory, since their
 titles are stale.
 
-`prefix+Tab` toggles it for the whole server; `set -g @vtabs-enabled on` before
-`vtabs.conf` is sourced shows it on start, `@vtabs-width` sets the columns (32).
-Click a window or session to switch; the sidebar never takes focus (pane
-navigation bounces off it). Closing a window's last real pane closes the window.
-Sidebars redraw on tmux hooks, poll once a second while visible and sleep while
-hidden; the only state is the `@vtabs-enabled` option. tmux-resurrect restores
-them as sidebars. One sidebar per window keeps pane widths stable when switching
-windows, at ~15 MB RSS per window for its Python process.
+`prefix+Tab` focuses the sidebar (showing it first if hidden), like `prefix+w`
+but persistent: up/down or `j`/`k` switch windows live, `1`-`9` jump, and
+Enter/Esc/Right return to the window. Moving left into it with pane navigation
+works too, and a click on a window or session switches to it. `prefix+BTab`
+(Shift+Tab) hides or shows sidebars everywhere; `set -g @vtabs-enabled on`
+before `vtabs.conf` is sourced shows them on start, and `@vtabs-width` sets the
+columns (32). Closing a window's last real pane closes the window.
+
+Each sidebar highlights its own window, so it is already drawn when its window
+comes into view and switching never waits on a redraw. A sidebar wakes on its
+window's `wait-for` channel, polls once a second while visible and sleeps
+otherwise; keys and clicks go to the running process. The only state is the
+`@vtabs-enabled` option, and tmux-resurrect restores sidebars as sidebars. One
+sidebar per window keeps pane widths stable when switching windows, at ~15 MB
+RSS per window for its Python process. `prefix+w` also shows full agent titles.
 
 ## tmux session saves
 

@@ -186,13 +186,10 @@ class ServerTests(unittest.TestCase):
         self.wait_for(lambda: [p[1] for p in self.panes()] == ["main"])
         self.assertEqual(self.tmux("show", "-gv", "@vtabs-enabled"), "off")
 
-    def test_hooks_new_window_focus_bounce_and_tidy(self):
+    def test_hooks_new_window_and_tidy(self):
         self.vtabs("toggle")
         self.tmux("new-window", "-t", "main", "sleep 600")
         self.wait_for(lambda: [p[1] for p in self.panes("main:3")] == ["side", "main"])
-        # Navigating into the sidebar bounces focus back.
-        self.tmux("select-pane", "-t", self.sidebar("main:3"))
-        self.assertEqual([p[2] for p in self.panes("main:3")], ["0", "1"])
         # Closing the last real pane closes the window, not leaving a sidebar.
         main = self.panes("main:3")[1][0]
         self.tmux("kill-pane", "-t", main)
@@ -201,9 +198,8 @@ class ServerTests(unittest.TestCase):
         self.tmux("resize-window", "-t", "main:1", "-x", "160")
         self.wait_for(lambda: self.panes()[0][3] == "32")
 
-    def test_mouse_click_switches_window_without_focusing_sidebar(self):
-        self.tmux("set", "-g", "pane-border-status", "off")
-        self.vtabs("toggle")
+    def attach(self):
+        """Attach a client through a pty; returns a send(bytes) function."""
         pid, fd = pty.fork()
         if pid == 0:
             os.environ["TERM"] = "xterm-256color"
@@ -221,16 +217,49 @@ class ServerTests(unittest.TestCase):
                     except OSError:
                         return
 
+        def send(data):
+            os.write(fd, data)
+            drain(0.2)
+
         drain(1.5)
+        return send
+
+    def where(self):
+        return self.tmux("display", "-p", "#I #{?@vtabs,side,main}")
+
+    def test_keyboard_navigation(self):
+        self.tmux("new-window", "-t", "main", "sleep 600")
+        self.tmux("select-window", "-t", "main:1")
+        self.vtabs("toggle")
+        send = self.attach()
+        send(b"\x02\t")  # prefix+Tab focuses the sidebar
+        self.wait_for(lambda: self.where() == "1 side")
+        send(b"\x1b[B")  # down: next window, focus stays in its sidebar
+        self.wait_for(lambda: self.where() == "2 side")
+        self.wait_for(lambda: "\u258c2" in self.tmux("capture-pane", "-p", "-t", self.sidebar("main:2")))
+        send(b"j")
+        self.wait_for(lambda: self.where() == "3 side")
+        send(b"k")
+        self.wait_for(lambda: self.where() == "2 side")
+        send(b"\r")  # Enter: back to the window's own pane
+        self.wait_for(lambda: self.where() == "2 main")
+        send(b"\x02\t")
+        self.wait_for(lambda: self.where() == "2 side")
+        send(b"3")  # digit: jump to that window
+        self.wait_for(lambda: self.where() == "3 side")
+        send(b"\x1b")
+        self.wait_for(lambda: self.where() == "3 main")
+
+    def test_mouse_click_switches_window_and_leaves_no_focus_behind(self):
+        self.tmux("set", "-g", "pane-border-status", "off")
+        self.vtabs("toggle")
+        send = self.attach()
         # Sidebar line 2 (terminal row 3, 1-based) is window 2.
-        os.write(fd, b"\x1b[<0;5;3M\x1b[<0;5;3m")
-        self.wait_for(lambda: self.tmux("display", "-p", "#I") == "2")
-        drain(0.5)
-        self.assertEqual(self.tmux("display", "-p", "#{?@vtabs,side,main}"), "main")
-        # The newly visible sidebar redraws with window 2 selected.
-        self.wait_for(
-            lambda: "▌2" in self.tmux("capture-pane", "-p", "-t", self.sidebar("main:2"))
-        )
+        send(b"\x1b[<0;5;3M\x1b[<0;5;3m")
+        self.wait_for(lambda: self.where() == "2 main")
+        # Window 1 keeps focus on its own pane, not the clicked sidebar.
+        active = self.tmux("display", "-p", "-t", "main:1", "#{?@vtabs,side,main}")
+        self.assertEqual(active, "main")
 
 
 if __name__ == "__main__":
