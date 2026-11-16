@@ -45,8 +45,10 @@ def pane(**kw):
         pane_current_command="claude",
         pane_current_path="/home/u/proj",
         pane_title="",
+        pane_start_command="",
         sidebar=False,
     )
+    base["@vtabs"] = ""
     base["@agent-state"] = kw.pop("state", "")
     base.update(kw)
     return base
@@ -105,10 +107,37 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual(lines[1], "▌1 Bob inventory, review, and ~")
         self.assertEqual(lines[2], "▌  self-improvement")
         self.assertEqual(lines[3], " 2 Sound hooks                +")
-        self.assertEqual([r[1] for r in rows], ["$0", "@1", "@1", "@2"])
+        self.assertEqual([r[1] for r in rows], ["$0", "$0:@1", "$0:@1", "$0:@2"])
         self.assertEqual([r[2] for r in rows], [False, True, True, False])
         for line in lines:
             self.assertLessEqual(len(line), 32)
+
+    def test_wide_characters_wrap_by_terminal_cells(self):
+        panes = [pane(pane_id="%0", sidebar=True), pane(pane_title="界" * 20, state="done")]
+        lines = text(vtabs.build(panes, panes[0], 32, 20))
+        for line in lines:
+            self.assertLessEqual(vtabs.cells(line), 32)
+        self.assertTrue(lines[1].endswith("+"))  # the badge survives
+        self.assertEqual(lines[1].count("界") + lines[2].count("界"), 20)
+        self.assertEqual(vtabs.wrap("ab " + "x" * 9, 4), ["ab x", "xxxx", "xxxx"])
+
+    def test_linked_window_is_listed_in_each_session(self):
+        panes = [
+            pane(pane_id="%0", sidebar=True),
+            pane(pane_id="%1", pane_title="shared"),
+            pane(session_id="$1", session_name="b", pane_id="%0", sidebar=True),
+            pane(session_id="$1", session_name="b", pane_id="%1", pane_title="shared"),
+        ]
+        rows = vtabs.build(panes, panes[0], 32, 20)
+        self.assertEqual([r[1] for r in rows if r[1]], ["$0", "$0:@1", "$1", "$1:@1"])
+        self.assertNotIn("(+", "".join(text(rows)))
+
+    def test_title_alone_does_not_make_a_sidebar(self):
+        # Any program can set its title; sidebars are killed on toggle off.
+        self.assertFalse(vtabs.is_sidebar(pane(pane_title="vtabs")))
+        self.assertTrue(vtabs.is_sidebar(pane(**{"@vtabs": "1"})))
+        start = "exec python3 /h/.tmux/vtabs.py /s render"
+        self.assertTrue(vtabs.is_sidebar(pane(pane_start_command=start)))
 
     def test_other_sessions_collapse_when_too_tall(self):
         panes = [pane(pane_id="%0", sidebar=True), pane(pane_id="%1")]
@@ -251,11 +280,11 @@ class ServerTests(unittest.TestCase):
         self.wait_for(lambda: self.where() == "3 main")
 
     def test_mouse_click_switches_window_and_leaves_no_focus_behind(self):
-        self.tmux("set", "-g", "pane-border-status", "off")
+        self.tmux("set", "-g", "pane-border-status", "top")
         self.vtabs("toggle")
         send = self.attach()
-        # Sidebar line 2 (terminal row 3, 1-based) is window 2.
-        send(b"\x1b[<0;5;3M\x1b[<0;5;3m")
+        # Row 1 is the pane border; sidebar line 2 (terminal row 4) is window 2.
+        send(b"\x1b[<0;5;4M\x1b[<0;5;4m")
         self.wait_for(lambda: self.where() == "2 main")
         # Window 1 keeps focus on its own pane, not the clicked sidebar.
         active = self.tmux("display", "-p", "-t", "main:1", "#{?@vtabs,side,main}")

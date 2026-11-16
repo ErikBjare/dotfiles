@@ -38,7 +38,7 @@ import socket
 import subprocess
 import sys
 import termios
-import textwrap
+import unicodedata
 
 SOCKET = ""
 SHELLS = {"sh", "bash", "zsh", "fish", "dash", "ksh", "tcsh", "nu", "xonsh"}
@@ -97,21 +97,89 @@ def snapshot():
         values = line.split(SEP)
         if len(values) == len(FIELDS):
             pane = dict(zip(FIELDS, values))
-            pane["sidebar"] = (
-                bool(pane["@vtabs"])
-                or "vtabs.py" in pane["pane_start_command"]  # set at split time
-                or pane["pane_title"] == "vtabs"  # restored by tmux-resurrect
-            )
+            pane["sidebar"] = is_sidebar(pane)
             panes.append(pane)
     return panes
 
 
-def windows(panes):
-    """Group panes into {window_id: [panes]} preserving order."""
+def is_sidebar(pane):
+    # Never the title: any program can set it, and sidebars get killed.
+    return bool(pane["@vtabs"]) or "vtabs.py" in pane["pane_start_command"]
+
+
+def windows(panes, per_session=False):
+    """Group panes into {window_id: [panes]} preserving order.
+
+    per_session keys by "$session:@window" instead, a valid tmux target: a
+    window linked into several sessions is listed once in each.
+    """
     grouped = {}
     for pane in panes:
-        grouped.setdefault(pane["window_id"], []).append(pane)
+        key = pane["window_id"]
+        if per_session:
+            key = f"{pane['session_id']}:{key}"
+        grouped.setdefault(key, []).append(pane)
     return grouped
+
+
+def key(pane):
+    return f"{pane['session_id']}:{pane['window_id']}"
+
+
+# ---------------------------------------------------------------- cell widths
+
+
+def char_cells(char):
+    if unicodedata.combining(char):
+        return 0
+    return 2 if unicodedata.east_asian_width(char) in "WF" else 1
+
+
+def cells(text):
+    """Terminal columns `text` occupies (CJK and most emoji take two)."""
+    return sum(char_cells(c) for c in text)
+
+
+def clip(text, width, ellipsis=False):
+    """Cut `text` to at most `width` columns, ending in … if cut and asked."""
+    if cells(text) <= width:
+        return text
+    room = width - 1 if ellipsis else width
+    out, used = "", 0
+    for char in text:
+        if used + char_cells(char) > room:
+            break
+        out += char
+        used += char_cells(char)
+    return out + ("…" if ellipsis and width > 0 else "")
+
+
+def pad(text, width):
+    return text + " " * max(width - cells(text), 0)
+
+
+def wrap(text, width):
+    """Greedy word wrap by columns; words wider than a line are split."""
+    lines, line = [], ""
+    for word in text.split():
+        while cells(word) > width:
+            head = clip(word, width - cells(line) - (1 if line else 0))
+            if not head:
+                lines.append(line)
+                line = ""
+                continue
+            line = f"{line} {head}" if line else head
+            lines.append(line)
+            line, word = "", word[len(head):]
+        candidate = f"{line} {word}" if line else word
+        if cells(candidate) <= width:
+            line = candidate
+        else:
+            lines.append(line)
+            line = word
+    if line or not lines:
+        lines.append(line)
+    return lines
 
 
 # ---------------------------------------------------------------- labels
@@ -165,7 +233,7 @@ def build(panes, me, cols, rows, focused=False):
     if that overflows, other sessions collapse.
     """
     sessions = {}
-    for wid, wpanes in windows(panes).items():
+    for wid, wpanes in windows(panes, per_session=True).items():
         info = window_info(wpanes)
         if info:
             first = wpanes[0]
@@ -192,7 +260,7 @@ def build(panes, me, cols, rows, focused=False):
             if not folded:
                 idx_w = max(len(w["index"]) for w in wins)
                 for win in wins:
-                    out.extend(window_rows(win, win["id"] == me["window_id"], idx_w, cols))
+                    out.extend(window_rows(win, win["id"] == key(me), idx_w, cols))
         return out
 
     budget = rows - 1 if focused else rows
@@ -209,7 +277,7 @@ def build(panes, me, cols, rows, focused=False):
 
 def window_order(panes):
     """Window ids in display order (windows that have a real pane)."""
-    return [wid for wid, wp in windows(panes).items() if window_info(wp)]
+    return [k for k, wp in windows(panes, per_session=True).items() if window_info(wp)]
 
 
 def badge_right(segments, state, cols):
@@ -217,10 +285,10 @@ def badge_right(segments, state, cols):
     room = cols - 3  # leading space, gap, glyph
     fitted, used = [], 0
     for text, sgr in segments:
-        if used + len(text) > room:
-            text = text[: max(room - used - 1, 0)] + "…"
+        if used + cells(text) > room:
+            text = clip(text, max(room - used, 0), ellipsis=True)
         fitted.append((text, sgr))
-        used += len(text)
+        used += cells(text)
         if used >= room:
             break
     glyph, colour = BADGES.get(state, (" ", 0))
@@ -239,9 +307,9 @@ def window_rows(win, selected, idx_w, cols):
     if win["extra"]:
         label += f" (+{win['extra']})"
     text_w = max(cols - idx_w - 5, 4)  # "▌NN " + label + " " + glyph + " "
-    lines = textwrap.wrap(label, text_w, break_long_words=True) or [""]
+    lines = wrap(label, text_w)
     if len(lines) > 2:
-        lines = [lines[0], lines[1][: text_w - 1] + "…"]
+        lines = [lines[0], clip(lines[1] + "…", text_w, ellipsis=True)]
     glyph, colour = BADGES.get(win["state"], (" ", 0))
     out = []
     for i, line in enumerate(lines):
@@ -249,7 +317,7 @@ def window_rows(win, selected, idx_w, cols):
         segs = [
             ("▌" if selected else " ", "38;5;39" if selected else ""),
             (idx, idx_sgr),
-            (" " + line.ljust(text_w) + " ", text_sgr),
+            (" " + pad(line, text_w) + " ", text_sgr),
             (glyph if i == 0 else " ", f"1;38;5;{colour}" if colour else ""),
         ]
         out.append((segs, win["id"], selected))
@@ -263,8 +331,8 @@ def paint(rows, cols, focused):
         line = f"\x1b[0;{base}m"
         used = 0
         for text, sgr in segs:
-            text = text[: max(cols - used, 0)]
-            used += len(text)
+            text = clip(text, max(cols - used, 0))
+            used += cells(text)
             line += f"\x1b[0;{base}{';' + sgr if sgr else ''}m{text}"
         line += f"\x1b[0;{base}m" + " " * max(cols - used, 0)
         lines.append(line)
@@ -290,7 +358,7 @@ class Sidebar:
         self.me = None
 
     def window(self, wid):
-        return windows(self.panes).get(wid, [])
+        return windows(self.panes, per_session=True).get(wid, [])
 
     def go(self, wid, stay):
         """Show window `wid`; keep focus in its sidebar if `stay`."""
@@ -307,34 +375,34 @@ class Sidebar:
     def back(self):
         """Return focus from the sidebar to the window's previous pane."""
         if tmux("last-pane", "-t", self.pane).returncode:
-            real = [p for p in self.window(self.me["window_id"]) if not p["sidebar"]]
+            real = [p for p in self.window(key(self.me)) if not p["sidebar"]]
             if real:
                 tmux("select-pane", "-t", real[0]["pane_id"])
 
     def keys(self, data):
         moves, action = 0, None
         for m in KEYS.finditer(data):
-            key = m.group(0)
+            k = m.group(0)
             if m.group(1) is not None:  # mouse: left press only, no wheel/drag
                 if m.group(4) == b"M" and int(m.group(1)) == 0:
                     action = ("click", int(m.group(3)) - 1)
-            elif key in UP:
+            elif k in UP:
                 moves -= 1
-            elif key in DOWN:
+            elif k in DOWN:
                 moves += 1
-            elif key in BACK:
+            elif k in BACK:
                 action = ("back",)
-            elif key.isdigit():
-                action = ("jump", key.decode())
+            elif k.isdigit():
+                action = ("jump", k.decode())
         order = window_order(self.panes)
-        if moves and self.me["window_id"] in order:
-            i = order.index(self.me["window_id"])
+        if moves and key(self.me) in order:
+            i = order.index(key(self.me))
             self.go(order[(i + moves) % len(order)], stay=True)
         elif action and action[0] == "back":
             self.back()
         elif action and action[0] == "jump":
             index = "10" if action[1] == "0" else action[1]
-            for wid, wp in windows(self.panes).items():
+            for wid, wp in windows(self.panes, per_session=True).items():
                 first = wp[0]
                 if first["session_id"] == self.me["session_id"] and first["window_index"] == index:
                     self.go(wid, stay=True)
@@ -343,8 +411,8 @@ class Sidebar:
             if 0 <= action[1] < len(rows) and rows[action[1]][1]:
                 target = rows[action[1]][1]
                 self.back()  # the click focused this sidebar; undo that
-                if target.startswith("@"):
-                    if target != self.me["window_id"]:
+                if ":" in target:  # "$session:@window", else a session
+                    if target != key(self.me):
                         self.go(target, stay=False)
                 else:
                     tmux("switch-client", "-t", target)
