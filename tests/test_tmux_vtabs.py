@@ -242,6 +242,20 @@ class ServerTests(unittest.TestCase):
         self.tmux("resize-window", "-t", "main:1", "-x", "160")
         self.wait_for(lambda: self.panes()[0][3] == "32")
 
+    def test_selecting_a_window_wakes_its_sidebar(self):
+        self.vtabs("toggle")
+        wid = self.tmux("display", "-p", "-t", "main:2", "#{window_id}")
+        waiter = subprocess.Popen(["tmux", "-S", self.sock, "wait-for", f"vtabs-{wid}"])
+        self.addCleanup(waiter.kill)
+        time.sleep(0.3)
+        result = subprocess.run(
+            ["tmux", "-S", self.sock, "select-window", "-t", "main:2"],
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual((result.returncode, result.stderr), (0, ""))
+        self.assertEqual(waiter.wait(timeout=3), 0)
+
     def attach(self):
         """Attach a client through a pty; returns a send(bytes) function."""
         pid, fd = pty.fork()
