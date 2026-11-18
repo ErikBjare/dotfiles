@@ -9,6 +9,7 @@ import fcntl
 import os
 import pty
 import select
+import shlex
 import shutil
 import struct
 import subprocess
@@ -18,6 +19,7 @@ import termios
 import time
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "home/.tmux/vtabs.py"
@@ -154,6 +156,21 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual(text(rows)[0], " …")
         self.assertEqual(text(rows)[-1], " …")
 
+    def test_one_row_sidebar_keeps_selected_window(self):
+        panes = [pane(pane_id="%0", sidebar=True), pane(pane_id="%1")]
+        for focused in (False, True):
+            with self.subTest(focused=focused):
+                rows = vtabs.build(panes, panes[0], 32, 1, focused=focused)
+                self.assertEqual(len(rows), 1)
+                self.assertTrue(rows[0][2])
+
+    def test_session_and_window_badges_share_a_column(self):
+        for cols in (12, 32, 40):
+            panes = [pane(pane_id="%0", sidebar=True), pane(state="done")]
+            rows = vtabs.build(panes, panes[0], cols, 20)
+            positions = [vtabs.cells(line.split("+")[0]) for line in text(rows) if "+" in line]
+            self.assertEqual(positions, [cols - 2, cols - 2])
+
     def test_other_sessions_collapse_when_too_tall(self):
         panes = [pane(pane_id="%0", sidebar=True), pane(pane_id="%1")]
         for i in range(10):
@@ -173,6 +190,129 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual(len(vtabs.build(panes, panes[0], 32, 2)), 2)
 
 
+class InputTests(unittest.TestCase):
+    def setUp(self):
+        self.bar = vtabs.Sidebar("%0")
+        self.bar.panes = [
+            pane(pane_id="%0", sidebar=True), pane(pane_id="%1"),
+            pane(pane_id="%2", window_id="@2", window_index="2", sidebar=True),
+            pane(pane_id="%3", window_id="@2", window_index="2"),
+        ]
+        self.bar.me = self.bar.panes[0]
+        self.tmux = patch.object(vtabs, "tmux").start()
+        self.addCleanup(patch.stopall)
+        self.tmux.return_value.returncode = 0
+
+    def test_split_arrow_and_mouse_sequences_are_buffered(self):
+        self.bar.keys(b"\x1b[")
+        self.tmux.assert_not_called()
+        self.bar.keys(b"B")
+        self.assertEqual(self.tmux.call_args.args[:3], ("switch-client", "-t", "$0:@2"))
+        self.tmux.reset_mock()
+        self.bar.keys(b"\x1b[<0;5;")
+        self.tmux.assert_not_called()
+        self.bar.keys(b"2M")
+        self.assertTrue(self.tmux.called)
+
+    def test_burst_navigation_crosses_window_without_sidebar(self):
+        self.bar.panes = [p for p in self.bar.panes if p["pane_id"] != "%2"] + [
+            pane(pane_id="%4", window_id="@3", window_index="3", sidebar=True),
+            pane(pane_id="%5", window_id="@3", window_index="3"),
+        ]
+        for data in (b"jj", b"2j"):
+            with self.subTest(data=data):
+                self.tmux.reset_mock()
+                self.bar.keys(data)
+                self.assertEqual(self.tmux.call_args.args[:3], ("switch-client", "-t", "$0:@3"))
+        # Enter after landing on a real pane must not toggle that window's
+        # last pane, nor return focus in the source sidebar's window.
+        self.tmux.reset_mock()
+        self.bar.keys(b"j\r")
+        self.tmux.assert_called_once_with("switch-client", "-t", "$0:@2")
+
+    def test_burst_navigation_then_back_uses_destination_pane(self):
+        self.bar.keys(b"j\r")
+        self.assertEqual(self.tmux.call_args_list[0].args[:3], ("switch-client", "-t", "$0:@2"))
+        self.assertEqual(self.tmux.call_args_list[-1].args, ("last-pane", "-t", "%2"))
+
+    def test_navigation_then_delayed_escape_uses_destination(self):
+        self.bar.keys(b"j\x1b")
+        self.bar.keys(b"", flush=True)
+        self.assertEqual(self.tmux.call_args.args, ("last-pane", "-t", "%2"))
+
+    def test_partial_mouse_survives_escape_flush(self):
+        self.bar.keys(b"\x1b[<0;5;")
+        self.bar.keys(b"", flush=True)
+        self.tmux.assert_not_called()
+        self.assertEqual(self.bar.pending, b"\x1b[<0;5;")
+        self.bar.keys(b"2M")
+        self.tmux.assert_called_once_with("last-pane", "-t", "%0")
+
+    def test_mouse_after_navigation_uses_receiving_pane_coordinates(self):
+        self.bar.keys(b"j\x1b[<0;5;")
+        self.tmux.reset_mock()
+        self.bar.keys(b"2M")
+        # Row 2 on the receiving sidebar is its own window. Return focus in
+        # that pane AND switch the client back from the keyboard destination.
+        self.assertIn(("last-pane", "-t", "%0"), [call.args for call in self.tmux.call_args_list])
+        self.assertEqual(self.tmux.call_args_list[-1].args[:3], ("switch-client", "-t", "$0:@1"))
+
+    def test_fragmented_mouse_keeps_original_layout_after_update(self):
+        self.bar.panes += [
+            pane(pane_id="%4", window_id="@3", window_index="3", sidebar=True),
+            pane(pane_id="%5", window_id="@3", window_index="3"),
+        ]
+        self.bar.pane = "%2"
+        self.bar.me = self.bar.panes[2]
+        for record in self.bar.panes:
+            record["pane_height"] = "4"
+        self.bar.keys(b"j\x1b[<0;5;")
+        # Model update() observing an external focus change between reads.
+        # Row 2 was window 2 in the focused, scrolled frame, not window 1.
+        self.bar.me = dict(self.bar.me, window_active="0")
+        self.bar.keys(b"2M")
+        switches = [call.args[:3] for call in self.tmux.call_args_list if call.args[0] == "switch-client"]
+        self.assertEqual(switches[-1], ("switch-client", "-t", "$0:@2"))
+
+    def test_ignored_mouse_after_navigation_preserves_destination(self):
+        for chunks in ((b"j\x1b[<0;5;10M\r",), (b"j\x1b[<0;5;", b"10M\r")):
+            with self.subTest(chunks=chunks):
+                self.tmux.reset_mock()
+                for chunk in chunks:
+                    self.bar.keys(chunk)
+                self.assertEqual(self.tmux.call_args.args, ("last-pane", "-t", "%2"))
+
+    def test_mouse_destination_after_navigation_selects_real_pane(self):
+        # The snapshot predates move() selecting window 2's sidebar. Its
+        # previously active real pane is not necessarily the first real pane.
+        self.bar.panes[2]["pane_active"] = "0"
+        self.bar.panes[3]["pane_active"] = "0"
+        self.bar.panes.append(pane(pane_id="%4", window_id="@2", window_index="2"))
+        self.bar.keys(b"j\x1b[<0;5;3M")
+        self.assertEqual(
+            self.tmux.call_args.args,
+            ("switch-client", "-t", "$0:@2", ";", "select-pane", "-t", "%4"),
+        )
+
+    def test_exit_discards_trailing_partial_input(self):
+        for action in (b"\r", b"j\r", b"\x1b[<0;5;2M"):
+            for suffix in (b"\x1b", b"\x1b[", b"\x1b[<0;5;"):
+                with self.subTest(action=action, suffix=suffix):
+                    self.tmux.reset_mock()
+                    self.bar.keys(action + suffix)
+                    calls = self.tmux.call_args_list[:]
+                    self.assertEqual(self.bar.pending, b"")
+                    self.assertIsNone(self.bar.pending_rows)
+                    self.bar.keys(b"", flush=True)
+                    self.assertEqual(self.tmux.call_args_list, calls)
+
+    def test_lone_escape_is_delayed_then_returns_focus(self):
+        self.bar.keys(b"\x1b")
+        self.tmux.assert_not_called()
+        self.bar.keys(b"", flush=True)
+        self.tmux.assert_called_once_with("last-pane", "-t", "%0")
+
+
 @unittest.skipUnless(shutil.which("tmux"), "tmux not installed")
 class ServerTests(unittest.TestCase):
     def setUp(self):
@@ -186,10 +326,10 @@ class ServerTests(unittest.TestCase):
         )
         self.tmux(
             "-f", os.path.join(self.tmp, "main.conf"),
-            "new-session", "-d", "-s", "main", "-x", "120", "-y", "30", "sleep 600",
+            "new-session", "-d", "-s", "main", "-x", "120", "-y", "30", "-c", self.tmp, "sleep 600",
         )  # fmt: skip
         self.addCleanup(self.tmux, "kill-server")
-        self.tmux("new-window", "-t", "main", "sleep 600")
+        self.tmux("new-window", "-t", "main", "-c", self.tmp, "sleep 600")
         self.tmux("select-window", "-t", "main:1")
 
     def tmux(self, *args):
@@ -242,8 +382,64 @@ class ServerTests(unittest.TestCase):
         self.tmux("resize-window", "-t", "main:1", "-x", "160")
         self.wait_for(lambda: self.panes()[0][3] == "32")
 
-    def test_selecting_a_window_wakes_its_sidebar(self):
+    def test_chooser_empty_agent_title_falls_back_to_window_name(self):
+        conf = (SCRIPT.parent / "agent-status.conf").read_text()
+        binding = next(line for line in conf.splitlines() if line.startswith("bind-key w "))
+        fmt = shlex.split(binding)[-1]
+        # Evaluate the actual chooser format in a window row for an agent.
+        fmt = fmt.replace("#{?window_format,", "#{?#{==:1,1},").replace("#{pane_current_command}", "claude")
+        self.tmux("rename-window", "-t", "main:1", "fallback")
+        self.tmux("select-pane", "-t", "main:1", "-T", "")
+        self.assertEqual(self.tmux("display", "-p", "-t", "main:1", fmt), "fallback")
+        self.tmux("select-pane", "-t", "main:1", "-T", "✳ Full agent title")
+        self.assertEqual(self.tmux("display", "-p", "-t", "main:1", fmt), "Full agent title")
+
+    def test_unzoom_adds_sidebar_skipped_while_zoomed(self):
+        self.tmux("split-window", "-t", "main:1", "sleep 600")
+        self.tmux("resize-pane", "-Z", "-t", "main:1")
         self.vtabs("toggle")
+        self.assertFalse(any(p[1] == "side" for p in self.panes()))
+        self.assertEqual(self.tmux("display", "-p", "-t", "main:1", "#{window_zoomed_flag}"), "1")
+        self.tmux("resize-pane", "-Z", "-t", "main:1")
+        self.wait_for(lambda: any(p[1] == "side" for p in self.panes()))
+        self.assertEqual(sum(p[1] == "main" for p in self.panes()), 2)
+
+    def test_resizing_window_with_sidebar_does_not_run_ensure(self):
+        self.vtabs("toggle")
+        self.wait_for(lambda: "▾ main" in self.tmux("capture-pane", "-p", "-t", self.sidebar()))
+        # Keep the actual hook condition but replace its Python command with
+        # a marker, so this detects needless process launches, not just splits.
+        hook = next(line for line in CONF.read_text().splitlines() if line.startswith("set-hook -g after-resize-pane"))
+        args = shlex.split(hook)
+        args[-1] = args[-1].replace("python3 ~/.tmux/vtabs.py", "touch " + self.tmp + "/ensure-called #")
+        result = subprocess.run(
+            ["tmux", "-S", self.sock, *args], capture_output=True, text=True,
+        )
+        self.assertEqual((result.returncode, result.stderr), (0, ""))
+        real = next(p[0] for p in self.panes() if p[1] == "main")
+        self.tmux("resize-pane", "-t", real, "-x", "70")
+        time.sleep(0.3)
+        self.assertFalse(Path(self.tmp, "ensure-called").exists())
+
+    def test_sidebar_guard_sees_inactive_panes(self):
+        self.vtabs("toggle")
+        # The real pane remains active, but P: iterates over every pane.
+        self.assertEqual(self.panes()[1][2], "1")
+        self.assertEqual(self.tmux("display", "-p", "-t", "main:1", vtabs.HAS_SIDEBAR), "1")
+
+    def test_signal_before_waiter_is_retained(self):
+        self.tmux("wait-for", "-S", "early-notification")
+        result = subprocess.run(
+            ["tmux", "-S", self.sock, "wait-for", "early-notification"],
+            timeout=3, capture_output=True,
+        )
+        self.assertEqual(result.returncode, 0)
+
+    def test_selecting_a_window_wakes_its_sidebar(self):
+        # Test the hook without a renderer competing for the same one-shot
+        # channel notification.
+        self.tmux("set", "-g", "@vtabs-suspended", "1")
+        self.tmux("set", "-g", "@vtabs-enabled", "on")
         wid = self.tmux("display", "-p", "-t", "main:2", "#{window_id}")
         waiter = subprocess.Popen(["tmux", "-S", self.sock, "wait-for", f"vtabs-{wid}"])
         self.addCleanup(waiter.kill)
@@ -317,6 +513,36 @@ class ServerTests(unittest.TestCase):
         # ...and prefix+Tab brings them back, focused.
         send(b"\x02\t")
         self.wait_for(lambda: self.where() == "3 side")
+
+    def test_fragmented_navigation_keeps_input_in_receiving_process(self):
+        self.tmux("new-window", "-t", "main", "sleep 600")
+        self.tmux("select-window", "-t", "main:1")
+        self.vtabs("toggle")
+        send = self.attach()
+        send(b"\x02\t")
+        self.wait_for(lambda: self.where() == "1 side")
+        source = self.sidebar()
+        # Inject at the pane-stdin boundary: the terminal-facing tmux parser
+        # normally assembles CSI keys before forwarding them. Route the next
+        # fragment to whichever pane is active, not to the original Sidebar.
+        self.tmux("send-keys", "-H", "-t", source, "6a", "1b", "5b")
+        time.sleep(0.3)
+        active = self.tmux("display", "-p", "#{pane_id}")
+        self.tmux("send-keys", "-H", "-t", active, "42")
+        self.wait_for(lambda: self.where() == "3 side")
+        self.assertEqual(active, source)
+
+    def test_navigation_and_back_in_one_read(self):
+        self.vtabs("toggle")
+        send = self.attach()
+        for suffix in (b"\r", b"\x1b"):
+            self.tmux("select-window", "-t", "main:1")
+            real = next(p[0] for p in self.panes() if p[1] == "main")
+            self.tmux("select-pane", "-t", real)
+            send(b"\x02\t")
+            self.wait_for(lambda: self.where() == "1 side")
+            send(b"j" + suffix)
+            self.wait_for(lambda: self.where() == "2 main")
 
     def test_mouse_click_switches_window_and_leaves_no_focus_behind(self):
         self.tmux("set", "-g", "pane-border-status", "top")
