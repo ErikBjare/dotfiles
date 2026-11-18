@@ -330,6 +330,23 @@ class ServerTests(unittest.TestCase):
         self.wait_for(lambda: any(p[1] == "side" for p in self.panes()))
         self.assertEqual(sum(p[1] == "main" for p in self.panes()), 2)
 
+    def test_resizing_window_with_sidebar_does_not_run_ensure(self):
+        self.vtabs("toggle")
+        self.wait_for(lambda: "▾ main" in self.tmux("capture-pane", "-p", "-t", self.sidebar()))
+        # Keep the actual hook condition but replace its Python command with
+        # a marker, so this detects needless process launches, not just splits.
+        hook = next(line for line in CONF.read_text().splitlines() if line.startswith("set-hook -g after-resize-pane"))
+        args = shlex.split(hook)
+        args[-1] = args[-1].replace("python3 ~/.tmux/vtabs.py", "touch " + self.tmp + "/ensure-called #")
+        result = subprocess.run(
+            ["tmux", "-S", self.sock, *args], capture_output=True, text=True,
+        )
+        self.assertEqual((result.returncode, result.stderr), (0, ""))
+        real = next(p[0] for p in self.panes() if p[1] == "main")
+        self.tmux("resize-pane", "-t", real, "-x", "70")
+        time.sleep(0.3)
+        self.assertFalse(Path(self.tmp, "ensure-called").exists())
+
     def test_sidebar_guard_sees_inactive_panes(self):
         self.vtabs("toggle")
         # The real pane remains active, but P: iterates over every pane.
