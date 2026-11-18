@@ -256,6 +256,18 @@ class InputTests(unittest.TestCase):
         # context must not redirect the click/back to window 2's sidebar.
         self.tmux.assert_called_once_with("last-pane", "-t", "%0")
 
+    def test_exit_discards_trailing_partial_input(self):
+        for action in (b"\r", b"j\r", b"\x1b[<0;5;2M"):
+            for suffix in (b"\x1b", b"\x1b[", b"\x1b[<0;5;"):
+                with self.subTest(action=action, suffix=suffix):
+                    self.tmux.reset_mock()
+                    self.bar.keys(action + suffix)
+                    calls = self.tmux.call_args_list[:]
+                    self.assertEqual(self.bar.pending, b"")
+                    self.assertIsNone(self.bar.pending_context)
+                    self.bar.keys(b"", flush=True)
+                    self.assertEqual(self.tmux.call_args_list, calls)
+
     def test_lone_escape_is_delayed_then_returns_focus(self):
         self.bar.keys(b"\x1b")
         self.tmux.assert_not_called()

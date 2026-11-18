@@ -460,6 +460,7 @@ class Sidebar:
                                 self.go(target, stay=False)
                         else:
                             tmux("switch-client", "-t", target)
+                        self.pending = b""
                         break
                 elif k in UP or k in DOWN:
                     order = window_order(self.panes)
@@ -469,6 +470,9 @@ class Sidebar:
                 elif k in BACK:
                     if self.me["sidebar"]:
                         self.back()
+                    # Exiting discards the rest of this read, including a
+                    # buffered suffix that would otherwise exit again later.
+                    self.pending = b""
                     break
                 elif k.isdigit():
                     index = "10" if k == b"0" else k.decode()
