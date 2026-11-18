@@ -252,9 +252,10 @@ class InputTests(unittest.TestCase):
         self.bar.keys(b"j\x1b[<0;5;")
         self.tmux.reset_mock()
         self.bar.keys(b"2M")
-        # Row 2 on the receiving sidebar is its own window. Keyboard burst
-        # context must not redirect the click/back to window 2's sidebar.
-        self.tmux.assert_called_once_with("last-pane", "-t", "%0")
+        # Row 2 on the receiving sidebar is its own window. Return focus in
+        # that pane AND switch the client back from the keyboard destination.
+        self.assertEqual(self.tmux.call_args_list[0].args, ("last-pane", "-t", "%0"))
+        self.assertEqual(self.tmux.call_args_list[-1].args[:3], ("switch-client", "-t", "$0:@1"))
 
     def test_exit_discards_trailing_partial_input(self):
         for action in (b"\r", b"j\r", b"\x1b[<0;5;2M"):

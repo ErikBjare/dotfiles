@@ -449,6 +449,7 @@ class Sidebar:
                         continue
                     # Mouse coordinates belong to the pane receiving bytes,
                     # not the keyboard burst's temporary destination.
+                    keyboard_target = key(self.me)
                     self.pane, self.me = original_pane, original_me
                     y = int(m.group(3)) - 1
                     rows = build(self.panes, self.me, *self.size(), focused=self.focused())
@@ -458,6 +459,10 @@ class Sidebar:
                         if ":" in target:  # "$session:@window", else a session
                             if target != key(self.me):
                                 self.go(target, stay=False)
+                            elif target != keyboard_target:
+                                # back() changed this window's focus, but a
+                                # prior key already switched the client away.
+                                tmux("switch-client", "-t", target)
                         else:
                             tmux("switch-client", "-t", target)
                         self.pending = b""
