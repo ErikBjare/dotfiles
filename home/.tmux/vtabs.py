@@ -434,9 +434,12 @@ class Sidebar:
 
         def move(wid):
             self.go(wid, stay=True)
-            side = next((p for p in self.window(wid) if p["sidebar"]), None)
-            if side:
-                self.pane, self.me = side["pane_id"], side
+            target = self.window(wid)
+            # Zoomed windows may have no sidebar. Keep advancing through
+            # them, but do not treat their real pane as a focused sidebar.
+            dest = next((p for p in target if p["sidebar"]), target[0] if target else None)
+            if dest:
+                self.pane, self.me = dest["pane_id"], dest
 
         try:
             for m in KEYS.finditer(data):
@@ -464,7 +467,8 @@ class Sidebar:
                         i = order.index(key(self.me))
                         move(order[(i + (1 if k in DOWN else -1)) % len(order)])
                 elif k in BACK:
-                    self.back()
+                    if self.me["sidebar"]:
+                        self.back()
                     break
                 elif k.isdigit():
                     index = "10" if k == b"0" else k.decode()

@@ -214,6 +214,22 @@ class InputTests(unittest.TestCase):
         self.bar.keys(b"2M")
         self.assertTrue(self.tmux.called)
 
+    def test_burst_navigation_crosses_window_without_sidebar(self):
+        self.bar.panes = [p for p in self.bar.panes if p["pane_id"] != "%2"] + [
+            pane(pane_id="%4", window_id="@3", window_index="3", sidebar=True),
+            pane(pane_id="%5", window_id="@3", window_index="3"),
+        ]
+        for data in (b"jj", b"2j"):
+            with self.subTest(data=data):
+                self.tmux.reset_mock()
+                self.bar.keys(data)
+                self.assertEqual(self.tmux.call_args.args[:3], ("switch-client", "-t", "$0:@3"))
+        # Enter after landing on a real pane must not toggle that window's
+        # last pane, nor return focus in the source sidebar's window.
+        self.tmux.reset_mock()
+        self.bar.keys(b"j\r")
+        self.tmux.assert_called_once_with("switch-client", "-t", "$0:@2")
+
     def test_burst_navigation_then_back_uses_destination_pane(self):
         self.bar.keys(b"j\r")
         self.assertEqual(self.tmux.call_args_list[0].args[:3], ("switch-client", "-t", "$0:@2"))
