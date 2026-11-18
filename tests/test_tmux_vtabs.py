@@ -307,6 +307,16 @@ class ServerTests(unittest.TestCase):
         self.wait_for(lambda: self.where() == "3 side")
         send(b"\x1b")
         self.wait_for(lambda: self.where() == "3 main")
+        # prefix+Tab from the sidebar itself hides the sidebars.
+        send(b"\x02\t")
+        self.wait_for(lambda: self.where() == "3 side")
+        send(b"\x02\t")
+        self.wait_for(lambda: self.tmux("show", "-gv", "@vtabs-enabled") == "off")
+        self.wait_for(lambda: [p[1] for p in self.panes("main:3")] == ["main"])
+        self.assertEqual(self.where(), "3 main")
+        # ...and prefix+Tab brings them back, focused.
+        send(b"\x02\t")
+        self.wait_for(lambda: self.where() == "3 side")
 
     def test_mouse_click_switches_window_and_leaves_no_focus_behind(self):
         self.tmux("set", "-g", "pane-border-status", "top")

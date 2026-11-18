@@ -10,7 +10,8 @@ with the OSC 7501 agent state rolled up per window (see agent-status.py).
 A sidebar always highlights its own window, so a hidden sidebar is already
 correct the moment its window is shown: switching never waits on a redraw.
 Focus it (prefix+Tab, or move left into it) to navigate like choose-tree:
-up/down or j/k switch windows live, 1-9 jump, Enter/Esc/Right go back.
+up/down or j/k switch windows live, 1-9 jump, Enter/Esc/Right go back,
+prefix+Tab again hides the sidebars.
 Mouse clicks are read by the running sidebar, not a new process.
 
 No daemon and no state files: the server-wide @vtabs-enabled option is the

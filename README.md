@@ -79,8 +79,9 @@ titles are stale.
 
 `prefix+Tab` focuses the sidebar (showing it first if hidden), like `prefix+w`
 but persistent: up/down or `j`/`k` switch windows live, `1`-`9` jump, and
-Enter/Esc/Right return to the window. Moving left into it with pane navigation
-works too, and a click on a window or session switches to it. `prefix+BTab`
+Enter/Esc/Right return to the window. `prefix+Tab` again, while the sidebar has
+focus, hides the sidebars. Moving left into it with pane navigation works too,
+and a click on a window or session switches to it. `prefix+BTab`
 (Shift+Tab) hides or shows sidebars everywhere; `set -g @vtabs-enabled on`
 before `vtabs.conf` is sourced shows them on start, and `@vtabs-width` sets the
 columns (32). Closing a window's last real pane closes the window.
