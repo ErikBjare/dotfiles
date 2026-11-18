@@ -444,6 +444,9 @@ class Sidebar:
                 if m.group(1) is not None:  # mouse: left press only, no wheel/drag
                     if m.group(4) != b"M" or int(m.group(1)) != 0:
                         continue
+                    # Mouse coordinates belong to the pane receiving bytes,
+                    # not the keyboard burst's temporary destination.
+                    self.pane, self.me = original_pane, original_me
                     y = int(m.group(3)) - 1
                     rows = build(self.panes, self.me, *self.size(), focused=self.focused())
                     if 0 <= y < len(rows) and rows[y][1]:

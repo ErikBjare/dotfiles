@@ -232,6 +232,14 @@ class InputTests(unittest.TestCase):
         self.bar.keys(b"2M")
         self.tmux.assert_called_once_with("last-pane", "-t", "%0")
 
+    def test_mouse_after_navigation_uses_receiving_pane_coordinates(self):
+        self.bar.keys(b"j\x1b[<0;5;")
+        self.tmux.reset_mock()
+        self.bar.keys(b"2M")
+        # Row 2 on the receiving sidebar is its own window. Keyboard burst
+        # context must not redirect the click/back to window 2's sidebar.
+        self.tmux.assert_called_once_with("last-pane", "-t", "%0")
+
     def test_lone_escape_is_delayed_then_returns_focus(self):
         self.bar.keys(b"\x1b")
         self.tmux.assert_not_called()
