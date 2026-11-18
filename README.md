@@ -67,6 +67,33 @@ and needs a bridge on that server (not enabled automatically).
 
 Test the parser with `python3 -m unittest discover -s tests`.
 
+## tmux vertical tabs
+
+`home/.tmux/vtabs.py` (+ `vtabs.conf`) is a Herdr-inspired sidebar without the
+runtime: a narrow pane on the left of every window listing sessions and windows.
+Each window is labelled with the full title of its most urgent agent pane (a
+Claude Code session name, say), wrapped onto a second line instead of cut, and
+carries the rolled-up agent state from the badges above (`!` blocked, `x` error,
+`~` working, `+` done, `.` idle). Shell panes show their directory, since their
+titles are stale.
+
+`prefix+Tab` focuses the sidebar (showing it first if hidden), like `prefix+w`
+but persistent: up/down or `j`/`k` switch windows live, `1`-`9` jump, and
+Enter/Esc/Right return to the window. `prefix+Tab` again, while the sidebar has
+focus, hides the sidebars. Moving left into it with pane navigation works too,
+and a click on a window or session switches to it. `prefix+BTab`
+(Shift+Tab) hides or shows sidebars everywhere; `set -g @vtabs-enabled on`
+before `vtabs.conf` is sourced shows them on start, and `@vtabs-width` sets the
+columns (32). Closing a window's last real pane closes the window.
+
+Each sidebar highlights its own window, so it is already drawn when its window
+comes into view and switching never waits on a redraw. A sidebar wakes on its
+window's `wait-for` channel, polls once a second while visible and sleeps
+otherwise; keys and clicks go to the running process. The only state is the
+`@vtabs-enabled` option, and tmux-resurrect restores sidebars as sidebars. One
+sidebar per window keeps pane widths stable when switching windows, at ~15 MB
+RSS per window for its Python process. `prefix+w` also shows full agent titles.
+
 ## tmux session saves
 
 `home/.tmux/autosave.sh` runs tmux-resurrect's save every 15 minutes from a loop
