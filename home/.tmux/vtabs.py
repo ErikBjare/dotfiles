@@ -390,7 +390,7 @@ class Sidebar:
         self.panes = []
         self.me = None
         self.pending = b""
-        self.pending_context = None
+        self.pending_rows = None
 
     def window(self, wid):
         return windows(self.panes, per_session=True).get(wid, [])
@@ -419,21 +419,33 @@ class Sidebar:
 
     def keys(self, data, flush=False):
         data = self.pending + data
+        rows = self.pending_rows
+        if rows is None:
+            rows = build(self.panes, self.me, *self.size(), focused=self.focused())
         self.pending = b""
-        # Reads need not end at an escape-sequence boundary. A lone Escape
-        # gets a short timeout in render(); incomplete CSI/SS3 waits for more.
+        self.pending_rows = None
+        # Keep the whole batch in this process until its final sequence is
+        # complete: switching panes earlier would route the remaining bytes
+        # to another sidebar's stdin. Only a lone Escape has a timeout.
         partial = re.search(rb"\x1b(?:\[[0-9;<]*|O)?$", data)
-        if partial:
-            self.pending = data[partial.start():]
-            data = data[:partial.start()]
-            if flush and self.pending == b"\x1b":
-                data += self.pending
-                self.pending = b""
+        if partial and not (flush and partial.group() == b"\x1b"):
+            prefix = data[:partial.start()]
+            # A completed exit already discards all following input, so it
+            # need not wait for a trailing sequence that will never be used.
+            exits = any(
+                m.group() in BACK or (
+                    m.group(1) == b"0" and m.group(4) == b"M"
+                    and 0 <= int(m.group(3)) - 1 < len(rows)
+                    and rows[int(m.group(3)) - 1][1]
+                )
+                for m in KEYS.finditer(prefix)
+            )
+            if not exits:
+                self.pending, self.pending_rows = data, rows
+                return
+            data = prefix
 
         original_pane, original_me = self.pane, self.me
-        if self.pending_context:
-            self.pane, self.me = self.pending_context
-            self.pending_context = None
 
         def move(wid):
             self.go(wid, stay=True)
@@ -456,7 +468,6 @@ class Sidebar:
                     keyboard_target = key(self.me)
                     self.pane, self.me = original_pane, original_me
                     y = int(m.group(3)) - 1
-                    rows = build(self.panes, self.me, *self.size(), focused=self.focused())
                     if 0 <= y < len(rows) and rows[y][1]:
                         target = rows[y][1]
                         self.back()  # the click focused this sidebar; undo that
@@ -493,8 +504,6 @@ class Sidebar:
                             move(wid)
                             break
         finally:
-            if self.pending:
-                self.pending_context = (self.pane, self.me)
             # This process still belongs to its original pane. The temporary
             # destination context only applies to further keys in this read.
             self.pane, self.me = original_pane, original_me
@@ -566,7 +575,7 @@ def render():
                 out.write(frame)
                 out.flush()
                 last = frame
-            timeout = 0.05 if bar.pending == b"\x1b" else (1 if bar.visible() else None)
+            timeout = 0.05 if bar.pending.endswith(b"\x1b") else (1 if bar.visible() else None)
             ready = select.select([0, waiter.stdout, wake_r], [], [], timeout)[0]
             if not ready and bar.pending:
                 bar.keys(b"", flush=True)

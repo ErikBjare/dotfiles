@@ -254,8 +254,25 @@ class InputTests(unittest.TestCase):
         self.bar.keys(b"2M")
         # Row 2 on the receiving sidebar is its own window. Return focus in
         # that pane AND switch the client back from the keyboard destination.
-        self.assertEqual(self.tmux.call_args_list[0].args, ("last-pane", "-t", "%0"))
+        self.assertIn(("last-pane", "-t", "%0"), [call.args for call in self.tmux.call_args_list])
         self.assertEqual(self.tmux.call_args_list[-1].args[:3], ("switch-client", "-t", "$0:@1"))
+
+    def test_fragmented_mouse_keeps_original_layout_after_update(self):
+        self.bar.panes += [
+            pane(pane_id="%4", window_id="@3", window_index="3", sidebar=True),
+            pane(pane_id="%5", window_id="@3", window_index="3"),
+        ]
+        self.bar.pane = "%2"
+        self.bar.me = self.bar.panes[2]
+        for record in self.bar.panes:
+            record["pane_height"] = "4"
+        self.bar.keys(b"j\x1b[<0;5;")
+        # Model update() observing an external focus change between reads.
+        # Row 2 was window 2 in the focused, scrolled frame, not window 1.
+        self.bar.me = dict(self.bar.me, window_active="0")
+        self.bar.keys(b"2M")
+        switches = [call.args[:3] for call in self.tmux.call_args_list if call.args[0] == "switch-client"]
+        self.assertEqual(switches[-1], ("switch-client", "-t", "$0:@2"))
 
     def test_ignored_mouse_after_navigation_preserves_destination(self):
         for chunks in ((b"j\x1b[<0;5;10M\r",), (b"j\x1b[<0;5;", b"10M\r")):
@@ -285,7 +302,7 @@ class InputTests(unittest.TestCase):
                     self.bar.keys(action + suffix)
                     calls = self.tmux.call_args_list[:]
                     self.assertEqual(self.bar.pending, b"")
-                    self.assertIsNone(self.bar.pending_context)
+                    self.assertIsNone(self.bar.pending_rows)
                     self.bar.keys(b"", flush=True)
                     self.assertEqual(self.tmux.call_args_list, calls)
 
@@ -496,6 +513,24 @@ class ServerTests(unittest.TestCase):
         # ...and prefix+Tab brings them back, focused.
         send(b"\x02\t")
         self.wait_for(lambda: self.where() == "3 side")
+
+    def test_fragmented_navigation_keeps_input_in_receiving_process(self):
+        self.tmux("new-window", "-t", "main", "sleep 600")
+        self.tmux("select-window", "-t", "main:1")
+        self.vtabs("toggle")
+        send = self.attach()
+        send(b"\x02\t")
+        self.wait_for(lambda: self.where() == "1 side")
+        source = self.sidebar()
+        # Inject at the pane-stdin boundary: the terminal-facing tmux parser
+        # normally assembles CSI keys before forwarding them. Route the next
+        # fragment to whichever pane is active, not to the original Sidebar.
+        self.tmux("send-keys", "-H", "-t", source, "6a", "1b", "5b")
+        time.sleep(0.3)
+        active = self.tmux("display", "-p", "#{pane_id}")
+        self.tmux("send-keys", "-H", "-t", active, "42")
+        self.wait_for(lambda: self.where() == "3 side")
+        self.assertEqual(active, source)
 
     def test_navigation_and_back_in_one_read(self):
         self.vtabs("toggle")
