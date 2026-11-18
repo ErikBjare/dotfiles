@@ -257,6 +257,14 @@ class InputTests(unittest.TestCase):
         self.assertEqual(self.tmux.call_args_list[0].args, ("last-pane", "-t", "%0"))
         self.assertEqual(self.tmux.call_args_list[-1].args[:3], ("switch-client", "-t", "$0:@1"))
 
+    def test_ignored_mouse_after_navigation_preserves_destination(self):
+        for chunks in ((b"j\x1b[<0;5;10M\r",), (b"j\x1b[<0;5;", b"10M\r")):
+            with self.subTest(chunks=chunks):
+                self.tmux.reset_mock()
+                for chunk in chunks:
+                    self.bar.keys(chunk)
+                self.assertEqual(self.tmux.call_args.args, ("last-pane", "-t", "%2"))
+
     def test_mouse_destination_after_navigation_selects_real_pane(self):
         # The snapshot predates move() selecting window 2's sidebar. Its
         # previously active real pane is not necessarily the first real pane.

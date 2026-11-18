@@ -452,6 +452,7 @@ class Sidebar:
                         continue
                     # Mouse coordinates belong to the pane receiving bytes,
                     # not the keyboard burst's temporary destination.
+                    keyboard_pane, keyboard_me = self.pane, self.me
                     keyboard_target = key(self.me)
                     self.pane, self.me = original_pane, original_me
                     y = int(m.group(3)) - 1
@@ -470,6 +471,8 @@ class Sidebar:
                             tmux("switch-client", "-t", target)
                         self.pending = b""
                         break
+                    # An ignored click must not redirect subsequent keys.
+                    self.pane, self.me = keyboard_pane, keyboard_me
                 elif k in UP or k in DOWN:
                     order = window_order(self.panes)
                     if key(self.me) in order:
