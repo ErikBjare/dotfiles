@@ -250,6 +250,16 @@ class ServerTests(unittest.TestCase):
         self.tmux("resize-window", "-t", "main:1", "-x", "160")
         self.wait_for(lambda: self.panes()[0][3] == "32")
 
+    def test_unzoom_adds_sidebar_skipped_while_zoomed(self):
+        self.tmux("split-window", "-t", "main:1", "sleep 600")
+        self.tmux("resize-pane", "-Z", "-t", "main:1")
+        self.vtabs("toggle")
+        self.assertFalse(any(p[1] == "side" for p in self.panes()))
+        self.assertEqual(self.tmux("display", "-p", "-t", "main:1", "#{window_zoomed_flag}"), "1")
+        self.tmux("resize-pane", "-Z", "-t", "main:1")
+        self.wait_for(lambda: any(p[1] == "side" for p in self.panes()))
+        self.assertEqual(sum(p[1] == "main" for p in self.panes()), 2)
+
     def test_selecting_a_window_wakes_its_sidebar(self):
         self.vtabs("toggle")
         wid = self.tmux("display", "-p", "-t", "main:2", "#{window_id}")
