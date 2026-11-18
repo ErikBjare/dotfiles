@@ -389,6 +389,8 @@ class Sidebar:
         self.pane = pane
         self.panes = []
         self.me = None
+        self.pending = b""
+        self.pending_context = None
 
     def window(self, wid):
         return windows(self.panes, per_session=True).get(wid, [])
@@ -412,43 +414,68 @@ class Sidebar:
             if real:
                 tmux("select-pane", "-t", real[0]["pane_id"])
 
-    def keys(self, data):
-        moves, action = 0, None
-        for m in KEYS.finditer(data):
-            k = m.group(0)
-            if m.group(1) is not None:  # mouse: left press only, no wheel/drag
-                if m.group(4) == b"M" and int(m.group(1)) == 0:
-                    action = ("click", int(m.group(3)) - 1)
-            elif k in UP:
-                moves -= 1
-            elif k in DOWN:
-                moves += 1
-            elif k in BACK:
-                action = ("back",)
-            elif k.isdigit():
-                action = ("jump", k.decode())
-        order = window_order(self.panes)
-        if moves and key(self.me) in order:
-            i = order.index(key(self.me))
-            self.go(order[(i + moves) % len(order)], stay=True)
-        elif action and action[0] == "back":
-            self.back()
-        elif action and action[0] == "jump":
-            index = "10" if action[1] == "0" else action[1]
-            for wid, wp in windows(self.panes, per_session=True).items():
-                first = wp[0]
-                if first["session_id"] == self.me["session_id"] and first["window_index"] == index:
-                    self.go(wid, stay=True)
-        elif action and action[0] == "click":
-            rows = build(self.panes, self.me, *self.size(), focused=self.focused())
-            if 0 <= action[1] < len(rows) and rows[action[1]][1]:
-                target = rows[action[1]][1]
-                self.back()  # the click focused this sidebar; undo that
-                if ":" in target:  # "$session:@window", else a session
-                    if target != key(self.me):
-                        self.go(target, stay=False)
-                else:
-                    tmux("switch-client", "-t", target)
+    def keys(self, data, flush=False):
+        data = self.pending + data
+        self.pending = b""
+        # Reads need not end at an escape-sequence boundary. A lone Escape
+        # gets a short timeout in render(); incomplete CSI/SS3 waits for more.
+        partial = re.search(rb"\x1b(?:\[[0-9;<]*|O)?$", data)
+        if partial:
+            self.pending = data[partial.start():]
+            data = data[:partial.start()]
+            if flush and self.pending == b"\x1b":
+                data += self.pending
+                self.pending = b""
+
+        original_pane, original_me = self.pane, self.me
+        if self.pending_context:
+            self.pane, self.me = self.pending_context
+            self.pending_context = None
+
+        def move(wid):
+            self.go(wid, stay=True)
+            side = next((p for p in self.window(wid) if p["sidebar"]), None)
+            if side:
+                self.pane, self.me = side["pane_id"], side
+
+        try:
+            for m in KEYS.finditer(data):
+                k = m.group(0)
+                if m.group(1) is not None:  # mouse: left press only, no wheel/drag
+                    if m.group(4) != b"M" or int(m.group(1)) != 0:
+                        continue
+                    y = int(m.group(3)) - 1
+                    rows = build(self.panes, self.me, *self.size(), focused=self.focused())
+                    if 0 <= y < len(rows) and rows[y][1]:
+                        target = rows[y][1]
+                        self.back()  # the click focused this sidebar; undo that
+                        if ":" in target:  # "$session:@window", else a session
+                            if target != key(self.me):
+                                self.go(target, stay=False)
+                        else:
+                            tmux("switch-client", "-t", target)
+                        break
+                elif k in UP or k in DOWN:
+                    order = window_order(self.panes)
+                    if key(self.me) in order:
+                        i = order.index(key(self.me))
+                        move(order[(i + (1 if k in DOWN else -1)) % len(order)])
+                elif k in BACK:
+                    self.back()
+                    break
+                elif k.isdigit():
+                    index = "10" if k == b"0" else k.decode()
+                    for wid, wp in windows(self.panes, per_session=True).items():
+                        first = wp[0]
+                        if first["session_id"] == self.me["session_id"] and first["window_index"] == index:
+                            move(wid)
+                            break
+        finally:
+            if self.pending:
+                self.pending_context = (self.pane, self.me)
+            # This process still belongs to its original pane. The temporary
+            # destination context only applies to further keys in this read.
+            self.pane, self.me = original_pane, original_me
 
     def size(self):
         return int(self.me["pane_width"]), int(self.me["pane_height"])
@@ -517,9 +544,10 @@ def render():
                 out.write(frame)
                 out.flush()
                 last = frame
-            ready = select.select(
-                [0, waiter.stdout, wake_r], [], [], 1 if bar.visible() else None
-            )[0]
+            timeout = 0.05 if bar.pending == b"\x1b" else (1 if bar.visible() else None)
+            ready = select.select([0, waiter.stdout, wake_r], [], [], timeout)[0]
+            if not ready and bar.pending:
+                bar.keys(b"", flush=True)
             if 0 in ready:
                 try:
                     data = os.read(0, 4096)
