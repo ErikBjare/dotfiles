@@ -242,6 +242,11 @@ def build(panes, me, cols, rows, focused=False):
     The selected row is the sidebar's own window. All sessions are expanded;
     if that overflows, other sessions collapse.
     """
+    if rows <= 0:
+        return []
+    # At minimum height, keep the selection instead of reserving the only
+    # row for the keyboard hint.
+    focused = focused and rows > 1
     sessions = {}
     for wid, wpanes in windows(panes, per_session=True).items():
         info = window_info(wpanes)

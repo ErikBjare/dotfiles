@@ -154,6 +154,14 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual(text(rows)[0], " …")
         self.assertEqual(text(rows)[-1], " …")
 
+    def test_one_row_sidebar_keeps_selected_window(self):
+        panes = [pane(pane_id="%0", sidebar=True), pane(pane_id="%1")]
+        for focused in (False, True):
+            with self.subTest(focused=focused):
+                rows = vtabs.build(panes, panes[0], 32, 1, focused=focused)
+                self.assertEqual(len(rows), 1)
+                self.assertTrue(rows[0][2])
+
     def test_other_sessions_collapse_when_too_tall(self):
         panes = [pane(pane_id="%0", sidebar=True), pane(pane_id="%1")]
         for i in range(10):
