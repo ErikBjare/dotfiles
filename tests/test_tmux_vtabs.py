@@ -257,6 +257,18 @@ class InputTests(unittest.TestCase):
         self.assertEqual(self.tmux.call_args_list[0].args, ("last-pane", "-t", "%0"))
         self.assertEqual(self.tmux.call_args_list[-1].args[:3], ("switch-client", "-t", "$0:@1"))
 
+    def test_mouse_destination_after_navigation_selects_real_pane(self):
+        # The snapshot predates move() selecting window 2's sidebar. Its
+        # previously active real pane is not necessarily the first real pane.
+        self.bar.panes[2]["pane_active"] = "0"
+        self.bar.panes[3]["pane_active"] = "0"
+        self.bar.panes.append(pane(pane_id="%4", window_id="@2", window_index="2"))
+        self.bar.keys(b"j\x1b[<0;5;3M")
+        self.assertEqual(
+            self.tmux.call_args.args,
+            ("switch-client", "-t", "$0:@2", ";", "select-pane", "-t", "%4"),
+        )
+
     def test_exit_discards_trailing_partial_input(self):
         for action in (b"\r", b"j\r", b"\x1b[<0;5;2M"):
             for suffix in (b"\x1b", b"\x1b[", b"\x1b[<0;5;"):

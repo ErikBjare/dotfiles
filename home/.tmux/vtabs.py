@@ -403,8 +403,11 @@ class Sidebar:
         args = ["switch-client", "-t", wid]
         if stay and side:
             args += [";", "select-pane", "-t", side["pane_id"]]
-        elif real and not any(p["pane_active"] == "1" for p in real):
-            args += [";", "select-pane", "-t", real[0]["pane_id"]]
+        elif real and (not stay or not any(p["pane_active"] == "1" for p in real)):
+            # A prior key in this read may have focused the sidebar since
+            # this snapshot. Explicitly restore the recorded real pane.
+            dest = next((p for p in real if p["pane_active"] == "1"), real[0])
+            args += [";", "select-pane", "-t", dest["pane_id"]]
         tmux(*args)
 
     def back(self):
